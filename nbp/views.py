@@ -117,23 +117,28 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
             Entity.event_date_filed >= window_start)
     )
 
-    # ✅ NEW: Check if user has access to this jurisdiction
-    if session.get('is_subscriber') and session.get('user_email'):
+    # ✅ NEW: If ?preview=1 is in URL, always show blurred (non-subscriber view)
+    if request.args.get('preview') == '1':
+        # Force preview mode - show data for the requested jurisdiction only
+        if jur.kind == "state":
+            q = q.filter_by(state="FL")
+        elif jur.kind == "county":
+            q = q.filter_by(state="FL", county=jur.name)
+        elif jur.kind == "city":
+            q = q.filter_by(state="FL", city=jur.name)
+    
+    # ✅ Normal access control for logged-in users (existing code)
+    elif session.get('is_subscriber') and session.get('user_email'):
         user_email = session['user_email']
         subscription = Subscription.query.filter_by(email=user_email).first()
         
         if subscription and subscription.scope_json:
             scope = json.loads(subscription.scope_json)
             
-            # If they have statewide access, show everything
             if scope.get('kind') == 'state':
                 q = q.filter_by(state="FL")
-            
-            # If they have specific counties, only show those
             elif scope.get('kind') == 'counties':
                 allowed_counties = scope.get('slugs', [])
-                
-                # Convert slugs to actual county names
                 allowed_county_names = []
                 for slug in allowed_counties:
                     county_jur = Jurisdiction.query.filter_by(
@@ -143,23 +148,20 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
                     if county_jur:
                         allowed_county_names.append(county_jur.name)
                 
-                # Only show entities in their allowed counties
                 if allowed_county_names:
                     q = q.filter(
                         Entity.state == "FL",
                         Entity.county.in_(allowed_county_names)
                     )
                 else:
-                    # No valid counties = no results
-                    q = q.filter(Entity.id == None)  # Returns empty
+                    q = q.filter(Entity.id == None)
             else:
-                # Unknown scope = no access
                 q = q.filter(Entity.id == None)
         else:
-            # No subscription = no access
             q = q.filter(Entity.id == None)
+    
+    # ✅ Not logged in - show preview
     else:
-        # Not logged in = show preview (existing behavior for non-subscribers)
         if jur.kind == "state":
             q = q.filter_by(state="FL")
         elif jur.kind == "county":
@@ -174,7 +176,7 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
     )
 
     return q.limit(preview_limit).all()
-
+    
 def _children(jur: Jurisdiction):
     return sorted(jur.children, key=lambda c: c.name)[:12]
 
@@ -213,22 +215,21 @@ def state_page():
     if not jur:
         abort(404)
     
-    # ✅ Check if user has statewide access
-    if session.get('is_subscriber') and session.get('user_email'):
-        subscription = Subscription.query.filter_by(
-            email=session['user_email']
-        ).first()
-        
-        if subscription and subscription.scope_json:
-            scope = json.loads(subscription.scope_json)
+    # ✅ Skip access control if preview mode
+    if request.args.get('preview') != '1':
+        if session.get('is_subscriber') and session.get('user_email'):
+            subscription = Subscription.query.filter_by(
+                email=session['user_email']
+            ).first()
             
-            # Only allow if they have statewide plan
-            if scope.get('kind') != 'state':
-                # Redirect to their first county instead
-                if scope.get('kind') == 'counties' and scope.get('slugs'):
-                    first_county = scope['slugs'][0]
-                    return redirect(url_for('public.county_page', county_slug=first_county))
-                return redirect(url_for('public.home'))
+            if subscription and subscription.scope_json:
+                scope = json.loads(subscription.scope_json)
+                
+                if scope.get('kind') != 'state':
+                    if scope.get('kind') == 'counties' and scope.get('slugs'):
+                        first_county = scope['slugs'][0]
+                        return redirect(url_for('public.county_page', county_slug=first_county))
+                    return redirect(url_for('public.home'))
     
     canonical = url_for("public.state_page", _external=True)
     profile_data = _get_user_profile_data()
@@ -257,29 +258,28 @@ def county_page(county_slug):
     if not jur:
         abort(404)
 
-    # ✅ Check if user has access to this county
-    if session.get('is_subscriber') and session.get('user_email'):
-        subscription = Subscription.query.filter_by(
-            email=session['user_email']
-        ).first()
-        
-        if subscription and subscription.scope_json:
-            scope = json.loads(subscription.scope_json)
+    # ✅ Skip access control if preview mode
+    if request.args.get('preview') != '1':
+        if session.get('is_subscriber') and session.get('user_email'):
+            subscription = Subscription.query.filter_by(
+                email=session['user_email']
+            ).first()
             
-            # Allow if statewide OR if county is in their list
-            has_access = (
-                scope.get('kind') == 'state' or
-                (scope.get('kind') == 'counties' and 
-                 county_slug in scope.get('slugs', []))
-            )
-            
-            if not has_access:
-                # Redirect to their first allowed county or home
-                if scope.get('kind') == 'counties' and scope.get('slugs'):
-                    return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
-                elif scope.get('kind') == 'state':
-                    return redirect(url_for('public.state_page'))
-                return redirect(url_for('public.home'))
+            if subscription and subscription.scope_json:
+                scope = json.loads(subscription.scope_json)
+                
+                has_access = (
+                    scope.get('kind') == 'state' or
+                    (scope.get('kind') == 'counties' and 
+                     county_slug in scope.get('slugs', []))
+                )
+                
+                if not has_access:
+                    if scope.get('kind') == 'counties' and scope.get('slugs'):
+                        return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
+                    elif scope.get('kind') == 'state':
+                        return redirect(url_for('public.state_page'))
+                    return redirect(url_for('public.home'))
 
     canonical = url_for("public.county_page", county_slug=jur.slug, _external=True)
     profile_data = _get_user_profile_data()
@@ -306,32 +306,31 @@ def city_page(city_slug):
     if not jur:
         abort(404)
 
-    # ✅ Check if user has access to this city's county
-    if session.get('is_subscriber') and session.get('user_email'):
-        subscription = Subscription.query.filter_by(
-            email=session['user_email']
-        ).first()
-        
-        if subscription and subscription.scope_json:
-            scope = json.loads(subscription.scope_json)
+    # ✅ Skip access control if preview mode
+    if request.args.get('preview') != '1':
+        if session.get('is_subscriber') and session.get('user_email'):
+            subscription = Subscription.query.filter_by(
+                email=session['user_email']
+            ).first()
             
-            # Get the county this city belongs to
-            city_county = jur.parent if jur.parent else None
-            city_county_slug = city_county.slug if city_county else None
-            
-            # Allow if statewide OR if city's county is in their list
-            has_access = (
-                scope.get('kind') == 'state' or
-                (scope.get('kind') == 'counties' and 
-                 city_county_slug in scope.get('slugs', []))
-            )
-            
-            if not has_access:
-                if scope.get('kind') == 'counties' and scope.get('slugs'):
-                    return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
-                elif scope.get('kind') == 'state':
-                    return redirect(url_for('public.state_page'))
-                return redirect(url_for('public.home'))
+            if subscription and subscription.scope_json:
+                scope = json.loads(subscription.scope_json)
+                
+                city_county = jur.parent if jur.parent else None
+                city_county_slug = city_county.slug if city_county else None
+                
+                has_access = (
+                    scope.get('kind') == 'state' or
+                    (scope.get('kind') == 'counties' and 
+                     city_county_slug in scope.get('slugs', []))
+                )
+                
+                if not has_access:
+                    if scope.get('kind') == 'counties' and scope.get('slugs'):
+                        return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
+                    elif scope.get('kind') == 'state':
+                        return redirect(url_for('public.state_page'))
+                    return redirect(url_for('public.home'))
 
     canonical = url_for("public.city_page", city_slug=jur.slug, _external=True)
     profile_data = _get_user_profile_data()
@@ -365,27 +364,28 @@ def county_city_page(county_slug, city_slug):
     if not jur:
         abort(404)
 
-    # ✅ Check if user has access to this county
-    if session.get('is_subscriber') and session.get('user_email'):
-        subscription = Subscription.query.filter_by(
-            email=session['user_email']
-        ).first()
-        
-        if subscription and subscription.scope_json:
-            scope = json.loads(subscription.scope_json)
+    # ✅ Skip access control if preview mode
+    if request.args.get('preview') != '1':
+        if session.get('is_subscriber') and session.get('user_email'):
+            subscription = Subscription.query.filter_by(
+                email=session['user_email']
+            ).first()
             
-            has_access = (
-                scope.get('kind') == 'state' or
-                (scope.get('kind') == 'counties' and 
-                 county_slug in scope.get('slugs', []))
-            )
-            
-            if not has_access:
-                if scope.get('kind') == 'counties' and scope.get('slugs'):
-                    return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
-                elif scope.get('kind') == 'state':
-                    return redirect(url_for('public.state_page'))
-                return redirect(url_for('public.home'))
+            if subscription and subscription.scope_json:
+                scope = json.loads(subscription.scope_json)
+                
+                has_access = (
+                    scope.get('kind') == 'state' or
+                    (scope.get('kind') == 'counties' and 
+                     county_slug in scope.get('slugs', []))
+                )
+                
+                if not has_access:
+                    if scope.get('kind') == 'counties' and scope.get('slugs'):
+                        return redirect(url_for('public.county_page', county_slug=scope['slugs'][0]))
+                    elif scope.get('kind') == 'state':
+                        return redirect(url_for('public.state_page'))
+                    return redirect(url_for('public.home'))
 
     canonical = url_for("public.city_page", city_slug=jur.slug, _external=True)
     profile_data = _get_user_profile_data()
@@ -411,23 +411,22 @@ def multi_counties_page():
     if len(slugs) < 2:
         return redirect(url_for("public.state_page"))
 
-    # ✅ Validate user has access to ALL requested counties
-    if session.get('is_subscriber') and session.get('user_email'):
-        subscription = Subscription.query.filter_by(
-            email=session['user_email']
-        ).first()
-        
-        if subscription and subscription.scope_json:
-            scope = json.loads(subscription.scope_json)
+    # ✅ Skip access control if preview mode
+    if request.args.get('preview') != '1':
+        if session.get('is_subscriber') and session.get('user_email'):
+            subscription = Subscription.query.filter_by(
+                email=session['user_email']
+            ).first()
             
-            # If not statewide, filter to only their allowed counties
-            if scope.get('kind') == 'counties':
-                allowed = scope.get('slugs', [])
-                slugs = [s for s in slugs if s in allowed]
+            if subscription and subscription.scope_json:
+                scope = json.loads(subscription.scope_json)
                 
-                # If none of the requested counties are allowed, redirect
-                if not slugs:
-                    return redirect(url_for('public.county_page', county_slug=allowed[0]))
+                if scope.get('kind') == 'counties':
+                    allowed = scope.get('slugs', [])
+                    slugs = [s for s in slugs if s in allowed]
+                    
+                    if not slugs:
+                        return redirect(url_for('public.county_page', county_slug=allowed[0]))
 
     state = Jurisdiction.query.filter_by(kind="state", slug="florida").first()
     if not state:
@@ -491,8 +490,7 @@ def multi_counties_page():
         parent_county=None,
         profile_data=profile_data,
     )
-
-
+    
 @bp.get("/export/<path:slug>.csv")
 def export_csv(slug):
     if not session.get("is_subscriber"):
