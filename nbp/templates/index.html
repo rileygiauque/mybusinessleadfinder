@@ -1273,8 +1273,6 @@ if (toStep5) {
     return '/new-business/florida/'; // fallback
   }
 
-  // final submit
-  // final submit
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -1288,7 +1286,8 @@ form.addEventListener('submit', (e) => {
   phoneInput.setCustomValidity('');
 
   const redirect = computeRedirect();
-  window.location.href = redirect;   // 👈 go straight to new-business page
+  // ✅ ADD ?preview=1 to force blur
+  window.location.href = redirect + '?preview=1';
 });
 
 
