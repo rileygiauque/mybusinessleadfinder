@@ -1273,7 +1273,7 @@ if (toStep5) {
     return '/new-business/florida/'; // fallback
   }
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const ok = validPhoneOptional(phoneInput.value);
@@ -1285,8 +1285,10 @@ form.addEventListener('submit', (e) => {
   }
   phoneInput.setCustomValidity('');
 
+  // ✅ Logout user when they click Finish
+  await fetch('/logout', { method: 'GET' });
+  
   const redirect = computeRedirect();
-  // ✅ ADD ?preview=1 to force blur
   window.location.href = redirect + '?preview=1';
 });
 
