@@ -360,55 +360,47 @@ def subscribe_success():
     if not session_id:
         return abort(400, description="Missing session_id")
 
-    # Pull the session so we can read metadata
     checkout_session = s.checkout.Session.retrieve(
         session_id,
         expand=["customer", "subscription", "line_items"],
     )
 
-    # Mark as subscriber
     session["is_subscriber"] = True
     
-    # Store customer ID for billing portal
     if checkout_session.get("customer"):
         session["stripe_customer_id"] = checkout_session["customer"]
 
-    # ✅ GET EMAIL FROM CHECKOUT SESSION AND SET IN SESSION
-    meta = (checkout_session.get("metadata") or {}) if isinstance(checkout_session, dict) else {}
+    meta = (checkout_session.get("metadata") or {})
     stored_email = meta.get("nbp_email")
     
-    # Also check customer_details as fallback
     if not stored_email:
         customer_details = checkout_session.get("customer_details") or {}
         stored_email = customer_details.get("email")
     
     if stored_email:
-        session["user_email"] = stored_email  # ✅ SET THIS!
+        session["user_email"] = stored_email
         current_app.logger.info(f"✅ Set user_email in session: {stored_email}")
 
-    # ---- Build redirect based on plan + counties
     plan = (meta.get("nbp_plan") or "").lower()
     counties_csv = (meta.get("nbp_counties") or "").strip()
     counties = [c for c in counties_csv.split(",") if c]
     
-    # Store counties in session for profile display
+    # ✅ Store counties in session for profile display
     if counties:
         session["selected_counties"] = counties
+        current_app.logger.info(f"✅ Stored counties in session: {counties}")
 
     def compute_redirect(plan: str, counties: list[str]) -> str:
-        # STATEWIDE or explicit florida
         if plan == "statewide" or "florida" in counties:
             return "/new-business/florida/"
-
-        # SINGLE county
         if len(counties) == 1:
             return f"/new-business/florida/county/{counties[0]}/"
-
-        # MULTI (10-county plan) — point to a combined view you implement
         return "/new-business/florida/multi/?counties=" + ",".join(counties)
 
     redirect_to = compute_redirect(plan, counties)
+    current_app.logger.info(f"✅ Redirecting to: {redirect_to}")
     return redirect(redirect_to)
+    
 
 
 @bp.post("/stripe/webhook")
@@ -516,17 +508,26 @@ def stripe_webhook():
                 plan_label = metadata.get("nbp_plan") or "unknown"
                 scope = metadata.get("nbp_jurisdiction") or ""
                 counties_csv = metadata.get("nbp_counties") or ""
-                
-                # Build scope_json with counties
+    
+                # ✅ Build scope_json in the format views.py expects
+                scope_json = None
                 if counties_csv:
-                    scope_json = json.dumps({
-                        "jurisdiction": scope,
-                        "counties": counties_csv
-                    })
+                    # Split counties and build proper structure
+                    county_list = [c.strip() for c in counties_csv.split(',') if c.strip()]
+        
+                    # Check if it's statewide
+                    if 'florida' in county_list or len(county_list) == 67:  # all Florida counties
+                        scope_json = json.dumps({
+                            "kind": "state",
+                            "slug": "florida"
+                        })
+                    else:
+                        scope_json = json.dumps({
+                            "kind": "counties",
+                            "slugs": county_list  # ✅ Changed from string to list
+                        })
                 elif scope:
                     scope_json = json.dumps({"jurisdiction": scope})
-                else:
-                    scope_json = None
 
                 existing = None
                 if email or stored_email:
@@ -544,7 +545,6 @@ def stripe_webhook():
                 db.session.commit()
             except Exception as e:
                 current_app.logger.error(f"Error creating Subscription record: {e}")
-
         elif etype in ("customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted"):
             sub = data
             customer_id = sub.get("customer")
