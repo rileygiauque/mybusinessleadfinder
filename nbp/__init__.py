@@ -28,12 +28,11 @@ def create_user(email, password, plan_name):
     return new_user
 
 
-
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
     # ⬇️ import the blueprint here and register it AFTER app exists
-    from .nearby_cities_api import bp as nearby_bp   # adjust path if file lives elsewhere
+    from .nearby_cities_api import bp as nearby_bp
     app.register_blueprint(nearby_bp)
 
     # Use DATABASE_URL if provided, else fallback to local SQLite
@@ -75,11 +74,10 @@ def create_app():
     def robots():
         return robots_txt()
 
-    
-    # Example: Create a user when the app starts (can be triggered manually)
-    with app.app_context():
-        # You can call this function manually to create users
-        create_user('test@example.com', 'securepassword', 'Local Star')
-        print("User created successfully.")  # Debug message, you can remove later
+    # ⚠️ REMOVE OR COMMENT THIS OUT FOR PRODUCTION
+    # This will try to create a user EVERY TIME the app starts
+    # with app.app_context():
+    #     create_user('test@example.com', 'securepassword', 'Local Star')
+    #     print("User created successfully.")
 
     return app
