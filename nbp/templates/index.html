@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NewBizPulse — Find New Businesses Near You!</title>
+  <meta name="description" content="Get daily emails with new local businesses, including their phone and email. Sign up now to grow your business!">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ===== Brand (softer finance blues) ===== */
+    :root{
+      --blue-deep:#0f3658;     /* deep, not neon */
+      --blue-soft:#2a5ea9;     /* softer primary */
+      --blue-tint:#e9f1fb;     /* gentle tint */
+      --ink-900:#0f172a;
+      --ink-700:#1f2937;
+      --ink-600:#334155;
+      --border:#e5e7eb;
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --radius:18px;
+      --shadow:0 10px 28px rgba(17,24,39,.08);
+      --focus: 0 0 0 3px rgba(42,94,169,.25);
+--hero-h: calc(100svh + 0.25in);
+
+    }
+
+/* --- Preview masking --- */
+.only-city-visible td:not(.city):not(.formation) .mask { filter: blur(7px); opacity:.95; }
+.only-city-visible td:not(.city):not(.formation) .mask::selection { background:transparent; }
+.only-city-visible td:not(.city):not(.formation) { user-select: none; }
+.only-city-visible td.city,
+.only-city-visible td.formation { filter:none; }
+
+/* Make long cells wrap nicely */
+td, th { vertical-align: top; }
+
+
+/* Results section background only */
+.section-results {
+  background: #163B5A;     /* the blue in your screenshot */
+}
+.section-results h2 {
+  color: #fff;              /* keep the heading readable on blue */
+}
+
+/* Pricing footnote */
+.pricing-note{
+  margin-top: 14px;
+  color: var(--ink-600);
+  font-size: clamp(15px,1.2vw,17px);
+  line-height: 1.6;
+  text-align: center;
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+
+
+    /* ===== Base ===== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--ink-700);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+    }
+    .container{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,3vw,48px)}
+    .section{padding-block:clamp(52px,7vw,92px)}
+    .alt{background:linear-gradient(#fff, #f7f9ff)}
+
+    h1,h2{color:var(--ink-900);margin:0 0 .5rem 0}
+    h1{font-size:clamp(34px,4.2vw,56px);letter-spacing:.2px}
+    h2{font-size:clamp(26px,3vw,36px)}
+    p{font-size:clamp(18px,1.6vw,20px)}
+    .lead{color:#20324b}
+
+    .btn{
+      display:inline-block;border:0;border-radius:14px;
+      background:var(--blue-soft);color:#fff;font-weight:800;
+      padding:16px 20px;font-size:clamp(18px,1.4vw,20px);
+      box-shadow:var(--shadow); cursor:pointer;
+    }
+    .btn:focus{outline:none; box-shadow:var(--focus)}
+
+    input,select{
+      width:100%;padding:16px 14px;font-size:20px;
+      border:1.5px solid var(--border);border-radius:14px;
+    }
+    input:focus,select:focus{outline:none; box-shadow:var(--focus)}
+
+    /* ===== Header ===== */
+    .header{background:#fff;box-shadow:var(--shadow)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:14px}
+    .logo{font-weight:800;color:var(--blue-soft);font-size:clamp(20px,2.2vw,26px)}
+
+    /* ===== HERO: background image + soft overlay + blurred feather (no line) ===== */
+    .hero{
+  position: relative;
+  color: #fff;
+  min-height: 100vh;
+  padding: clamp(64px, 10vw, 120px) 0 clamp(64px, 8vw, 100px);
+}
+    .hero::before{
+  content:"";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    rgba(15,54,88,.95) 0%,
+    rgba(15,54,88,.72) 40%,
+    rgba(15,54,88,.30) 70%,
+    rgba(15,54,88,0)   100%
+  );
+  pointer-events:none;
+  z-index: -1;
+}
+
+    /* blurred feather into next section */
+    .hero::after{
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: var(--hero-bg) center / cover no-repeat;
+  z-index: -2;
+}
+
+    .hero-inner{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(28px,3vw,52px);
+  align-items: start;  /* Changed from center */
+  grid-template-columns: 1.05fr minmax(340px,540px);
+}
+
+    .hero h1{color:#f7fbff}
+    .hero .lead{color:#e9f1fb}
+
+    .form-card{
+  margin-top:clamp(16px,2vw,24px);
+  margin-bottom:clamp(24px,3vw,40px);
+  background:#fff;
+  color:var(--ink-700);
+  padding:clamp(18px,2.2vw,26px);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  width:min(560px,100%);
+  min-height: 200px;  /* Ensure it has substance */
+  overflow:visible;
+}
+
+    .form-card .btn{width:100%; margin-top:10px}
+
+    /* We’re using the background image for the hero. You can keep this column for balance,
+       or remove it if you prefer a single-column hero on desktop. */
+    .hero-illustration{min-height:320px}
+
+    @media (max-width: 980px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero-illustration{display:none}
+
+    }
+
+    /* ===== How it works (with thumbnails) ===== */
+    .hiw-grid{display:grid;gap:24px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    .hiw-card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .hiw-img{width:100%;height:160px;object-fit:cover;display:block}
+    .hiw-body{padding:18px}
+    .hiw-body h3{margin:0 0 .35rem 0;color:var(--ink-900);font-size:clamp(18px,2vw,20px)}
+    .hiw-body p{margin:.25rem 0 0}
+    @media (max-width:900px){.hiw-grid{grid-template-columns:1fr}}
+
+    /* ===== Results (card table) ===== */
+    .table-wrap{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:auto;min-height:180px}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:var(--blue-tint);color:var(--blue-deep);text-align:left;font-weight:700;padding:14px;border-bottom:1px solid var(--border)}
+    tbody td{padding:14px;border-bottom:1px solid var(--border);font-size:18px}
+    tbody tr:hover{background:#f8fbff}
+
+    /* ===== Pricing (accent photos) ===== */
+    .pricing-grid{display:grid;gap:24px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    .pricing-card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;text-align:center}
+    .pricing-photo{height:120px;object-fit:cover;width:100%}
+    .pricing-body{padding:24px}
+    .price{font-weight:800;font-size:32px;margin:.25rem 0 1rem;color:var(--ink-900)}
+    .pricing-card.featured{border-color:var(--blue-soft);box-shadow:0 16px 40px rgba(42,94,169,.18)}
+    @media (max-width:980px){.pricing-grid{grid-template-columns:1fr}}
+
+
+
+/* ===== Custom multiselect ===== */
+.nbp-multi { position: relative; }
+.nbp-multi-toggle{
+  width:100%; padding:14px 14px; border:1.5px solid var(--border);
+  border-radius:14px; background:#fff; text-align:left; font-size:18px;
+  cursor:pointer; box-shadow:var(--shadow);
+}
+.nbp-multi-toggle:focus{ outline:none; box-shadow:var(--focus); }
+.nbp-multi-panel{
+  position: absolute;
+  left: -14px;                 /* extend beyond the card padding */
+  right: -14px;
+  top: calc(100% + 8px);       /* sit just below the toggle */
+  z-index: 50;                 /* above the card */
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  width: auto;                 /* respect left/right values */
+  max-height: 260px;           /* show ~2–3 options */
+}
+
+.nbp-multi-list{
+  /* show ≈3 options, then scroll */
+  max-height: calc(56px * 3 + 6px);  /* 56px ≈ one row height */
+  overflow: auto;
+  padding: 4px;
+}
+
+.nbp-multi-item{
+  display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px;
+  cursor:pointer; user-select:none;
+}
+.nbp-multi-item:hover{ background:#f7f9ff; }
+.nbp-multi-item input{ width:18px; height:18px; }
+.nbp-multi-sep{ margin:6px 10px; color:#94a3b8; }
+
+.nbp-multi-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.nbp-chip{
+  background:var(--blue-tint); color:var(--blue-deep); border-radius:999px;
+  padding:6px 10px; font-size:14px; display:inline-flex; align-items:center; gap:6px;
+}
+.nbp-chip .x{ cursor:pointer; font-weight:700; }
+
+
+
+
+/* Wizard steps */
+.step[hidden] { display: none !important; }
+
+/* iOS Safari: prevent focus-zoom on controls */
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea, button,
+  .nbp-multi-toggle,
+  .nbp-multi-item span {
+    font-size: 17px !important;
+  }
+}
+.nbp-multi-toggle,
+.nbp-multi-item,
+.nbp-multi-item input {
+  touch-action: manipulation;
+}
+
+
+/* --- Trial CTA button (matches your theme) --- */
+.trial-cta{ text-align:center; margin: 8px 0 18px; }
+
+.cta-big{
+  Margin-top: 12px;
+  display:inline-grid; gap:6px; place-items:center;
+  border:0; border-radius:16px; padding:22px 26px;
+  background: var(--blue-soft);
+  color:#fff; text-decoration:none; font-weight:800;
+  box-shadow: var(--shadow);
+  width:100%;
+  line-height:1.25; cursor:pointer;
+}
+.cta-big:hover{ box-shadow: 0 16px 34px rgba(31,107,214,.30); }
+.cta-big:focus{ outline:none; box-shadow: 0 0 0 4px rgba(37,99,235,.28); }
+
+.cta-line-1{ font-size: clamp(26px, 2.4vw, 34px); letter-spacing:.2px; }
+.cta-line-2{ font-weight:600; opacity:.95; font-size: clamp(15px, 1.4vw, 18px); }
+
+/* Lead flyer sticker */
+.section-results .container { position: relative; }   /* anchor for absolute child */
+.lead-sticker{
+  position: absolute;
+  left: clamp(8px, 2vw, -10px);
+  bottom: clamp(-18px, -3vw, -26px);   /* slight overlap below the preview box */
+  width: min(260px, 28vw);
+  max-width: 320px;
+  transform: rotate(-2deg);
+  z-index: 3;                          /* on top of the table card */
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,.25));
+}
+/* give the section breathing room so the overlap isn't clipped */
+.section-results { padding-bottom: clamp(60px, 8vw, 100px); }
+
+/* Hide on small screens to keep things tidy */
+@media (max-width: 720px){
+  .lead-sticker{ display:none; }
+}
+
+/* --- Row CTA (centered) + full-row blur on hover --- */
+#preview-table tbody tr.preview-row { position: relative; }
+
+#preview-table a.row-cta{
+  position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); /* centered */
+  background: var(--blue-soft); color:#fff; text-decoration:none;
+  font-weight:800; font-size:14px; line-height:1;
+  padding:10px 14px; border-radius:999px;
+  box-shadow: var(--shadow);
+  opacity:0; pointer-events:none; transition:opacity .18s ease;
+  z-index: 2;  /* keep above blur */
+}
+
+#preview-table tbody tr.preview-row:hover a.row-cta,
+#preview-table a.row-cta:focus-visible{
+  opacity:1; pointer-events:auto;
+}
+
+
+/* Full-row blur on hover — even City + Formation */
+#preview-table tbody tr.preview-row:hover td .mask{ filter: blur(8px) !important; opacity:.95; }
+
+/* Don't blur the CTA itself */
+#preview-table tbody tr.preview-row:hover a.row-cta{ filter:none !important; }
+
+@media (max-width: 720px){
+  /* optional: always show on mobile */
+  #preview-table a.row-cta{ opacity:1; pointer-events:auto; }
+}
+
+:root{
+  --green-mid:#16a34a;
+  --green-ink:#0b4d2b;
+}
+
+.trial-kicker{ margin:6px 0 8px; font-size:16px; }
+.trial-badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(22,163,74,.12);
+  border:1px solid rgba(22,163,74,.35);
+  color:var(--green-ink);
+  font-weight:800;
+}
+
+/* Results subtitle on dark background */
+.results-subtitle{
+  color:#e9f1fb;
+  opacity:.92;
+  margin:6px 0 16px;
+  font-size: clamp(15px,1.3vw,18px);
+  line-height:1.5;
+}
+
+.step-progress{
+  margin-top:8px;
+  text-align:center;
+  color:var(--ink-600);
+  font-size:14px;
+  font-weight:600;
+}
+
+/* Subtle Login Button Style */
+.login-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 12px;
+  font-size: 16px;
+  background-color: var(--blue-soft);
+  color: white;
+  border: 2px solid var(--blue-soft);
+  border-radius: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  z-index: 10; /* Ensure it's above other content like images */
+}
+
+.login-btn:hover,
+.login-btn:focus {
+  background-color: var(--blue-soft);
+  color: white;
+  border-color: var(--blue-soft);
+  box-shadow: 0 14px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Login Modal Styles */
+.login-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Make sure it's above other elements */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+  overflow: auto;
+}
+
+.login-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  margin: 15% auto;
+  border-radius: 10px;
+  width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Input Fields and Button Styles */
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+<!-- Subtle Login Button -->
+<a href="/login" class="login-btn" aria-label="Login">
+  Login
+</a>
+
+
+<!-- Login Modal -->
+<div id="loginModal" class="login-modal">
+  <div class="login-modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" name="email" required>
+
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" name="password" required>
+
+      <button type="submit" class="btn">Login</button>
+      <p id="login-error" style="color:red; margin-top:10px; display:none;"></p>
+    </form>
+  </div>
+</div>
+
+
+
+  <!-- Header -->
+
+
+  <!-- HERO (set your background image here) -->
+  <section
+    class="hero"
+    style="--hero-bg: url('{{ url_for('static', filename='img/hero-people.png') }}');">
+    <!-- ^^^ If your file is not PNG, change .png to the real extension. -->
+
+    <div class="container hero-inner">
+      <!-- Left: copy + form -->
+      <div>
+        <h1>Get Fresh Leads Sent To You Daily</h1>
+        <p class="lead">Sending you brand-new local business leads to help generate new customers and clients for your business.</p>
+
+        <form class="form-card" id="nbp-wizard" action="" method="GET" aria-label="Signup">
+
+  <!-- hidden payload the server reads -->
+  <input type="hidden" name="counties" id="nbp-hidden-counties">
+  <input type="hidden" name="redirect_to" id="nbp-hidden-redirect">
+  <input type="hidden" id="nbp-selected-plan" name="price_id">
+
+
+  <!-- STEP 1: State only -->
+<div class="step" id="step-1">
+  <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Start by Selecting a State</label>
+  <select id="nbp-state" aria-label="Choose state" required>
+    <option value="">Select</option>
+    <option value="florida">Florida</option>
+  </select>
+
+  <button class="btn" type="button" id="to-step-2" style="margin-top:12px">Continue</button>
+
+</div>
+
+
+  <!-- STEP 2: Area (Counties) — custom multiselect -->
+  <div class="step" id="step-2" hidden>
+    <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Select county</label>
+
+    <div class="nbp-multi" id="nbp-multi">
+      <button
+        type="button"
+        class="nbp-multi-toggle"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-controls="nbp-multi-panel"
+        id="nbp-multi-button"
+      >
+        Select areas…
+      </button>
+
+      <div id="nbp-multi-panel" class="nbp-multi-panel" hidden>
+        <div class="nbp-multi-list" role="listbox" aria-multiselectable="true">
+          <!-- All-of-state (mutually exclusive) -->
+          <label class="nbp-multi-item">
+            <input type="checkbox" value="florida" data-all="1" />
+            <span>All of Florida</span>
+          </label>
+
+          <div class="nbp-multi-sep" aria-hidden="true">—</div>
+
+          <!-- Counties -->
+          {% for c in counties %}
+          <label class="nbp-multi-item">
+            <input type="checkbox" value="{{ c.slug }}" />
+            <span>{{ c.name }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Selected chips (visual summary) -->
+      <div class="nbp-multi-chips" id="nbp-multi-chips" aria-live="polite"></div>
+    </div>
+
+    <div id="nbp-multi-hidden"></div>
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn" type="button" id="back-to-1" style="flex:1;background:#e5e7eb;color:#0f172a;font-weight:700">Back</button>
+      <button class="btn" type="button" id="to-step-3" style="flex:2">Continue</button>
+
+    </div>
+
+  </div>
+
+  <!-- STEP 3: Email (required) + Phone (optional) -->
+<div class="step" id="step-3" hidden>
+  <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Email</label>
+  <input type="email" id="nbp-email" name="email" placeholder="you@example.com" required aria-label="Email" autocomplete="email">
+
+  <label style="display:block;font-weight:700;margin:14px 0 6px 2px">
+    Phone
+    <span style="font-weight:400;color:var(--ink-600)"></span>
+  </label>
+  <input type="tel" id="nbp-phone" name="phone" placeholder="(555) 555-5555" aria-label="Phone">
+
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="btn" type="button" id="back-to-2" style="flex:1;background:#e5e7eb;color:#0f172a;font-weight:700">Back</button>
+    <button class="btn" type="submit" id="finish" style="flex:2">Finish</button>
+  </div>
+</div>
+
+</form>
+
+      </div>
+
+      <!-- Right column kept for layout balance; no inline image needed since hero uses a BG -->
+      <div class="hero-illustration" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (using the same safe image to avoid 404s; replace later if you add files) -->
+  <section class="section alt">
+    <div class="container">
+      <h2>How It Works</h2>
+      <p>Simple steps that keep your business growing without the noise.</p>
+      <div class="hiw-grid">
+        <div class="hiw-card">
+          <img class="hiw-img" src="{{ url_for('static', filename='img/1.png') }}" alt="Illustration" />
+          <div class="hiw-body">
+            <h3>Pick Your Area</h3>
+            <p>Choose 1 county or many. We constantly scan for new businesses in your location.</p>
+          </div>
+        </div>
+        <div class="hiw-card">
+          <img class="hiw-img" src="{{ url_for('static', filename='img/2.png') }}" alt="Illustration" />
+          <div class="hiw-body">
+            <h3>Daily Delivery</h3>
+            <p>When a new business is created in your area, details and contact info are sent to your dashboard.</p>
+          </div>
+        </div>
+        <div class="hiw-card">
+          <img class="hiw-img" src="{{ url_for('static', filename='img/3.png') }}" alt="Illustration" />
+          <div class="hiw-body">
+            <h3>Win Customers First</h3>
+            <p>Reach new owners before the competition—zero guesswork.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS PREVIEW -->
+  <section class="section section-results">
+    <div class="container">
+      <h2>New Businesses In Your Area</h2>
+<p id="results-subtitle" class="results-subtitle">
+  Each day, thousands of fresh business owners start their journey, excited and ready to take action. Getting in front of these prospects first gives you the advantage of <strong>consistent new leads</strong> and long-term growth potential for your business.
+</p>
+      <div class="table-wrap">
+  <table class="only-city-visible" id="preview-table">
+    <thead>
+      <tr>
+        <th>Business</th>
+        <th>Owner(s)</th>
+        <th class="city">Location</th>
+        <th>Address Data</th>
+        <th>Mailing Info</th>
+        <th>Contact Data</th>
+        <th>Formation Date</th>
+      </tr>
+    </thead>
+    <tbody id="preview-body"></tbody>
+  </table>
+</div>
+
+<img
+      class="lead-sticker"
+      src="{{ url_for('static', filename='img/lead.png') }}"
+      alt=""
+      aria-hidden="true"
+    />
+    </div>
+  </section>
+
+  <!-- PRICING -->
+<section id="plans" class="section alt" style="scroll-margin-top: 0px;">
+
+  <div class="container">
+    <h2 id="plans-title">Choose a Plan</h2>
+
+    <!-- This is where we'll inject the Area selector when a plan is chosen -->
+    <div id="plans-area" hidden>
+
+<!-- STEP 4: Email and Password Registration -->
+<div class="step" id="step-4" hidden>
+  <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Email</label>
+  <input type="email" id="nbp-email-register" name="email" placeholder="you@example.com" required aria-label="Email" autocomplete="email">
+
+  <label style="display:block;font-weight:700;margin:14px 0 6px 2px">Password</label>
+  <input type="password" id="nbp-password" name="password" placeholder="Enter your password" required aria-label="Password">
+
+  <label style="display:block;font-weight:700;margin:14px 0 6px 2px">Confirm Password</label>
+  <input type="password" id="nbp-password-confirm" name="password_confirm" placeholder="Re-enter your password" required aria-label="Confirm Password" style="margin-bottom:12px">
+
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="btn" type="button" id="back-to-area" style="flex:1;background:#e5e7eb;color:#0f172a;font-weight:700">Back</button>
+    <button class="btn" type="button" id="to-step-5" style="flex:2">Register and Continue</button>
+  </div>
+</div>
+</div>
+
+    <!-- Original plans content we will hide/show as a block -->
+    <div id="plans-content">
+      <div class="pricing-grid">
+        <div class="pricing-card featured">
+          <img class="pricing-photo" src="{{ url_for('static', filename='img/6.png') }}" alt="Local storefront" />
+          <div class="pricing-body">
+            <h3>Local Star</h3>
+            <div class="trial-kicker"><span class="trial-badge">Free 30-Day Trial, then</span></div>
+            <div class="price">$99<span style="font-weight:400">/month</span></div>
+            <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
+              <li>✔ 1 county</li><li>✔ Unlimited businesses</li><li>✔ Weekly lead flow</li><li>✔ Historical Lead Access</li>
+            </ul>
+            <button class="btn choose-area" type="button" data-plan="local">Choose Area</button>
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <img class="pricing-photo" src="{{ url_for('static', filename='img/7.png') }}" alt="Regional skyline" />
+          <div class="pricing-body">
+            <h3>Regional Hero</h3>
+            <div class="trial-kicker"><span class="trial-badge">Free 30-Day Trial, then</span></div>
+            <div class="price">$599<span style="font-weight:400">/month</span></div>
+            <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
+              <li>✔ 10 counties/cities</li><li>✔ Unlimited businesses</li><li>✔ Daily lead flow</li><li>✔ Historical Lead Access</li>
+            </ul>
+            <button class="btn choose-area" type="button" data-plan="regional">Choose Area</button>
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <img class="pricing-photo" src="{{ url_for('static', filename='img/8.png') }}" alt="State outline" />
+          <div class="pricing-body">
+            <h3>Statewide Boss</h3>
+            <div class="trial-kicker"><span class="trial-badge">Free 30-Day Trial, then</span></div>
+            <div class="price">$1299<span style="font-weight:400">/month</span></div>
+            <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
+              <li>✔ All 67 Florida counties</li><li>✔ Unlimited businesses</li><li>✔ Daily lead flow</li><li>✔ Historical Lead Access</li><li>✔ Live support</li>
+            </ul>
+            <button class="btn choose-area" type="button" data-plan="statewide">Chose Area</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trial-cta">
+  <a class="cta-big"
+     id="trial-scroll"
+     href="#plans"
+     aria-label="Try Free for 30 Days — jump to Choose a Plan">
+    <span class="cta-line-1">Try Free for 30 Days</span>
+    <span class="cta-line-2">Access all data, contact info, and instant new business-owner alerts</span>
+  </a>
+</div>
+
+      <p class="pricing-note">
+        Every plan begins with a <strong>30-day free trial</strong> for full access.
+        No contracts or commitments—billing starts only after the trial period, cancel anytime.
+      </p>
+    </div>
+  </div>
+</section>
+
+  <!-- FOOTER -->
+  <footer class="section" style="padding-block:36px;background:#fff;border-top:1px solid var(--border)">
+    <div class="container" style="text-align:center">
+      <p style="margin:.2rem 0;color:var(--ink-600)">© <span id="year"></span> NewBizPulse</p>
+      <p style="margin:.2rem 0;color:var(--ink-600)">Data from Florida Division of Corporations. Updated daily.</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();
+
+(function(){
+  // --- helpers ---
+  const byId = (id) => document.getElementById(id);
+  const emailInput = byId('nbp-email');
+  const stateSel   = byId('nbp-state');
+
+  const step1 = byId('step-1');
+  const step2 = byId('step-2');
+  const step3 = byId('step-3');
+
+  const to2   = byId('to-step-2');
+  const to3   = byId('to-step-3');
+  const b1    = byId('back-to-1');
+  const b2    = byId('back-to-2');
+  const finish= byId('finish');
+  const skip  = byId('skip-phone');
+
+  const form  = byId('nbp-wizard');
+  const hiddenCounties = byId('nbp-hidden-counties');
+  const hiddenRedirect = byId('nbp-hidden-redirect');
+  const phoneInput = byId('nbp-phone');
+  // --- plan -> area selection bridge (inside the PLANS section) ---
+const planField = document.getElementById('nbp-selected-plan');
+let launchedFromPlan = false;
+
+// Around line 1040 in your HTML
+const PLAN_TO_PRICE = {
+  'local': 'prod_T7xfmhXxq0Ad5U',      // ✅ Matches backend
+  'regional': 'prod_T7xgzN8li2Irrr',   // ✅ Matches backend
+  'statewide': 'prod_T7xgk8o1xOdQaP'   // ✅ Matches backend
+};
+
+const plansTitle   = document.getElementById('plans-title');
+const plansArea    = document.getElementById('plans-area');
+const plansContent = document.getElementById('plans-content');
+
+// remember where step-2 lives so we can put it back later
+const step2OrigParent = step2.parentElement;
+const step2OrigNext   = step2.nextSibling; // may be text node
+
+document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const el = document.getElementById('plans');
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.pageYOffset + 48; // land below the blue
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  setTimeout(() => window.scrollTo({ top: y, behavior: 'auto' }), 700); // re-align after layout settles
+});
+
+
+function mountStep2Into(el){
+  el.appendChild(step2);
+  show(step2);
+}
+
+// --- plan limits ---
+let maxAllowed = Infinity;            // how many counties may be checked
+let hideAllOption = false;            // whether to hide "All of Florida"
+let lastChanged = null;               // track last toggled checkbox (for undo)
+
+function setPlanLimits(planId){
+  if (planId === 'local') { maxAllowed = 1;  hideAllOption = true; }
+  else if (planId === 'regional') { maxAllowed = 10; hideAllOption = true; }
+  else { maxAllowed = Infinity; hideAllOption = false; } // statewide or wizard path
+
+  // Show/hide the "All of Florida" row + separator
+  const allLabel = allOpt()?.closest('label');
+  const sep = list?.querySelector('.nbp-multi-sep');
+  if (allLabel) allLabel.style.display = hideAllOption ? 'none' : '';
+  if (sep) sep.style.display = hideAllOption ? 'none' : '';
+
+  // If we just hid the "All" option and it was selected, unselect it
+  if (hideAllOption && allOpt() && allOpt().checked){
+    allOpt().checked = false;
+  }
+
+  // If current selection exceeds max, trim it (keep earliest)
+  const sel = inputs().filter(i => i.checked && !i.dataset.all);
+  if (sel.length > maxAllowed){
+    sel.slice(maxAllowed).forEach(i => i.checked = false);
+  }
+  renderAreas();
+}
+
+// Small toast/inline warning (simple alert for now)
+function overLimitMessage(){
+  const msg =
+    planField.value === 'local'
+      ? 'Local plan includes 1 county. Choose a different plan for more.'
+      : 'Regional plan includes up to 10 counties. Choose Statewide for all counties.';
+  alert(msg);
+}
+
+
+function restoreStep2Home(){
+  if (step2OrigNext) {
+    step2OrigParent.insertBefore(step2, step2OrigNext);
+  } else {
+    step2OrigParent.appendChild(step2);
+  }
+  hide(step2); // keep the hero wizard hidden again
+}
+
+function showAreaPickerFromPlan(planId){
+  launchedFromPlan = true;
+  const priceId = PLAN_TO_PRICE[planId];  // ✅ Convert plan name to Stripe price ID
+  if (!priceId) {
+    console.error('Invalid plan:', planId);
+    return;
+  }
+  planField.value = priceId;  // ✅ Store the actual Stripe price ID
+
+  // Statewide: pick all immediately and go to Stripe
+  if (planId === 'statewide'){
+    hiddenCounties.value = 'florida';   // send "all of Florida"
+    postToStripe();                     // straight to checkout
+    return;
+  }
+
+  // Swap the plans section to the area picker
+  plansTitle.textContent = 'Select Location';
+  plansContent.hidden = true;
+  plansArea.hidden = false;
+
+  mountStep2Into(plansArea);
+  setPlanLimits(planId);                // <-- apply plan rules
+
+  // focus & scroll
+  const areaBtn = document.getElementById('nbp-multi-button');
+  if (areaBtn) areaBtn.focus();
+  document.getElementById('plans').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// intercept “Choose Area” on pricing cards
+document.querySelectorAll('.choose-area').forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    showAreaPickerFromPlan(btn.dataset.plan); // local | regional | statewide
+  });
+});
+
+// POST to Stripe with plan + selected counties (+ email if present)
+function postToStripe(){
+  const f = document.createElement('form');
+  f.method = 'POST';
+  f.action = "{{ url_for('billing.create_checkout_session') }}";
+
+  const price = Object.assign(document.createElement('input'), {type:'hidden', name:'price_id', value: planField.value});
+  const counties = Object.assign(document.createElement('input'), {type:'hidden', name:'counties', value: hiddenCounties.value || ''});
+  const email = Object.assign(document.createElement('input'), {type:'hidden', name:'email', value: (document.getElementById('nbp-email')?.value || '').trim()});
+
+  f.append(price, counties, email);
+  document.body.appendChild(f);
+  f.submit();
+}
+
+
+  // --- email validation ---
+  function validEmail(v){
+    // conservative HTML5-ish pattern
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  // --- phone validation (US-ish, optional) ---
+  function normalizePhone(v){
+    const digits = (v || '').replace(/\D+/g,'');
+    if (digits.length === 11 && digits.startsWith('1')) return digits.slice(1);
+    return digits;
+  }
+  function validPhoneOptional(v){
+    const d = normalizePhone(v);
+    if (!d) return true;          // empty = allowed (skip)
+    if (d.length !== 10) return false;
+    if (/^(\d)\1{9}$/.test(d)) return false;  // reject 0000000000 / all same
+    return true;
+  }
+
+  // --- step toggles ---
+  function show(el){ el.hidden = false; }
+  function hide(el){ el.hidden = true; }
+
+  // --- custom multiselect logic (mutually exclusive "All of Florida") ---
+  const root   = document.getElementById('nbp-multi');
+  const panel  = document.getElementById('nbp-multi-panel');
+  const button = document.getElementById('nbp-multi-button');
+  const chips  = document.getElementById('nbp-multi-chips');
+  const hidden = document.getElementById('nbp-multi-hidden');
+  const list   = panel ? panel.querySelector('.nbp-multi-list') : null;
+
+  const inputs = () => list ? Array.from(list.querySelectorAll('input[type="checkbox"]')) : [];
+  const allOpt = () => list ? list.querySelector('input[data-all="1"]') : null;
+
+  function openPanel(){ if(panel){ panel.hidden=false; button.setAttribute('aria-expanded','true'); } }
+  function closePanel(){ if(panel){ panel.hidden=true; button.setAttribute('aria-expanded','false'); } }
+  if (button) {
+    button.addEventListener('click', () => {
+      const isOpen = button.getAttribute('aria-expanded') === 'true';
+      isOpen ? closePanel() : openPanel();
+    });
+  }
+  document.addEventListener('click', (e) => { if (root && !root.contains(e.target)) closePanel(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePanel(); });
+
+  function renderAreas(){
+    if (!list) return;
+    const selected = inputs().filter(i => i.checked);
+    const names    = selected.map(i => i.dataset.all ? 'All of Florida' : i.closest('label').innerText.trim());
+
+    // Button label
+    if (names.length === 0) button.textContent = 'Click here to select…';
+    else if (names.length === 1) button.textContent = names[0];
+    else button.textContent = `${names.length} areas selected`;
+
+    // Chips
+    chips.innerHTML = '';
+    selected.forEach(i => {
+      const label = i.dataset.all ? 'All of Florida' : i.closest('label').innerText.trim();
+      const chip = document.createElement('span');
+      chip.className = 'nbp-chip';
+      chip.innerHTML = `<span>${label}</span><span class="x" aria-label="Remove">×</span>`;
+      chip.querySelector('.x').addEventListener('click', () => { i.checked = false; renderAreas(); });
+      chips.appendChild(chip);
+    });
+
+    // Build hidden "counties" inputs string for server
+    const values = selected.map(i => i.value); // 'florida' or county slug(s)
+    hidden.innerHTML = '';                     // (we still build a single CSV for server)
+    hiddenCounties.value = values.join(',');
+  }
+
+  if (list) {
+  list.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.type !== 'checkbox') return;
+
+    lastChanged = t;
+
+    const all = allOpt();
+    const selected = inputs().filter(i => i.checked);
+    const pickedAll = selected.some(i => i.dataset.all === '1');
+    const pickedCounty = selected.some(i => !i.dataset.all && i.value);
+
+    // If "All of Florida" was just checked, uncheck all counties
+    if (t.dataset.all === '1' && t.checked) {
+      inputs().forEach(i => { if (!i.dataset.all) i.checked = false; });
+    }
+
+    // If "All" and a county co-exist, prefer counties unless "All" was just toggled
+    if (pickedAll && pickedCounty && all && t !== all) {
+      all.checked = false;
+    }
+
+    // Enforce cap (counts counties, not "All")
+const countySel = inputs().filter(i => i.checked && !i.dataset.all);
+if (countySel.length > maxAllowed) {
+  if (planField.value) {
+    // Pricing-card flow: show plan-based message
+    if (lastChanged) lastChanged.checked = false;
+    overLimitMessage();
+  } else {
+    // HERO wizard: true single-select, no alert
+    inputs().forEach(i => { if (!i.dataset.all && i !== lastChanged) i.checked = false; });
+  }
+}
+
+
+    renderAreas();
+  });
+  renderAreas();
+}
+
+  to2.addEventListener('click', async () => {
+  if (stateSel.value !== 'florida') {
+    stateSel.focus();
+    stateSel.setCustomValidity('Select Florida');
+    stateSel.reportValidity();
+    return;
+  }
+  stateSel.setCustomValidity('');
+  
+  // Set wizard-specific rules when entering step 2 from hero
+  planField.value = '';
+  launchedFromPlan = false;
+  maxAllowed = 1;
+  hideAllOption = false;
+  setPlanLimits(null);
+  renderAreas();
+  
+  hide(step1); 
+  show(step2);
+});
+
+
+
+  b1.addEventListener('click', () => {
+  hide(step2);
+
+  if (launchedFromPlan) {
+    // put step-2 back into the hero form and restore plans
+    restoreStep2Home();
+    plansArea.hidden = true;
+    plansContent.hidden = false;
+    plansTitle.textContent = 'Choose a Plan';
+
+    planField.value = '';
+    launchedFromPlan = false;
+    setPlanLimits(null);
+  } else {
+    show(step1);
+  }
+});
+
+
+  to3.addEventListener('click', () => {
+  const picked = (hiddenCounties.value || '').split(',').filter(Boolean);
+  if (picked.length === 0) { if (button) openPanel(); return; }
+
+  // Enforce cap again just in case
+  const count = picked.includes('florida') ? Infinity : picked.length;
+  if ((planField.value === 'local' && count > 1) ||
+      (planField.value === 'regional' && count > 10)) {
+    overLimitMessage();
+    return;
+  }
+
+  // If launched from plan, show Step 4 for registration
+  if (launchedFromPlan && planField.value) {
+    hide(step2);
+    show(byId('step-4'));
+    plansTitle.textContent = 'Create Account';  // 👈 ADD THIS LINE
+    return;
+  }
+  
+  hide(step2); show(step3);
+});
+
+
+
+  b2.addEventListener('click', () => { hide(step3); show(step2); });
+
+// Handle the 'Back' button in Step 4 (go back to area selection)
+const backToArea = byId('back-to-area');
+if (backToArea) {
+  backToArea.addEventListener('click', () => {
+    hide(byId('step-4'));
+    show(step2);
+    plansTitle.textContent = 'Select Location';  // 👈 ADD THIS LINE
+  });
+}
+
+// Handle registration form submission in Step 4
+const toStep5 = byId('to-step-5');
+if (toStep5) {
+  toStep5.addEventListener('click', async () => {
+    const email = byId('nbp-email-register').value;
+    const password = byId('nbp-password').value;
+    const passwordConfirm = byId('nbp-password-confirm').value;
+
+    if (!email || !password || !passwordConfirm) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      const confirmInput = byId('nbp-password-confirm');
+      confirmInput.focus();
+      confirmInput.setCustomValidity('Passwords do not match');
+      confirmInput.reportValidity();
+      return;
+    }
+
+    // Clear any previous validation error
+    byId('nbp-password-confirm').setCustomValidity('');
+
+    // Send registration data to the backend
+    const response = await fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        plan_id: planField.value,
+        counties: hiddenCounties.value
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      window.location.href = data.stripe_url;
+    } else {
+      alert(data.error || "Something went wrong. Please try again.");
+    }
+  });
+}
+
+  // Compute redirect target from chosen area
+  function computeRedirect(){
+    const picks = (hiddenCounties.value || '').split(',').filter(Boolean);
+    if (picks.includes('florida')) return '/new-business/florida/';
+    if (picks.length >= 1) return `/new-business/florida/county/${picks[0]}/`;
+    return '/new-business/florida/'; // fallback
+  }
+
+  // final submit
+  // final submit
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const ok = validPhoneOptional(phoneInput.value);
+  if (!ok) {
+    phoneInput.focus();
+    phoneInput.setCustomValidity('Enter a valid 10-digit phone or leave blank');
+    phoneInput.reportValidity();
+    return;
+  }
+  phoneInput.setCustomValidity('');
+
+  const redirect = computeRedirect();
+  window.location.href = redirect;   // 👈 go straight to new-business page
+});
+
+
+  // Skip acts like submit without phone (guard in case the button isn't present)
+if (skip) {
+  skip.addEventListener('click', () => {
+    hiddenRedirect.value = computeRedirect();
+  });
+}
+
+})();
+
+// === Fake preview table population with masked cells ===
+(async function buildPreviewRows(){
+  const tbody = document.getElementById('preview-body');
+  if (!tbody) return;
+
+  // A few popular US cities for fallback
+  const POPULAR_US = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"];
+
+  // Mapping of US state codes to nearby/major cities for simple "closest" variants
+  const STATE_CITIES = {
+    "FL": ["Miami", "Fort Lauderdale", "Hollywood", "Hialeah", "Miami Gardens", "Pembroke Pines", "Boca Raton", "West Palm Beach"],
+    "CA": ["Los Angeles", "Long Beach", "Glendale", "Santa Monica", "Pasadena", "Anaheim", "Irvine"],
+    "NY": ["New York", "Jersey City", "Newark", "Yonkers", "Hoboken", "Stamford"],
+    "TX": ["Houston", "Pasadena", "Sugar Land", "Katy", "The Woodlands", "Pearland", "Baytown"],
+    "IL": ["Chicago", "Evanston", "Skokie", "Cicero", "Oak Park", "Berwyn"],
+    "PA": ["Philadelphia", "Upper Darby", "Camden", "Cherry Hill", "Bensalem"],
+    "AZ": ["Phoenix", "Scottsdale", "Tempe", "Mesa", "Chandler", "Glendale"],
+    "GA": ["Atlanta", "Sandy Springs", "Roswell", "Marietta", "Decatur"],
+    "NC": ["Charlotte", "Concord", "Gastonia", "Huntersville"],
+    "WA": ["Seattle", "Bellevue", "Kirkland", "Redmond"],
+    // add more as you like
+  };
+
+  // Try to infer 3 nearby cities from IP; gracefully fall back
+  async function getCityCandidates(){
+  try {
+    const ipres = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+    if (!ipres.ok) throw 0;
+    const ip = await ipres.json();
+    const zip = (ip.postal || ip.postcode || "").toString().slice(0,5);
+    const country = (ip.country || ip.country_code || "").toUpperCase();
+    if (!zip || country !== "US") throw 0;
+
+    const res = await fetch(`/api/nearby-cities?zip=${zip}`);
+    if (!res.ok) throw 0;
+    const data = await res.json();
+    if (Array.isArray(data.cities) && data.cities.length) return data.cities.slice(0,3);
+    throw 0;
+  } catch {
+    // Florida-ish fallback
+    return ["Miami","Fort Lauderdale","West Palm Beach"];
+  }
+}
+
+  const cityChoices = await getCityCandidates();
+
+  // helper to create a blurred span
+  const blur = (txt) => `<span class="mask">${txt}</span>`;
+
+  // quick faker-ish generators (deterministic enough for a preview)
+  const bizNouns = ["Holdings", "Ventures", "Solutions", "Logistics", "Foods", "Outfitters", "Studios", "Systems", "Capital", "Services"];
+  const owners   = ["HERNANDEZ, NOSIEL", "JOHNSON, AMY L", "PATEL, RAKESH", "MARTINEZ, LUIS", "SMITH, JOEL", "NGUYEN, LINH", "LEE, JASMINE", "KIM, DAVID"];
+  const streets  = ["NW 82ND AVE", "E MAIN ST", "OAK RIDGE RD", "BISCAYNE BLVD", "BRAD CIR", "6TH AVE", "SUNSET DR", "PINE ST"];
+  const types    = ["Florida Limited Liability Company", "Florida Profit Corporation", "Florida Nonprofit Corporation"];
+  const phones   = ["(305) 555-1284", "(954) 555-2019", "(407) 555-4432", "(561) 555-7703", "(786) 555-9910"];
+  const emails   = ["info@example.com", "support@example.com", "hello@example.com", "contact@example.com"];
+  const zips     = ["33166", "33314", "33880", "33027", "33993", "33401"];
+
+  function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function dateRecent(){
+    const now = new Date();
+    const past = new Date(now.getTime() - Math.floor(Math.random()*60+1)*86400000);
+    return past.toLocaleDateString(undefined, {year:'numeric', month:'2-digit', day:'2-digit'});
+  }
+
+function today(){
+  return new Date().toLocaleDateString(undefined, { year:'numeric', month:'long', day:'2-digit' });
+}
+
+
+  // Build N preview rows
+  const ROWS = 5;
+  const rows = [];
+  for (let i=0;i<ROWS;i++){
+    const city = rand(cityChoices);
+    const row = `
+      <tr class="preview-row">
+        <td>${blur(`F${100+i} ${rand(bizNouns)} LLC`)}</td>
+        <td>${blur(rand(owners))}</td>
+        <td class="city"><span class="mask">${city}</span></td>
+        <td>${blur(`${Math.floor(Math.random()*2999+1000)} ${rand(streets)}, FL ${rand(zips)}`)}</td>
+        
+        <td>${blur(`2213 Cheg Drive ${Math.floor(Math.random()*9000+1000)}, FL ${rand(zips)}`)}</td>
+        <td>${blur(`${rand(phones)} · ${rand(emails)}`)}</td>
+        <td class="formation">
+          <span class="mask">${today()}</span>
+  <a class="row-cta" href="#plans" aria-label="Show details and choose a plan">Show details</a>
+</td>
+      </tr>`;
+    rows.push(row);
+  }
+  tbody.innerHTML = rows.join('');
+})();
+
+// Smooth-scroll to plans when "Show details" is clicked
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a.row-cta');
+  if (!a) return;
+  e.preventDefault();
+  const el = document.getElementById('plans');
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.pageYOffset + 48;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  setTimeout(() => window.scrollTo({ top: y, behavior: 'auto' }), 700);
+});
+
+// Get modal and button elements
+const modal = document.getElementById("loginModal");
+const loginButton = document.querySelector(".login-btn");
+const closeModal = document.getElementById("closeModal");
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementById("login-error");
+
+// Open the modal when the login button is clicked
+loginButton.onclick = function(e) {
+  e.preventDefault();
+  modal.style.display = "block";
+}
+
+// Close the modal when the close button is clicked
+closeModal.onclick = function() {
+  modal.style.display = "none";
+  loginError.style.display = "none";
+}
+
+// Close the modal when clicking outside the modal content
+window.onclick = function(event) {
+  if (event.target === modal) {
+    modal.style.display = "none";
+    loginError.style.display = "none";
+  }
+}
+
+// Handle login form submission
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  
+  loginError.style.display = "none";
+  
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Redirect to their appropriate page
+      window.location.href = data.redirect_url;
+    } else {
+      loginError.textContent = data.error || "Invalid email or password";
+      loginError.style.display = "block";
+    }
+  } catch (error) {
+    loginError.textContent = "Login failed. Please try again.";
+    loginError.style.display = "block";
+  }
+});
+// Dynamic page title based on form step
+function updatePageTitle() {
+  const step4 = byId('step-4');
+  
+  if (step4 && !step4.hidden) {
+    document.title = 'Create Account — NewBizPulse';
+  } else {
+    document.title = 'NewBizPulse — Find New Businesses Near You!';
+  }
+}
+
+// Watch for step changes
+const observer = new MutationObserver(updatePageTitle);
+const step4Element = byId('step-4');
+
+if (step4Element) {
+  observer.observe(step4Element, { 
+    attributes: true, 
+    attributeFilter: ['hidden'] 
+  });
+}
+
+</script>
+</body>
+</html>
