@@ -23,7 +23,6 @@ HTMLParser==0.0.2
 inotify==0.2.12
 ipython==8.12.3
 ipywidgets==8.1.7
-jnius==1.1.0
 js==1.0
 keyring==25.6.0
 lingua==4.15.0
