@@ -546,6 +546,7 @@ def stripe_webhook():
             except Exception as e:
                 current_app.logger.error(f"Error creating Subscription record: {e}")
         elif etype in ("customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted"):
+            from .models import User
             sub = data
             customer_id = sub.get("customer")
             subscription_id = sub.get("id")
