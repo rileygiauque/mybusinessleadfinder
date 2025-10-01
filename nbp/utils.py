@@ -19,16 +19,18 @@ def send_telegram_notification(user_data):
     if counties_display == 'florida':
         counties_display = 'All of Florida'
     
+    source = user_data.get('source', '📋 Form')
+    
     message = f"""
-🆕 <b>New Form Submission - NewBizPulse</b>
+{source}
 
 📧 <b>Email:</b> {user_data.get('email', 'N/A')}
 📱 <b>Phone:</b> {user_data.get('phone', 'Not provided')}
 🏛️ <b>State:</b> {user_data.get('state', 'Florida')}
 📍 <b>Counties:</b> {counties_display}
-💳 <b>Plan:</b> {user_data.get('plan_name', 'N/A')}
+💼 <b>Plan:</b> {user_data.get('plan_name', 'N/A')}
 
-⏰ <b>Submitted:</b> {user_data.get('timestamp', 'N/A')}
+⏰ {user_data.get('timestamp', 'N/A')}
     """
     
     telegram_api = f"https://api.telegram.org/bot{bot_token}/sendMessage"
