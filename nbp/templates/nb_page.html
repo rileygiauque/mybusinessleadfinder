@@ -621,7 +621,7 @@ body:not(.paywalled) .nx-obscure{
     {% elif jur.kind == "county" %}
       <h1>New Businesses in {{ jur.name }}</h1>
     {% else %}
-      <h1>New Businesses in {{ jur.name }}</h1>
+      <h1>New Businesses in {{ jur.name|title }}</h1>
     {% endif %}
     <p class="nbp-hero__sub">Constantly updated to give you first access to new potential customers or clients in your area</p>
   </div>
