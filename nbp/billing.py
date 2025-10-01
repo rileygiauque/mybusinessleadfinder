@@ -167,6 +167,8 @@ def login():
         data = request.get_json()
         email = data.get("email", "").strip()
         password = data.get("password", "")
+
+        base = os.getenv("APP_BASE_URL") or request.url_root.rstrip('/')
         
         if not email or not password:
             return {"success": False, "error": "Email and password required"}, 400
