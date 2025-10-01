@@ -111,7 +111,7 @@ def register():
         from werkzeug.security import generate_password_hash
         password_hash = generate_password_hash(password, method='pbkdf2:sha256')
 
-        base = os.getenv("APP_BASE_URL", "http://127.0.0.1:5000")
+        base = os.getenv("APP_BASE_URL") or request.url_root.rstrip('/')
         session_obj = s.checkout.Session.create(
             mode="subscription",
             customer_email=email,
@@ -315,7 +315,7 @@ def create_checkout_session():
         except Exception:
             plan_label = selected_price
 
-    base = os.getenv("APP_BASE_URL", "http://127.0.0.1:5000")
+    base = os.getenv("APP_BASE_URL") or request.url_root.rstrip('/')
 
     # create checkout session with 30-day trial
     session_obj = s.checkout.Session.create(
@@ -669,7 +669,7 @@ def billing_portal():
             current_app.logger.error(f"❌ Invalid customer ID format: {cust_id}")
             return redirect(url_for("public.home") + "#plans")
         
-        base = os.getenv("APP_BASE_URL", "http://127.0.0.1:5000")
+        base = os.getenv("APP_BASE_URL") or request.url_root.rstrip('/')
         
         # Create billing portal session
         current_app.logger.info(f"   ✅ Creating portal for customer: {cust_id}")
