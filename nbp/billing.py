@@ -633,6 +633,14 @@ def billing_portal():
         cust_id = session.get("stripe_customer_id")
         current_app.logger.info(f"   Customer ID from session: {cust_id}")
         
+        # ✅ ADD THESE 6 LINES HERE ✅
+        # Ensure cust_id is a string, not a dict
+        if isinstance(cust_id, dict):
+            cust_id = cust_id.get('id')
+            current_app.logger.warning(f"   ⚠️ Customer ID was a dict, extracted ID: {cust_id}")
+            # Update session with correct string value
+            session["stripe_customer_id"] = cust_id
+        
         # If not in session, look it up from database
         if not cust_id and session.get("user_email"):
             current_app.logger.info(f"   Looking up in DB for email: {session.get('user_email')}")
@@ -655,6 +663,12 @@ def billing_portal():
             current_app.logger.error("❌ No customer ID found, redirecting to plans")
             return redirect(url_for("public.home") + "#plans")
         
+        # ✅ ADD THESE 4 LINES HERE ✅
+        # Validate customer ID format before sending to Stripe
+        if not isinstance(cust_id, str) or not cust_id.startswith('cus_'):
+            current_app.logger.error(f"❌ Invalid customer ID format: {cust_id}")
+            return redirect(url_for("public.home") + "#plans")
+        
         base = os.getenv("APP_BASE_URL", "http://127.0.0.1:5000")
         
         # Create billing portal session
@@ -672,3 +686,4 @@ def billing_portal():
         import traceback
         current_app.logger.error(traceback.format_exc())
         return redirect(url_for("public.home") + "#plans")
+        
