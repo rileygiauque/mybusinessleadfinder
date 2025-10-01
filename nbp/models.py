@@ -55,6 +55,8 @@ class Jurisdiction(db.Model):
     slug = db.Column(db.String(255), nullable=False, unique=True)
     parent_id = db.Column(db.Integer, db.ForeignKey("jurisdictions.id"))
     parent = db.relationship("Jurisdiction", remote_side=[id], backref="children")
+    
+    population = db.Column(db.Integer, nullable=True, default=0)
 
 class Entity(db.Model):
     __tablename__ = "entities"
