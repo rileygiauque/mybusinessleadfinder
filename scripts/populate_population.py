@@ -104,7 +104,12 @@ def main():
         print("-" * 50)
         
         for slug, pop in sorted(POPULATIONS.items(), key=lambda x: x[1], reverse=True):
-            jur = Jurisdiction.query.filter_by(slug=slug, kind='county').first()
+            # Try lowercase slug match first
+            jur = Jurisdiction.query.filter(
+                Jurisdiction.slug.ilike(slug),  # ← Case-insensitive
+                Jurisdiction.kind == 'county'
+            ).first()
+    
             if jur:
                 jur.population = pop
                 updated += 1
