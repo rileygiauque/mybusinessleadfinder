@@ -80,17 +80,17 @@ def register():
         if existing_user:
             return {"success": False, "error": "Email already registered"}, 400
 
-        # Map Stripe product ID to plan name
+        # Map Stripe product ID to plan name using env variables
         PLAN_ID_TO_NAME = {
-            "prod_T7xfmhXxq0Ad5U": "Local Star",
-            "prod_T7xgzN8li2Irrr": "Regional Hero",
-            "prod_T7xgk8o1xOdQaP": "Statewide Boss",
+            PRICE_ID_LOCAL: "Local Star",
+            PRICE_ID_REGIONAL: "Regional Hero",
+            PRICE_ID_STATEWIDE: "Statewide Boss",
         }
-        
+
         plan_name = PLAN_ID_TO_NAME.get(plan_id)
         if not plan_name:
             return {"success": False, "error": "Invalid plan"}, 400
-
+            
         # Create Stripe checkout session
         s = use_stripe()
         
