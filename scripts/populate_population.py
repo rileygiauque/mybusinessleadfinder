@@ -7,90 +7,90 @@ Run with: python scripts/populate_population.py
 import sys
 import os
 
-# Add parent directory to path so we can import app
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from nbp import create_app
 from nbp.models import Jurisdiction, db
 
 # Florida county populations (2024 Census estimates)
+# NOTE: Slugs match database format with '-county' suffix
 POPULATIONS = {
     # Major metros (300k+)
-    'miami-dade': 2716940,
-    'broward': 1944375,
-    'palm-beach': 1496770,
-    'hillsborough': 1459762,
-    'orange': 1429908,
+    'miami-dade-county': 2716940,
+    'broward-county': 1944375,
+    'palm-beach-county': 1496770,
+    'hillsborough-county': 1459762,
+    'orange-county': 1429908,
     
     # Large (100k-300k)
-    'duval': 995567,
-    'pinellas': 959107,
-    'lee': 822152,
-    'polk': 787404,
-    'brevard': 606612,
-    'pasco': 590551,
-    'volusia': 553543,
-    'seminole': 471826,
-    'sarasota': 434263,
-    'manatee': 410242,
-    'collier': 384902,
-    'lake': 383956,
-    'st-lucie': 329226,
-    'escambia': 324603,
-    'leon': 295103,
-    'marion': 375908,
-    'osceola': 402134,
-    'st-johns': 273425,
-    'clay': 226718,
-    'charlotte': 188910,
-    'hernando': 194515,
+    'duval-county': 995567,
+    'pinellas-county': 959107,
+    'lee-county': 822152,
+    'polk-county': 787404,
+    'brevard-county': 606612,
+    'pasco-county': 590551,
+    'volusia-county': 553543,
+    'seminole-county': 471826,
+    'sarasota-county': 434263,
+    'manatee-county': 410242,
+    'collier-county': 384902,
+    'lake-county': 383956,
+    'st-lucie-county': 329226,
+    'escambia-county': 324603,
+    'leon-county': 295103,
+    'marion-county': 375908,
+    'osceola-county': 402134,
+    'st-johns-county': 273425,
+    'clay-county': 226718,
+    'charlotte-county': 188910,
+    'hernando-county': 194515,
     
     # Medium (50k-100k)
-    'alachua': 278468,
-    'bay': 182845,
-    'citrus': 153843,
-    'flagler': 116626,
-    'indian-river': 163902,
-    'martin': 161824,
-    'okaloosa': 211668,
-    'santa-rosa': 192783,
-    'sumter': 134732,
-    'nassau': 94046,
-    'walton': 75305,
-    'monroe': 82086,
-    'putnam': 73321,
-    'highlands': 103268,
+    'alachua-county': 278468,
+    'bay-county': 182845,
+    'citrus-county': 153843,
+    'flagler-county': 116626,
+    'indian-river-county': 163902,
+    'martin-county': 161824,
+    'okaloosa-county': 211668,
+    'santa-rosa-county': 192783,
+    'sumter-county': 134732,
+    'nassau-county': 94046,
+    'walton-county': 75305,
+    'monroe-county': 82086,
+    'putnam-county': 73321,
+    'highlands-county': 103268,
     
     # Small (25k-50k)
-    'columbia': 69698,
-    'desoto': 37010,
-    'gadsden': 45087,
-    'hardee': 26938,
-    'hendry': 42022,
-    'jackson': 46852,
-    'levy': 42915,
-    'okeechobee': 41611,
-    'suwannee': 45629,
-    'wakulla': 33764,
-    'washington': 25318,
-    'baker': 28259,
-    'bradford': 27440,
+    'columbia-county': 69698,
+    'desoto-county': 37010,
+    'gadsden-county': 45087,
+    'hardee-county': 26938,
+    'hendry-county': 42022,
+    'jackson-county': 46852,
+    'levy-county': 42915,
+    'okeechobee-county': 41611,
+    'suwannee-county': 45629,
+    'wakulla-county': 33764,
+    'washington-county': 25318,
+    'baker-county': 28259,
+    'bradford-county': 27440,
     
     # Very small (0-25k)
-    'calhoun': 13648,
-    'dixie': 16759,
-    'franklin': 12451,
-    'gilchrist': 18439,
-    'glades': 13125,
-    'gulf': 14192,
-    'hamilton': 14004,
-    'holmes': 19653,
-    'jefferson': 14145,
-    'lafayette': 8226,
-    'liberty': 7974,
-    'madison': 18732,
-    'taylor': 21796,
-    'union': 15766,
+    'calhoun-county': 13648,
+    'dixie-county': 16759,
+    'franklin-county': 12451,
+    'gilchrist-county': 18439,
+    'glades-county': 13125,
+    'gulf-county': 14192,
+    'hamilton-county': 14004,
+    'holmes-county': 19653,
+    'jefferson-county': 14145,
+    'lafayette-county': 8226,
+    'liberty-county': 7974,
+    'madison-county': 18732,
+    'taylor-county': 21796,
+    'union-county': 15766,
 }
 
 def main():
@@ -104,12 +104,7 @@ def main():
         print("-" * 50)
         
         for slug, pop in sorted(POPULATIONS.items(), key=lambda x: x[1], reverse=True):
-            # Try lowercase slug match first
-            jur = Jurisdiction.query.filter(
-                Jurisdiction.slug.ilike(slug),  # ← Case-insensitive
-                Jurisdiction.kind == 'county'
-            ).first()
-    
+            jur = Jurisdiction.query.filter_by(slug=slug, kind='county').first()
             if jur:
                 jur.population = pop
                 updated += 1
