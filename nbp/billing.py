@@ -4,6 +4,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, session, url_for, abort, current_app
 from .models import db, Subscriber, Subscription
 from werkzeug.routing import BuildError
+from .utils import send_telegram_notification
 
 bp = Blueprint("billing", __name__)
 
@@ -479,12 +480,29 @@ def stripe_webhook():
                     db.session.commit()
                     current_app.logger.info(f"✅ User updated via webhook: {stored_email}")
 
+            # ✅ ADD TELEGRAM NOTIFICATION HERE (after user is created)
+            stored_email = metadata.get("nbp_email") or email
+            counties = metadata.get("nbp_counties", "")
+            plan_name = metadata.get("nbp_plan_name", metadata.get("nbp_plan", "Unknown"))
+
             # Extract phone from custom fields
             phone = None
             for f in (data.get("custom_fields") or []):
                 if f.get("key") == "buyer_phone":
                     phone = (f.get("text") or {}).get("value")
                     break
+
+            # Send Telegram notification for paid subscription
+            send_telegram_notification({
+                'email': stored_email,
+                'phone': phone or 'Not provided',
+                'state': 'Florida',
+                'counties': counties,
+                'plan_name': plan_name,
+                'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'source': '💳 Stripe Checkout'
+            })
+
             if customer_id and phone:
                 try:
                     s.Customer.modify(customer_id, phone=phone)
