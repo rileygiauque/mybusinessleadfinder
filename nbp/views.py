@@ -99,7 +99,6 @@ def _get_stats(jur_id):
         "asof": today.isoformat(),
     }
 
-
 def _get_sample_rows(jur: Jurisdiction, limit=None):
     from datetime import date, timedelta
     import os
@@ -119,13 +118,24 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
 
     # ✅ NEW: If ?preview=1 is in URL, always show blurred (non-subscriber view)
     if request.args.get('preview') == '1':
-        # Force preview mode - show data for the requested jurisdiction only
         if jur.kind == "state":
             q = q.filter_by(state="FL")
         elif jur.kind == "county":
             q = q.filter_by(state="FL", county=jur.name)
         elif jur.kind == "city":
-            q = q.filter_by(state="FL", city=jur.name)
+            # ✅ DEBUGGING + FIX
+            current_app.logger.info(f"Looking for city: '{jur.name}'")
+            
+            sample_cities = db.session.query(Entity.city).filter(
+                Entity.state == "FL",
+                Entity.city.isnot(None)
+            ).distinct().limit(20).all()
+            current_app.logger.info(f"Sample cities in DB: {[c[0] for c in sample_cities]}")
+            
+            q = q.filter(
+                Entity.state == "FL",
+                func.lower(Entity.city) == func.lower(jur.name)
+            )
     
     # ✅ Normal access control for logged-in users (existing code)
     elif session.get('is_subscriber') and session.get('user_email'):
@@ -167,7 +177,19 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
         elif jur.kind == "county":
             q = q.filter_by(state="FL", county=jur.name)
         elif jur.kind == "city":
-            q = q.filter_by(state="FL", city=jur.name)
+            # ✅ DEBUGGING + FIX
+            current_app.logger.info(f"Looking for city: '{jur.name}'")
+            
+            sample_cities = db.session.query(Entity.city).filter(
+                Entity.state == "FL",
+                Entity.city.isnot(None)
+            ).distinct().limit(20).all()
+            current_app.logger.info(f"Sample cities in DB: {[c[0] for c in sample_cities]}")
+            
+            q = q.filter(
+                Entity.state == "FL",
+                func.lower(Entity.city) == func.lower(jur.name)
+            )
 
     q = q.order_by(
         Entity.filing_date.desc().nullslast(),
@@ -176,6 +198,7 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
     )
 
     return q.limit(preview_limit).all()
+
     
 def _children(jur: Jurisdiction):
     return sorted(jur.children, key=lambda c: c.name)[:12]
