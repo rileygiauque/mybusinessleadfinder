@@ -1285,6 +1285,23 @@ form.addEventListener('submit', async (e) => {
   }
   phoneInput.setCustomValidity('');
 
+  // ✅ Send notification to backend
+  try {
+    await fetch('/api/hero-finish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: emailInput.value,
+        phone: phoneInput.value,
+        state: stateSel.value,
+        counties: hiddenCounties.value
+      })
+    });
+  } catch (err) {
+    console.error('Notification failed:', err);
+    // Continue anyway - don't block user
+  }
+
   // ✅ Logout user when they click Finish
   await fetch('/logout', { method: 'GET' });
   
