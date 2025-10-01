@@ -7,12 +7,14 @@ from werkzeug.routing import BuildError
 
 bp = Blueprint("billing", __name__)
 
-# --- HARD-CODED (TEST) ---
-STRIPE_SECRET_KEY_HARDCODED = "sk_test_51GbFkxE4vPtJSn6ecxnMRVMsiWwgJrxOWxsQ7rSuA1s5NtTYEyRKyNr7Bi575PlHwTqng7gcI92coYA5UpBwu0xT00f24K6saO"  # test secret key
+# --- ENVIRONMENT VARIABLES (PRODUCTION-READY) ---
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+PRICE_ID_LOCAL = os.getenv("STRIPE_PRICE_LOCAL")
+PRICE_ID_REGIONAL = os.getenv("STRIPE_PRICE_REGIONAL")
+PRICE_ID_STATEWIDE = os.getenv("STRIPE_PRICE_STATEWIDE")
 
-PRICE_ID_LOCAL     = "prod_T7xfmhXxq0Ad5U"
-PRICE_ID_REGIONAL  = "prod_T7xgzN8li2Irrr"
-PRICE_ID_STATEWIDE = "prod_T7xgk8o1xOdQaP"
+if not STRIPE_SECRET_KEY:
+    raise ValueError("STRIPE_SECRET_KEY environment variable not set")
 
 PRICE_ALIAS_TO_ID = {
     "local":     PRICE_ID_LOCAL,
@@ -22,11 +24,10 @@ PRICE_ALIAS_TO_ID = {
 
 def use_stripe():
     """
-    Always use the hard-coded test key. No env, no guessing.
+    Use Stripe key from environment variables.
     """
-    stripe.api_key = STRIPE_SECRET_KEY_HARDCODED
+    stripe.api_key = STRIPE_SECRET_KEY
     return stripe
-
 
 
 
