@@ -637,3 +637,39 @@ def subscribe_post():
             redir = url_for("public.state_page")
 
     return redirect(redir)
+
+@bp.post("/api/hero-finish")
+def hero_finish():
+    """
+    Handle the hero form 'Finish' button - simple lead capture
+    (does NOT create account or subscription)
+    """
+    try:
+        from datetime import datetime
+        from .utils import send_telegram_notification
+        
+        data = request.get_json()
+        email = data.get('email', '').strip()
+        phone = data.get('phone', '').strip()
+        state = data.get('state', 'Florida')
+        counties = data.get('counties', '')
+        
+        if not email:
+            return {'success': False, 'error': 'Email required'}, 400
+        
+        # Send Telegram notification for hero form
+        send_telegram_notification({
+            'email': email,
+            'phone': phone or 'Not provided',
+            'state': state,
+            'counties': counties,
+            'plan_name': 'Lead Capture (No Plan Yet)',
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'source': '🎯 Hero Form'
+        })
+        
+        return {'success': True}
+        
+    except Exception as e:
+        current_app.logger.error(f"Hero finish error: {e}")
+        return {'success': False, 'error': str(e)}, 500
