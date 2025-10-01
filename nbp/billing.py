@@ -212,25 +212,24 @@ def login():
                 scope = json.loads(subscription.scope_json)
             except:
                 pass
-        
-        # Get counties from scope_json
-        counties_csv = scope.get('counties', '')
-        counties = [c.strip() for c in counties_csv.split(',') if c.strip()]
-        
-        # Determine redirect based on plan
-        plan_name = subscription.plan.lower()
-        
-        if 'statewide' in plan_name or 'florida' in counties:
-            redirect_url = "/new-business/florida/"
-        elif len(counties) == 1:
+
+        # ✅ Check the "kind" field to determine plan type
+        kind = scope.get('kind', '')
+        slugs = scope.get('slugs', [])
+
+        # Determine redirect based on scope structure
+        if kind == 'state' or scope.get('slug') == 'florida':
+            # Statewide plan
+            redirect_url = base + "/new-business/florida/"
+        elif kind == 'counties' and len(slugs) == 1:
             # Single county - Local Star plan
-            redirect_url = f"/new-business/florida/county/{counties[0]}/"
-        elif len(counties) > 1:
-            # Multi-county - Regional Hero plan
-            redirect_url = f"/new-business/florida/county/{counties[0]}/"
+            redirect_url = base + f"/new-business/florida/county/{slugs[0]}/"
+        elif kind == 'counties' and len(slugs) > 1:
+            # Multi-county - Regional Hero plan (redirect to first county)
+            redirect_url = base + f"/new-business/florida/county/{slugs[0]}/"
         else:
-            # Fallback
-            redirect_url = "/new-business/florida/"
+        # Fallback (legacy data or missing scope)
+            redirect_url = base + "/new-business/florida/"
         
         return {
             "success": True,
