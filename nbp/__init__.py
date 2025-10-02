@@ -32,6 +32,15 @@ def create_user(email, password, plan_name):
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
+    # Add custom Jinja filter for number formatting
+    @app.template_filter('format_number')
+    def format_number(value):
+        """Format number with commas: 1234567 -> 1,234,567"""
+        try:
+            return "{:,}".format(int(value))
+        except (ValueError, TypeError):
+            return value
+
     # ⬇️ import the blueprint here and register it AFTER app exists
     from .nearby_cities_api import bp as nearby_bp   # adjust path if file lives elsewhere
     app.register_blueprint(nearby_bp)
