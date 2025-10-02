@@ -509,6 +509,36 @@ form input {
   border-radius: 5px;
 }
 
+/* Loading Spinner Styles */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner-overlay.active {
+  display: flex;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e5e7eb;
+  border-top-color: #0f3658; /* dark blue */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
   </style>
 </head>
@@ -867,6 +897,11 @@ form input {
       <p style="margin:.2rem 0;color:var(--ink-600)">Data from Florida Division of Corporations. Updated daily.</p>
     </div>
   </footer>
+
+  <!-- Loading Spinner Overlay -->
+<div class="spinner-overlay" id="loading-spinner">
+  <div class="spinner"></div>
+</div>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1243,24 +1278,36 @@ if (toStep5) {
     // Clear any previous validation error
     byId('nbp-password-confirm').setCustomValidity('');
 
+    // Show loading spinner
+    document.getElementById('loading-spinner').classList.add('active');
+
     // Send registration data to the backend
-    const response = await fetch('/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        plan_id: planField.value,
-        counties: hiddenCounties.value
-      })
-    });
+    try {
+      const response = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          plan_id: planField.value,
+          counties: hiddenCounties.value
+        })
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      window.location.href = data.stripe_url;
-    } else {
-      alert(data.error || "Something went wrong. Please try again.");
+      if (data.success) {
+        window.location.href = data.stripe_url;
+        // Note: spinner will stay visible until redirect completes
+      } else {
+        // Hide spinner on error
+        document.getElementById('loading-spinner').classList.remove('active');
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      // Hide spinner on error
+      document.getElementById('loading-spinner').classList.remove('active');
+      alert("Registration failed. Please try again.");
     }
   });
 }
@@ -1285,6 +1332,9 @@ form.addEventListener('submit', async (e) => {
   }
   phoneInput.setCustomValidity('');
 
+  // Show loading spinner
+  document.getElementById('loading-spinner').classList.add('active');
+
   // ✅ Send notification to backend
   try {
     await fetch('/api/hero-finish', {
@@ -1307,6 +1357,7 @@ form.addEventListener('submit', async (e) => {
   
   const redirect = computeRedirect();
   window.location.href = redirect + '?preview=1';
+  // Note: spinner will stay visible until page redirects
 });
 
 
