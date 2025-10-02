@@ -629,7 +629,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);  /* ✅ Darker backdrop for better contrast */
   z-index: 99999;
   align-items: center;
   justify-content: center;
@@ -641,31 +641,31 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 .access-modal-content {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;  /* ✅ Slightly larger radius */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 90%;
-  padding: 32px;
-  align-items: center;
+  max-width: 480px;  /* ✅ Wider for easier reading */
+  width: 92%;
+  padding: 40px;  /* ✅ More breathing room */
   position: relative;
+  box-sizing: border-box;
 }
 
 .access-modal-content h2 {
-  margin: 0 0 12px;
-  font-size: 18px;
+  margin: 0 0 16px;
+  font-size: 24px;  /* ✅ Bigger title */
   font-weight: 700;
   color: #111827;
   text-align: left;
+  line-height: 1.3;
 }
 
 .access-modal-content p {
-  margin: 0 0 20px;
-  font-size: 15px;
-  color: #6b7280;
-  line-height: 1.5;
+  margin: 0 0 28px;  /* ✅ More space before button */
+  font-size: 18px;  /* ✅ Bigger text */
+  color: #4b5563;  /* ✅ Better contrast */
+  line-height: 1.6;
   text-align: left;
 }
-
 
 .access-modal-btn {
   display: block;
@@ -673,20 +673,46 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   text-align: center;
   background: #2563eb;
   color: white;
-  padding: 12px !important;  /* ✅ Force equal padding */
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  border-radius: 8px;
+  padding: 18px 24px;  /* ✅ Bigger touch target */
+  border-radius: 12px;  /* ✅ Rounder, friendlier */
   text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  transition: background 0.2s ease;
-  box-sizing: border-box !important;  /* ✅ Critical */
-  margin: 0;  /* ✅ Reset any margin */
+  font-weight: 700;  /* ✅ Bolder */
+  font-size: 18px;  /* ✅ Bigger text */
+  transition: background 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: none;
 }
 
 .access-modal-btn:hover {
   background: #1d4ed8;
+  transform: translateY(-2px);  /* ✅ Gentle lift effect */
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.access-modal-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile comfort */
+@media (max-width: 640px){
+  .access-modal-content {
+    padding: 32px 24px;
+    max-width: 95%;
+  }
+  
+  .access-modal-content h2 {
+    font-size: 22px;
+  }
+  
+  .access-modal-content p {
+    font-size: 17px;
+  }
+  
+  .access-modal-btn {
+    font-size: 17px;
+    padding: 16px 20px;
+  }
 }
   
 </style>
