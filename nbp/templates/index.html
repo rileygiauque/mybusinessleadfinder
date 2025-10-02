@@ -1148,6 +1148,11 @@ function postToStripe(){
 
     lastChanged = t;
 
+    // HERO WIZARD: enforce true single-select (only one checkbox at a time)
+    if (!launchedFromPlan && !planField.value) {
+      inputs().forEach(i => { if (i !== t) i.checked = false; });
+    }
+
     const all = allOpt();
     const selected = inputs().filter(i => i.checked);
     const pickedAll = selected.some(i => i.dataset.all === '1');
