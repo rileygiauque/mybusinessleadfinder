@@ -1092,10 +1092,6 @@ function showAreaPickerFromPlan(planId){
   mountStep2Into(plansArea);
   setPlanLimits(planId);                // <-- apply plan rules
 
-  // focus & scroll
-  const areaBtn = document.getElementById('nbp-multi-button-pricing');
-  if (areaBtn) areaBtn.focus();
-  document.getElementById('plans').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 // intercept “Choose Area” on pricing cards
