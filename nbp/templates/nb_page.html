@@ -709,18 +709,10 @@ body:not(.paywalled) .nx-obscure{
     <div class="container">
 
   <!-- Intro Section -->
-  <section style="margin: 32px 0;">
-    <h2>Real-Time Business Filing Data for {{ jur.name }}</h2>
-    <p style="font-size: 1.1rem; line-height: 1.6; color: var(--ink-700);">
-      Track new business owners of LLCs, corporations, partnerships and more registered in {{ jur.name }}, Florida. 
-    </p>
-  </section>
-      
-  <!-- Business Cards Section -->
   <section aria-label="New businesses" class="nbp-cards">
-    <h2>Latest Business Registrations</h2>
+    <h2>Real-Time Tracking of New Business Owners in {{ jur.name }}</h2>
     <p style="color: var(--ink-700); margin-bottom: 20px;">
-      This is the most recent data for companies registered in {{ jur.name }}.
+      This is the most recent data for companies registered in {{ jur.name }}. Track new business owners of LLCs, corporations, partnerships and more in your area.
       {% if not session.get('is_subscriber') %}
         <strong>Unlock full contact details</strong> to reach new business owners first.
       {% endif %}
