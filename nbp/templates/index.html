@@ -922,6 +922,11 @@ document.getElementById('year').textContent = new Date().getFullYear();
   const step2 = byId('step-2');
   const step3 = byId('step-3');
 
+  // ✅ Ensure Step 1 is always visible on page load in the hero
+  if (step1 && step1.parentElement.id === 'nbp-wizard') {
+    show(step1);
+  }
+
   const to2   = byId('to-step-2');
   const to3   = byId('to-step-3');
   const b1    = byId('back-to-1');
@@ -1184,7 +1189,7 @@ if (countySel.length > maxAllowed) {
 
     renderAreas();
   });
-  renderAreas();
+  if (button) renderAreas();
 }
 
   to2.addEventListener('click', async () => {
