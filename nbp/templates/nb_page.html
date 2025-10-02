@@ -554,34 +554,112 @@ body:not(.paywalled) .nx-obscure{
   <meta charset="utf-8"/>
 
   <!-- Dynamic Title -->
-  <title>
-    {% if jur.kind == "city" %}
-      New Businesses — {{ jur.name }}, Florida | NewBizPulse
-    {% elif jur.kind == "county" %}
-      New Businesses — {{ jur.name }}, Florida | NewBizPulse
-    {% elif jur.kind == "state" %}
-      New Businesses — Florida | NewBizPulse
-    {% else %}
-      New Businesses — {{ jur.name }} | NewBizPulse
-    {% endif %}
-  </title>
-
-  <!-- Dynamic Meta Description (single-line safe for SEO) -->
   {% if jur.kind == "city" %}
-    <meta name="description" content="Daily new business registrations in {{ jur.name }}, Florida. Updated every morning from Sunbiz.">
+    <title>{{ jur.name }} New Business Filings & Leads - Daily Updates | MyBusinessLeadFinder</title>
   {% elif jur.kind == "county" %}
-    <meta name="description" content="Daily new business registrations in {{ jur.name }}, Florida. Updated every morning from Sunbiz.">
+    <title>{{ jur.name }} New Business Filings & Leads - {{ 'Daily' if jur.population|default(0) > 300000 else 'Weekly' }} Updates | MyBusinessLeadFinder</title>
   {% elif jur.kind == "state" %}
-    <meta name="description" content="Daily new business registrations across Florida. Updated every morning from Sunbiz.">
+    <title>Florida New Business Filings Database - All Counties | MyBusinessLeadFinder</title>
   {% else %}
-    <meta name="description" content="Daily new business registrations in {{ jur.name }}. Updated every morning from Sunbiz.">
+    <title>{{ jur.name }} Business Registrations & Startup Leads | MyBusinessLeadFinder</title>
+  {% endif %}
+
+  <!-- Dynamic Meta Description -->
+  {% if jur.kind == "city" %}
+    <meta name="description" content="Access {{ jur.name }}, FL business registrations. Track new LLCs, corporations, partnerships and more leads updated {{ 'daily' if jur.population|default(0) > 100000 else 'weekly' }}. Try free 30 days.">
+  {% elif jur.kind == "county" %}
+    <meta name="description" content="Access {{ (jur.population or 0)|format_number }}+ {{ jur.name }} business filings. Track LLCs, corporations, partnerships and more updated {{ 'daily' if jur.population|default(0) > 300000 else 'weekly' }}. Try free 30 days.">
+  {% elif jur.kind == "state" %}
+    <meta name="description" content="Florida's largest new business database. Track 22M+ registrations across all 67 counties. LLCs, corporations partnerships and more updated daily. Try free 30 days.">
+  {% else %}
+    <meta name="description" content="Access {{ jur.name }} business registrations. Track new LLCs, corporations, partnerships and more with full contact details. Try free 30 days.">
   {% endif %}
 
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ canonical_url }}">
 
+  <!-- Open Graph (for social sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ jur.name }} New Business Filings | NewBizPulse">
+  <meta property="og:description" content="Track {{ (stats.total if stats else 0)|format_number }} businesses registered in {{ jur.name }}, Florida. Updated {{ 'daily' if jur.population|default(0) > 300000 else 'weekly' }}.">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:site_name" content="NewBizPulse">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ jur.name }} Business Filings">
+  <meta name="twitter:description" content="{{ (stats.total if stats else 0)|format_number }} businesses in {{ jur.name }}, FL">
+
   <!-- Styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "GovernmentService",
+  "name": "{{ jur.name }} Business Filing Records",
+  "description": "Official new business registration database for {{ jur.name }}, Florida",
+  "provider": {
+    "@type": "GovernmentOrganization",
+    "name": "Florida Division of Corporations"
+  },
+  "areaServed": {
+    "@type": "AdministrativeArea",
+    "name": "{{ jur.name }}, Florida",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "FL",
+      "addressCountry": "US"
+    }
+  },
+  "serviceType": "Business Registration Database",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "{{ canonical_url }}"
+  }
+  {% if stats %}
+  ,"numberOfItems": {{ stats.total|default(0) }}
+  {% endif %}
+}
+</script>
+
+<!-- Add breadcrumb schema too -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ url_for('public.home', _external=True) }}"
+    }
+    {% if parent_state %}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ parent_state.name }}",
+      "item": "{{ url_for('public.state_page', _external=True) }}"
+    }
+    {% endif %}
+    {% if parent_county %}
+    ,{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ parent_county.name }}",
+      "item": "{{ url_for('public.county_page', county_slug=parent_county.slug, _external=True) }}"
+    }
+    {% endif %}
+    ,{
+      "@type": "ListItem",
+      "position": {{ 4 if parent_county else (3 if parent_state else 2) }},
+      "name": "{{ jur.name }}",
+      "item": "{{ canonical_url }}"
+    }
+  ]
+}
+</script>
 </head>
 
 {% set _force = request.args.get('force_paywall') in ('1','true','yes') %}
@@ -628,12 +706,48 @@ body:not(.paywalled) .nx-obscure{
 </section>
 <div class="container">
 
-    <!-- Data context -->
-    <p>
+    <div class="container">
 
+  <!-- Intro Section -->
+  <section style="margin: 32px 0;">
+    <h2>Real-Time Business Filing Data for {{ jur.name }}</h2>
+    <p style="font-size: 1.1rem; line-height: 1.6; color: var(--ink-700);">
+      Track new LLCs, corporations, and partnerships registered in {{ jur.name }}, Florida. 
+      Updated {{ 'every weekday' if jur.population|default(0) > 300000 else 'weekly' }} with fresh filings.
+      {% if stats %}<strong>{{ stats.total|format_number }} businesses</strong> registered this year.{% endif %}
     </p>
+  </section>
 
-    <section aria-label="New businesses" class="nbp-cards">
+  <!-- Stats Section -->
+  {% if stats %}
+  <section style="margin: 32px 0;">
+    <h2>Filing Statistics</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px;">
+      <div style="background: #f0f9ff; padding: 18px; border-radius: 12px; text-align: center;">
+        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #0369a1;">{{ stats.today }}</p>
+        <p style="margin: 4px 0 0; color: #075985; font-weight: 600;">Filed Today</p>
+      </div>
+      <div style="background: #f0fdf4; padding: 18px; border-radius: 12px; text-align: center;">
+        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #15803d;">{{ stats.mtd }}</p>
+        <p style="margin: 4px 0 0; color: #166534; font-weight: 600;">This Month</p>
+      </div>
+      <div style="background: #fef3c7; padding: 18px; border-radius: 12px; text-align: center;">
+        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #b45309;">{{ stats.total|format_number }}</p>
+        <p style="margin: 4px 0 0; color: #92400e; font-weight: 600;">This Year</p>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Business Cards Section -->
+  <section aria-label="New businesses" class="nbp-cards">
+    <h2>Latest Business Registrations</h2>
+    <p style="color: var(--ink-700); margin-bottom: 20px;">
+      These {{ sample|length }} companies were recently registered in {{ jur.name }}.
+      {% if not session.get('is_subscriber') %}
+        <strong>Unlock full contact details</strong> to reach new business owners first.
+      {% endif %}
+    </p>
   <ul class="nbp-card-grid">
 {% set latest = (sample | map(attribute='filing_date') | max) %}
     {% for e in (sample[:15] if not session.get('is_subscriber') else sample) %}
