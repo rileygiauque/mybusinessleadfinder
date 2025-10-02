@@ -509,14 +509,13 @@ form input {
   border-radius: 5px;
 }
 
-/* Loading Spinner Styles */
 .spinner-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(233, 241, 251, 0.95);  /* light blue (matches your --blue-tint) */
   display: none;
   justify-content: center;
   align-items: center;
@@ -903,7 +902,15 @@ form input {
   <div class="spinner"></div>
 </div>
 
-  <script>document.getElementById('year').textContent = new Date().getFullYear();
+  <script>
+
+// Hide spinner on page load (in case user goes back)
+window.addEventListener('DOMContentLoaded', () => {
+  const spinner = document.getElementById('loading-spinner');
+  if (spinner) spinner.classList.remove('active');
+});
+    
+document.getElementById('year').textContent = new Date().getFullYear();
 
 (function(){
   // --- helpers ---
