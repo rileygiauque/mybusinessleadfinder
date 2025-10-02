@@ -585,23 +585,34 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   position: relative;
 }
 
+/* View Details button on hover */
 .nbp-view-details {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(31, 62, 88, 0.95);
+  background: #4a6fa5;
   color: #fff;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1.05rem;
+  padding: 12px 28px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 1rem;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background 0.2s ease;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: none;
+  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+}
+
+.nbp-card--locked:hover .nbp-view-details {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nbp-view-details:hover {
+  background: #3d5a8a;
 }
 
 .nbp-card--locked:hover .nbp-view-details {
@@ -632,7 +643,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   max-width: 400px;
-  width: 90%;
+  width: 100%;
   padding: 32px;
   position: relative;
 }
@@ -1089,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Access Modal -->
 <div id="accessModal" class="access-modal">
   <div class="access-modal-content">
-    <h2>Access All Content with Free 30-Day Trial</h2>
+    <h2>Access All Content and Daily Updates with Free 30-Day Trial</h2>
     <p>No contracts, cancel anytime.</p>
     <a href="{{ url_for('public.home') }}#plans" class="access-modal-btn">Get Access</a>
   </div>
