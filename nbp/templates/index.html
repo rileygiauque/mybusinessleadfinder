@@ -1456,6 +1456,14 @@ if (toStep5) {
       return;
     }
 
+    if (password.length < 5) {
+      const passwordInput = byId('nbp-password');
+      passwordInput.focus();
+      passwordInput.setCustomValidity('Password must be at least 5 characters');
+      passwordInput.reportValidity();
+      return;
+    }
+
     if (password !== passwordConfirm) {
       const confirmInput = byId('nbp-password-confirm');
       confirmInput.focus();
