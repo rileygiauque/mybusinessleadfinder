@@ -755,6 +755,52 @@ form input {
     <!-- This is where we'll inject the Area selector when a plan is chosen -->
     <div id="plans-area" hidden>
 
+<!-- STEP 2 (PRICING): Independent area selector for pricing cards -->
+<div class="step" id="step-2-pricing">
+  <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Select county</label>
+
+  <div class="nbp-multi" id="nbp-multi-pricing">
+    <button
+      type="button"
+      class="nbp-multi-toggle"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+      aria-controls="nbp-multi-panel-pricing"
+      id="nbp-multi-button-pricing"
+    >
+      Select areas…
+    </button>
+
+    <div id="nbp-multi-panel-pricing" class="nbp-multi-panel" hidden>
+      <div class="nbp-multi-list" role="listbox" aria-multiselectable="true">
+        <!-- All-of-state -->
+        <label class="nbp-multi-item">
+          <input type="checkbox" value="florida" data-all="1" />
+          <span>All of Florida</span>
+        </label>
+
+        <div class="nbp-multi-sep" aria-hidden="true">—</div>
+
+        <!-- Counties -->
+        {% for c in counties %}
+        <label class="nbp-multi-item">
+          <input type="checkbox" value="{{ c.slug }}" />
+          <span>{{ c.name }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Selected chips -->
+    <div class="nbp-multi-chips" id="nbp-multi-chips-pricing" aria-live="polite"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="btn" type="button" id="back-to-plans" style="flex:1;background:#e5e7eb;color:#0f172a;font-weight:700">Back</button>
+    <button class="btn" type="button" id="continue-to-register" style="flex:2">Continue</button>
+  </div>
+</div>
+
 <!-- STEP 4: Email and Password Registration -->
 <div class="step" id="step-4" hidden>
   <label style="display:block;font-weight:700;margin:4px 0 6px 2px">Email</label>
@@ -968,8 +1014,9 @@ document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
 
 
 function mountStep2Into(el){
-  el.appendChild(step2);
-  show(step2);
+  // Don't move step-2 anymore - pricing has its own selector
+  const pricingStep2 = byId('step-2-pricing');
+  if (pricingStep2) show(pricingStep2);
 }
 
 // --- plan limits ---
@@ -1192,6 +1239,82 @@ if (countySel.length > maxAllowed) {
   if (button) renderAreas();
 }
 
+// === PRICING SECTION: Independent multi-select ===
+(function setupPricingMulti(){
+  const root   = byId('nbp-multi-pricing');
+  const panel  = byId('nbp-multi-panel-pricing');
+  const button = byId('nbp-multi-button-pricing');
+  const chips  = byId('nbp-multi-chips-pricing');
+  const list   = panel ? panel.querySelector('.nbp-multi-list') : null;
+
+  if (!list) return;
+
+  const inputs = () => Array.from(list.querySelectorAll('input[type="checkbox"]'));
+  const allOpt = () => list.querySelector('input[data-all="1"]');
+
+  function openPanel(){ panel.hidden=false; button.setAttribute('aria-expanded','true'); }
+  function closePanel(){ panel.hidden=true; button.setAttribute('aria-expanded','false'); }
+
+  button.addEventListener('click', () => {
+    const isOpen = button.getAttribute('aria-expanded') === 'true';
+    isOpen ? closePanel() : openPanel();
+  });
+
+  document.addEventListener('click', (e) => { if (root && !root.contains(e.target)) closePanel(); });
+
+  function renderAreas(){
+    const selected = inputs().filter(i => i.checked);
+    const names = selected.map(i => i.dataset.all ? 'All of Florida' : i.closest('label').innerText.trim());
+
+    if (names.length === 0) button.textContent = 'Click here to select…';
+    else if (names.length === 1) button.textContent = names[0];
+    else button.textContent = `${names.length} areas selected`;
+
+    chips.innerHTML = '';
+    selected.forEach(i => {
+      const label = i.dataset.all ? 'All of Florida' : i.closest('label').innerText.trim();
+      const chip = document.createElement('span');
+      chip.className = 'nbp-chip';
+      chip.innerHTML = `<span>${label}</span><span class="x" aria-label="Remove">×</span>`;
+      chip.querySelector('.x').addEventListener('click', () => { i.checked = false; renderAreas(); });
+      chips.appendChild(chip);
+    });
+
+    const values = selected.map(i => i.value);
+    hiddenCounties.value = values.join(',');
+  }
+
+  list.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.type !== 'checkbox') return;
+
+    const all = allOpt();
+    const selected = inputs().filter(i => i.checked);
+    const pickedAll = selected.some(i => i.dataset.all === '1');
+    const pickedCounty = selected.some(i => !i.dataset.all && i.value);
+
+    if (t.dataset.all === '1' && t.checked) {
+      inputs().forEach(i => { if (!i.dataset.all) i.checked = false; });
+    }
+
+    if (pickedAll && pickedCounty && all && t !== all) {
+      all.checked = false;
+    }
+
+    // Apply plan limits
+    const countySel = inputs().filter(i => i.checked && !i.dataset.all);
+    if (countySel.length > maxAllowed) {
+      t.checked = false;
+      overLimitMessage();
+    }
+
+    renderAreas();
+  });
+
+  renderAreas();
+})();
+
+
   to2.addEventListener('click', async () => {
   if (stateSel.value !== 'florida') {
     stateSel.focus();
@@ -1217,45 +1340,52 @@ if (countySel.length > maxAllowed) {
 
   b1.addEventListener('click', () => {
   hide(step2);
+  show(step1);
+});
 
-  if (launchedFromPlan) {
-    // put step-2 back into the hero form and restore plans
-    restoreStep2Home();
+// NEW: Back button for pricing area selector
+const backToPlans = byId('back-to-plans');
+if (backToPlans) {
+  backToPlans.addEventListener('click', () => {
+    hide(byId('step-2-pricing'));
     plansArea.hidden = true;
     plansContent.hidden = false;
     plansTitle.textContent = 'Choose a Plan';
-
     planField.value = '';
     launchedFromPlan = false;
-    setPlanLimits(null);
-  } else {
-    show(step1);
-  }
-});
+  });
+}
 
 
   to3.addEventListener('click', () => {
   const picked = (hiddenCounties.value || '').split(',').filter(Boolean);
   if (picked.length === 0) { if (button) openPanel(); return; }
-
-  // Enforce cap again just in case
-  const count = picked.includes('florida') ? Infinity : picked.length;
-  if ((planField.value === 'local' && count > 1) ||
-      (planField.value === 'regional' && count > 10)) {
-    overLimitMessage();
-    return;
-  }
-
-  // If launched from plan, show Step 4 for registration
-  if (launchedFromPlan && planField.value) {
-    hide(step2);
-    show(byId('step-4'));
-    plansTitle.textContent = 'Create Account';  // 👈 ADD THIS LINE
-    return;
-  }
-  
-  hide(step2); show(step3);
+  hide(step2); 
+  show(step3);
 });
+
+// NEW: Continue button for pricing area selector
+const continueToRegister = byId('continue-to-register');
+if (continueToRegister) {
+  continueToRegister.addEventListener('click', () => {
+    const picked = (hiddenCounties.value || '').split(',').filter(Boolean);
+    if (picked.length === 0) { 
+      alert('Please select at least one area');
+      return; 
+    }
+
+    const count = picked.includes('florida') ? Infinity : picked.length;
+    if ((planField.value.includes('local') && count > 1) ||
+        (planField.value.includes('regional') && count > 10)) {
+      overLimitMessage();
+      return;
+    }
+
+    hide(byId('step-2-pricing'));
+    show(byId('step-4'));
+    plansTitle.textContent = 'Create Account';
+  });
+}
 
 
 
