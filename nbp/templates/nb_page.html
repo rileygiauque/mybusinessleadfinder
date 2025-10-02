@@ -402,12 +402,12 @@ body{ margin:0; background:var(--bg); color:var(--ink-900); font-size:18px; line
 .nbp-detailgrid{
   list-style:none; margin:0; padding:0;
   display:grid;
-  grid-template-columns: 1fr 1fr; /* two equal columns */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:12px 28px;
 }
 .nbp-detailgrid li{
   display:grid;
-  grid-template-columns: 1fr 1fr; /* equal columns */
+  grid-template-columns: auto 1fr;
   align-items:baseline;
   gap: 12px;
 }
