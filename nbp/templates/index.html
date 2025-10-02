@@ -539,6 +539,24 @@ form input {
   to { transform: rotate(360deg); }
 }
 
+    /* Smooth transitions for plan/location swap */
+#plans-content,
+#plans-area {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#plans-content.fade-out,
+#plans-area.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+
+#plans-content.fade-in,
+#plans-area.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
   </style>
 </head>
 
@@ -1070,28 +1088,37 @@ function restoreStep2Home(){
 
 function showAreaPickerFromPlan(planId){
   launchedFromPlan = true;
-  const priceId = PLAN_TO_PRICE[planId];  // ✅ Convert plan name to Stripe price ID
+  const priceId = PLAN_TO_PRICE[planId];
   if (!priceId) {
     console.error('Invalid plan:', planId);
     return;
   }
-  planField.value = priceId;  // ✅ Store the actual Stripe price ID
+  planField.value = priceId;
 
   // Statewide: pick all immediately and go to Stripe
   if (planId === 'statewide'){
-    hiddenCounties.value = 'florida';   // send "all of Florida"
-    postToStripe();                     // straight to checkout
+    hiddenCounties.value = 'florida';
+    postToStripe();
     return;
   }
 
-  // Swap the plans section to the area picker
-  plansTitle.textContent = 'Select Location';
-  plansContent.hidden = true;
-  plansArea.hidden = false;
-
-  mountStep2Into(plansArea);
-  setPlanLimits(planId);                // <-- apply plan rules
-
+  // Animate out plans content
+  plansContent.classList.add('fade-out');
+  
+  setTimeout(() => {
+    plansContent.hidden = true;
+    plansContent.classList.remove('fade-out');
+    
+    plansTitle.textContent = 'Select Location';
+    plansArea.hidden = false;
+    plansArea.classList.add('fade-in');
+    
+    mountStep2Into(plansArea);
+    setPlanLimits(planId);
+    
+    // Remove fade-in class after animation
+    setTimeout(() => plansArea.classList.remove('fade-in'), 300);
+  }, 300);
 }
 
 // intercept “Choose Area” on pricing cards
@@ -1345,12 +1372,25 @@ if (countySel.length > maxAllowed) {
 const backToPlans = byId('back-to-plans');
 if (backToPlans) {
   backToPlans.addEventListener('click', () => {
-    hide(byId('step-2-pricing'));
-    plansArea.hidden = true;
-    plansContent.hidden = false;
-    plansTitle.textContent = 'Choose a Plan';
-    planField.value = '';
-    launchedFromPlan = false;
+    // Animate out location selector
+    byId('step-2-pricing').classList.add('fade-out');
+    plansArea.classList.add('fade-out');
+    
+    setTimeout(() => {
+      hide(byId('step-2-pricing'));
+      plansArea.hidden = true;
+      plansArea.classList.remove('fade-out');
+      
+      plansTitle.textContent = 'Choose a Plan';
+      plansContent.hidden = false;
+      plansContent.classList.add('fade-in');
+      
+      planField.value = '';
+      launchedFromPlan = false;
+      
+      // Remove fade-in class after animation
+      setTimeout(() => plansContent.classList.remove('fade-in'), 300);
+    }, 300);
   });
 }
 
