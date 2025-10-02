@@ -589,6 +589,7 @@ form input {
 
   <!-- hidden payload the server reads -->
   <input type="hidden" name="counties" id="nbp-hidden-counties">
+  <input type="hidden" id="nbp-hidden-counties-pricing">
   <input type="hidden" name="redirect_to" id="nbp-hidden-redirect">
   <input type="hidden" id="nbp-selected-plan" name="price_id">
 
@@ -1281,7 +1282,8 @@ if (countySel.length > maxAllowed) {
     });
 
     const values = selected.map(i => i.value);
-    hiddenCounties.value = values.join(',');
+    const hiddenPricing = byId('nbp-hidden-counties-pricing');
+    if (hiddenPricing) hiddenPricing.value = values.join(',');
   }
 
   list.addEventListener('change', (e) => {
@@ -1364,11 +1366,12 @@ if (backToPlans) {
   show(step3);
 });
 
-// NEW: Continue button for pricing area selector
 const continueToRegister = byId('continue-to-register');
 if (continueToRegister) {
   continueToRegister.addEventListener('click', () => {
-    const picked = (hiddenCounties.value || '').split(',').filter(Boolean);
+    const hiddenPricing = byId('nbp-hidden-counties-pricing');
+    const picked = (hiddenPricing.value || '').split(',').filter(Boolean);  // ← Use pricing field
+    
     if (picked.length === 0) { 
       alert('Please select at least one area');
       return; 
@@ -1380,6 +1383,9 @@ if (continueToRegister) {
       overLimitMessage();
       return;
     }
+
+    // ✅ Copy pricing counties to main field for submission
+    hiddenCounties.value = hiddenPricing.value;
 
     hide(byId('step-2-pricing'));
     show(byId('step-4'));
@@ -1396,8 +1402,8 @@ const backToArea = byId('back-to-area');
 if (backToArea) {
   backToArea.addEventListener('click', () => {
     hide(byId('step-4'));
-    show(step2);
-    plansTitle.textContent = 'Select Location';  // 👈 ADD THIS LINE
+    show(byId('step-2-pricing'));  // ← Show PRICING's step 2
+    plansTitle.textContent = 'Select Location';
   });
 }
 
