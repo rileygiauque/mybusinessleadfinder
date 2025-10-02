@@ -826,11 +826,11 @@ form input {
   <input type="email" id="nbp-email-register" name="email" placeholder="you@example.com" required aria-label="Email" autocomplete="email">
 
   <label style="display:block;font-weight:700;margin:14px 0 6px 2px">Password</label>
-  <input type="password" id="nbp-password" name="password" placeholder="Enter your password" required aria-label="Password">
+<input type="password" id="nbp-password" name="password" placeholder="Enter your password" required minlength="5" aria-label="Password">
 
-  <label style="display:block;font-weight:700;margin:14px 0 6px 2px">Confirm Password</label>
-  <input type="password" id="nbp-password-confirm" name="password_confirm" placeholder="Re-enter your password" required aria-label="Confirm Password" style="margin-bottom:12px">
-
+<label style="display:block;font-weight:700;margin:14px 0 6px 2px">Confirm Password</label>
+<input type="password" id="nbp-password-confirm" name="password_confirm" placeholder="Re-enter your password" required minlength="5" aria-label="Confirm Password" style="margin-bottom:12px">
+  
   <div style="display:flex;gap:10px;margin-top:12px">
     <button class="btn" type="button" id="back-to-area" style="flex:1;background:#e5e7eb;color:#0f172a;font-weight:700">Back</button>
     <button class="btn" type="button" id="to-step-5" style="flex:2">Register and Continue</button>
