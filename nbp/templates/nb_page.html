@@ -712,38 +712,15 @@ body:not(.paywalled) .nx-obscure{
   <section style="margin: 32px 0;">
     <h2>Real-Time Business Filing Data for {{ jur.name }}</h2>
     <p style="font-size: 1.1rem; line-height: 1.6; color: var(--ink-700);">
-      Track new LLCs, corporations, and partnerships registered in {{ jur.name }}, Florida. 
-      Updated {{ 'every weekday' if jur.population|default(0) > 300000 else 'weekly' }} with fresh filings.
-      {% if stats %}<strong>{{ stats.total|format_number }} businesses</strong> registered this year.{% endif %}
+      Track new business owners of LLCs, corporations, partnerships and more registered in {{ jur.name }}, Florida. 
     </p>
   </section>
-
-  <!-- Stats Section -->
-  {% if stats %}
-  <section style="margin: 32px 0;">
-    <h2>Filing Statistics</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px;">
-      <div style="background: #f0f9ff; padding: 18px; border-radius: 12px; text-align: center;">
-        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #0369a1;">{{ stats.today }}</p>
-        <p style="margin: 4px 0 0; color: #075985; font-weight: 600;">Filed Today</p>
-      </div>
-      <div style="background: #f0fdf4; padding: 18px; border-radius: 12px; text-align: center;">
-        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #15803d;">{{ stats.mtd }}</p>
-        <p style="margin: 4px 0 0; color: #166534; font-weight: 600;">This Month</p>
-      </div>
-      <div style="background: #fef3c7; padding: 18px; border-radius: 12px; text-align: center;">
-        <p style="margin: 0; font-size: 2rem; font-weight: 800; color: #b45309;">{{ stats.total|format_number }}</p>
-        <p style="margin: 4px 0 0; color: #92400e; font-weight: 600;">This Year</p>
-      </div>
-    </div>
-  </section>
-  {% endif %}
-
+      
   <!-- Business Cards Section -->
   <section aria-label="New businesses" class="nbp-cards">
     <h2>Latest Business Registrations</h2>
     <p style="color: var(--ink-700); margin-bottom: 20px;">
-      These {{ sample|length }} companies were recently registered in {{ jur.name }}.
+      This is the most recent data for companies registered in {{ jur.name }}.
       {% if not session.get('is_subscriber') %}
         <strong>Unlock full contact details</strong> to reach new business owners first.
       {% endif %}
