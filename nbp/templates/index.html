@@ -1093,7 +1093,7 @@ function showAreaPickerFromPlan(planId){
   setPlanLimits(planId);                // <-- apply plan rules
 
   // focus & scroll
-  const areaBtn = document.getElementById('nbp-multi-button');
+  const areaBtn = document.getElementById('nbp-multi-button-pricing');
   if (areaBtn) areaBtn.focus();
   document.getElementById('plans').scrollIntoView({ behavior:'smooth', block:'start' });
 }
