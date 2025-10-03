@@ -367,9 +367,16 @@ def subscribe_success():
     )
 
     session["is_subscriber"] = True
+    session.modified = True  # ✅ FORCE SAVE
     
     if checkout_session.get("customer"):
-        session["stripe_customer_id"] = checkout_session["customer"]
+        customer_obj = checkout_session["customer"]
+        # ✅ Handle both string and dict
+        if isinstance(customer_obj, dict):
+            session["stripe_customer_id"] = customer_obj.get("id")
+        else:
+            session["stripe_customer_id"] = customer_obj
+        session.modified = True  # ✅ FORCE SAVE
 
     meta = (checkout_session.get("metadata") or {})
     stored_email = meta.get("nbp_email")
@@ -380,6 +387,7 @@ def subscribe_success():
     
     if stored_email:
         session["user_email"] = stored_email
+        session.modified = True  # ✅ FORCE SAVE
         current_app.logger.info(f"✅ Set user_email in session: {stored_email}")
 
     plan = (meta.get("nbp_plan") or "").lower()
@@ -389,6 +397,7 @@ def subscribe_success():
     # ✅ Store counties in session for profile display
     if counties:
         session["selected_counties"] = counties
+        session.modified = True  # ✅ FORCE SAVE
         current_app.logger.info(f"✅ Stored counties in session: {counties}")
 
     def compute_redirect(plan: str, counties: list[str]) -> str:
@@ -400,8 +409,11 @@ def subscribe_success():
 
     redirect_to = compute_redirect(plan, counties)
     current_app.logger.info(f"✅ Redirecting to: {redirect_to}")
-    return redirect(redirect_to)
     
+    # ✅ Final save before redirect
+    session.modified = True
+    
+    return redirect(redirect_to)    
 
 
 @bp.post("/stripe/webhook")
