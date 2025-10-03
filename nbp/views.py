@@ -6,7 +6,7 @@ from sqlalchemy import func, or_
 from flask import url_for, request
 from flask import Blueprint, render_template, abort, url_for, Response, session, request, redirect
 import json
-from .models import Jurisdiction, Entity, Stat, Subscription, db
+from .models import Jurisdiction, Entity, Stat, Subscription, User, db
 
 from .models import Jurisdiction, Entity, Stat
 
