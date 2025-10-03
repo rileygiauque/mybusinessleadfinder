@@ -876,7 +876,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); 
               border-radius: 20px; 
               padding: 32px 40px; 
-              margin: 24px 0; 
+              margin: 24px 0 10px 0; 
               box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);">
     <div style="display: flex; align-items: center; gap: 18px;">
       <span style="font-size: 52px;">💼</span>
@@ -899,13 +899,13 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
   <!-- Intro Section -->
   <section aria-label="New businesses" class="nbp-cards">
+    {% if not session.get('is_subscriber') %}
     <h2>Real-Time Tracking of New Business Owners in {{ jur.name }}</h2>
     <p style="color: var(--ink-700); margin-bottom: 20px;">
       This is the most recent data for companies registered in {{ jur.name }}. Track new business owners of LLCs, corporations, partnerships and more in your area.
-      {% if not session.get('is_subscriber') %}
-        <strong>Unlock full contact details</strong> to reach new business owners first.
-      {% endif %}
+      <strong>Unlock full contact details</strong> to reach new business owners first.
     </p>
+    {% endif %}
   <ul class="nbp-card-grid">
 {% set latest = (sample | map(attribute='filing_date') | max) %}
     {% for e in (sample[:15] if not session.get('is_subscriber') else sample) %}
