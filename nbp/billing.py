@@ -126,7 +126,6 @@ def register():
                 "optional": False
             }],
             subscription_data={
-                "trial_period_days": 30,
                 "metadata": {
                     "nbp_plan": plan_label,
                     "nbp_counties": counties,
@@ -336,7 +335,6 @@ def create_checkout_session():
 
 
         subscription_data={
-            "trial_period_days": 30,
             "metadata": {
                 "nbp_plan": plan_label,
                 "nbp_jurisdiction": jur_slug,
@@ -460,8 +458,8 @@ def stripe_webhook():
                             email=stored_email,
                             password_hash=password_hash,  # Already hashed
                             plan_id=plan.id,
-                            subscription_status='trialing',  # 30-day trial
-                            trial_end_date=trial_end
+                            subscription_status='active',
+                            trial_end_date=None
                         )
                         db.session.add(new_user)
                         db.session.commit()
@@ -590,10 +588,9 @@ def stripe_webhook():
                     user = User.query.filter_by(email=stored_email).first()
                     if user:
                         # Map Stripe status to our status
-                        if status == "trialing":
-                            user.subscription_status = "trialing"
-                        elif status == "active":
+                        if status in ("trialing", "active"):
                             user.subscription_status = "active"
+                            
                         elif status in ("canceled", "unpaid", "past_due"):
                             user.subscription_status = "inactive"
                         
