@@ -1134,6 +1134,7 @@ function restoreStep2Home(){
 }
 
 function showAreaPickerFromPlan(planId){
+  if (planId === 'local') planId = 'statewide'; // 🚨 FREE TRIAL: Remove this line later
   launchedFromPlan = true;
   const priceId = PLAN_TO_PRICE[planId];
   if (!priceId) {
