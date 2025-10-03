@@ -71,6 +71,7 @@ def register():
         password = data.get("password", "")
         plan_id = data.get("plan_id", "").strip()
         counties = data.get("counties", "").strip()
+        trial_days = data.get("trial_days")  # 🚨 FREE TRIAL: Delete this line later
 
         if not email or not password or not plan_id:
             return {"success": False, "error": "Missing required fields"}, 400
@@ -126,6 +127,7 @@ def register():
                 "optional": False
             }],
             subscription_data={
+                "trial_period_days": int(trial_days) if trial_days else None,  # 🚨 FREE TRIAL: Delete this line later
                 "metadata": {
                     "nbp_plan": plan_label,
                     "nbp_counties": counties,
@@ -288,6 +290,12 @@ def create_checkout_session():
     # CSV of areas from the form (e.g., "miami-dade,broward" or "florida")
     counties_csv = (request.form.get("counties") or "").strip()
 
+    # 🚨 FREE TRIAL: Get trial_days from form (delete this line later)
+    trial_days = request.form.get("trial_days")
+    if trial_days:
+        trial_days = int(trial_days)  # Convert to integer
+
+
     # resolve alias -> id
     resolved = PRICE_ALIAS_TO_ID.get(alias_or_id, request.form.get("price_id").strip())
 
@@ -317,6 +325,20 @@ def create_checkout_session():
             plan_label = selected_price
 
     base = os.getenv("APP_BASE_URL") or request.url_root.rstrip('/')
+
+    # 🚨 FREE TRIAL: Build subscription_data with conditional trial
+    subscription_data = {
+        "metadata": {
+            "nbp_plan": plan_label,
+            "nbp_jurisdiction": jur_slug,
+            "nbp_counties": counties_csv,
+        },
+    }
+    
+    # 🚨 FREE TRIAL: Add trial period if specified (delete this block later)
+    if trial_days:
+        subscription_data["trial_period_days"] = trial_days
+
 
     # create checkout session with 30-day trial
     session_obj = s.checkout.Session.create(
