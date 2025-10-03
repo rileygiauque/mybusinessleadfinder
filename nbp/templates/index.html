@@ -981,6 +981,9 @@ form input {
 
   <script>
 
+console.log('Script loaded at:', new Date().toISOString());
+console.log('preview-body exists?', !!document.getElementById('preview-body'));
+
 // Hide spinner on page load (in case user goes back)
 window.addEventListener('DOMContentLoaded', () => {
   const spinner = document.getElementById('loading-spinner');
