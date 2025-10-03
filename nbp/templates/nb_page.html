@@ -870,6 +870,31 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
     <p class="nbp-hero__sub">Constantly updated to give you first access to new potential customers or clients in your area</p>
   </div>
 </section>
+
+<!-- ✅ ADD THIS ENTIRE BLOCK HERE -->
+{% if session.get('is_subscriber') and profile_data and profile_data.plan_name == 'Local Star' %}
+<div class="container">
+  <div style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); 
+              border-radius: 16px; 
+              padding: 20px 24px; 
+              margin: 20px 0; 
+              box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 32px;">⭐</span>
+      <div>
+        <h3 style="margin: 0 0 4px; color: #78350f; font-size: 18px; font-weight: 700;">
+          Local Star Plan
+        </h3>
+        <p style="margin: 0; color: #92400e; font-size: 15px;">
+          Viewing your exclusive 15-business snapshot from your registration date
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<!-- ✅ END OF NEW BLOCK -->
+
 <div class="container">
 
     <div class="container">
