@@ -557,6 +557,25 @@ form input {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Temporary access message (remove when ready) */
+.access-message {
+  margin-top: 12px;
+  color: #dc2626;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.access-message a {
+  color: #dc2626;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.access-message a:hover {
+  color: #991b1b;
+}
   </style>
 </head>
 
@@ -993,6 +1012,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 (function(){
+  // ========================================
+  // 🚨 TEMPORARY FEATURE FLAG 🚨
+  // Set to false to remove "Must apply" messages
+  // ========================================
+  const REQUIRE_ACCESS_APPLICATION = true;
+  
   // --- helpers ---
   const byId = (id) => document.getElementById(id);
   const emailInput = byId('nbp-email');
@@ -1105,6 +1130,30 @@ function showAreaPickerFromPlan(planId){
     return;
   }
   planField.value = priceId;
+
+  // ✅ TEMPORARY: Regional/Statewide require application
+  if (REQUIRE_ACCESS_APPLICATION && (planId === 'regional' || planId === 'statewide')) {
+    const btn = document.querySelector(`button[data-plan="${planId}"]`);
+    if (!btn) return;
+    
+    // Remove any existing message first
+    const existing = btn.parentElement.querySelector('.access-message');
+    if (existing) return; // Already showing message
+    
+    // Create and insert message
+    const msg = document.createElement('div');
+    msg.className = 'access-message';
+    msg.innerHTML = 'Must apply for access! Start <a href="#top">here</a>.';
+    
+    // Add click handler to scroll to top
+    msg.querySelector('a').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    btn.parentElement.appendChild(msg);
+    return; // Don't proceed with area picker
+  }
 
   // Statewide: pick all immediately and go to Stripe
   if (planId === 'statewide'){
