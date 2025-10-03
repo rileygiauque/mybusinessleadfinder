@@ -269,6 +269,17 @@ def state_page():
         profile_data=profile_data,
     )
 
+@bp.get("/api/nearby-cities")
+def nearby_cities():
+    """Return nearby cities based on ZIP code"""
+    zip_code = request.args.get('zip', '').strip()
+    
+    if not zip_code:
+        return {'cities': ['Miami', 'Fort Lauderdale', 'West Palm Beach']}, 200
+    
+    # Simple fallback - you could enhance this with a real ZIP lookup
+    # For now, just return Florida cities
+    return {'cities': ['Miami', 'Fort Lauderdale', 'West Palm Beach']}, 200
 
 @bp.get("/new-business/florida/county/<county_slug>/")
 def county_page(county_slug):
