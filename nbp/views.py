@@ -116,14 +116,13 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
             Entity.event_date_filed >= window_start)
     )
 
-    # ✅ NEW: If ?preview=1 is in URL, always show blurred (non-subscriber view)
+    # ✅ If ?preview=1 is in URL, always show blurred (non-subscriber view)
     if request.args.get('preview') == '1':
         if jur.kind == "state":
             q = q.filter_by(state="FL")
         elif jur.kind == "county":
             q = q.filter_by(state="FL", county=jur.name)
         elif jur.kind == "city":
-            # ✅ DEBUGGING + FIX
             current_app.logger.info(f"Looking for city: '{jur.name}'")
             
             sample_cities = db.session.query(Entity.city).filter(
@@ -137,11 +136,44 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
                 func.lower(Entity.city) == func.lower(jur.name)
             )
     
-    # ✅ Normal access control for logged-in users (existing code)
+    # ✅ ENHANCED: Check for logged-in users including Local Star Plan
     elif session.get('is_subscriber') and session.get('user_email'):
         user_email = session['user_email']
+        user = User.query.filter_by(email=user_email).first()
         subscription = Subscription.query.filter_by(email=user_email).first()
         
+        # ✅ LOCAL STAR PLAN: Show only 15 cards from day before registration
+        if user and user.plan and user.plan.name == 'Local Star':
+            if user.created_at:
+                registration_date = user.created_at.date()
+                target_date = registration_date - timedelta(days=1)
+                
+                current_app.logger.info(f"Local Star user {user_email}: showing 15 records from {target_date}")
+                
+                # Filter to ONLY that specific day
+                q = q.filter(Entity.filing_date == target_date)
+                
+                # Apply jurisdiction filters
+                if jur.kind == "state":
+                    q = q.filter_by(state="FL")
+                elif jur.kind == "county":
+                    q = q.filter_by(state="FL", county=jur.name)
+                elif jur.kind == "city":
+                    q = q.filter(
+                        Entity.state == "FL",
+                        func.lower(Entity.city) == func.lower(jur.name)
+                    )
+                
+                # Order and limit to 15
+                q = q.order_by(
+                    Entity.filing_date.desc().nullslast(),
+                    Entity.id.desc()
+                )
+                
+                # Force limit to 15 for Local Star users
+                return q.limit(15).all()
+        
+        # ✅ For OTHER SUBSCRIBERS (not Local Star), apply normal access control
         if subscription and subscription.scope_json:
             scope = json.loads(subscription.scope_json)
             
@@ -177,7 +209,6 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
         elif jur.kind == "county":
             q = q.filter_by(state="FL", county=jur.name)
         elif jur.kind == "city":
-            # ✅ DEBUGGING + FIX
             current_app.logger.info(f"Looking for city: '{jur.name}'")
             
             sample_cities = db.session.query(Entity.city).filter(
@@ -191,6 +222,7 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
                 func.lower(Entity.city) == func.lower(jur.name)
             )
 
+    # Normal ordering for non-Local Star users
     q = q.order_by(
         Entity.filing_date.desc().nullslast(),
         Entity.event_date_filed.desc().nullslast(),
@@ -198,7 +230,6 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
     )
 
     return q.limit(preview_limit).all()
-
     
 def _children(jur: Jurisdiction):
     return sorted(jur.children, key=lambda c: c.name)[:12]
