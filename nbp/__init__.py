@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, url_for
+from flask import Flask, request, jsonify, redirect, url_for, render_template
 from flask_migrate import Migrate
 import os
 from .models import db, User, Plan
@@ -83,6 +83,20 @@ def create_app():
     @app.get("/robots.txt")
     def robots():
         return robots_txt()
+
+    # Legal pages
+    @app.route('/privacy-policy')
+    def privacy_policy():
+        return render_template('privacy_policy.html')
+
+    @app.route('/terms-of-service')
+    def terms_of_service():
+        return render_template('terms_of_service.html')
+
+    @app.route('/contact')
+    def contact():
+        # Opens user's default email client
+        return redirect('mailto:support@newbusinessleadfinder.com')
 
     
     # Example: Create a user when the app starts (can be triggered manually)
