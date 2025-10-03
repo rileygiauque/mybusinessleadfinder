@@ -1036,11 +1036,7 @@ const step2OrigNext   = step2.nextSibling; // may be text node
 
 document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
   e.preventDefault();
-  const el = document.getElementById('plans');
-  if (!el) return;
-  const y = el.getBoundingClientRect().top + window.pageYOffset + 48; // land below the blue
-  window.scrollTo({ top: y, behavior: 'smooth' });
-  setTimeout(() => window.scrollTo({ top: y, behavior: 'auto' }), 700); // re-align after layout settles
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 
@@ -1134,9 +1130,12 @@ function showAreaPickerFromPlan(planId){
 }
 
 // intercept “Choose Area” on pricing cards
-document.querySelectorAll('.choose-area').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    showAreaPickerFromPlan(btn.dataset.plan); // local | regional | statewide
+// Around line 1138, wrap the choose-area event listeners:
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.choose-area').forEach(btn=>{
+    btn.addEventListener('click', ()=> {
+      showAreaPickerFromPlan(btn.dataset.plan);
+    });
   });
 });
 
