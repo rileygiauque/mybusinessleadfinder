@@ -1098,10 +1098,8 @@ function setPlanLimits(planId){
     if (hideAllOption && allOpt && allOpt.checked){
       allOpt.checked = false;
     }
-  }
 
-  // If current selection exceeds max, trim it (keep earliest)
-  if (pricingList) {
+    // If current selection exceeds max, trim it (keep earliest)
     const pricingInputs = Array.from(pricingList.querySelectorAll('input[type="checkbox"]'));
     const sel = pricingInputs.filter(i => i.checked && !i.dataset.all);
     if (sel.length > maxAllowed){
@@ -1109,11 +1107,11 @@ function setPlanLimits(planId){
     }
   }
   
-  // Re-render the pricing dropdown
-  const renderPricing = window.renderPricingAreas;
-  if (renderPricing) renderPricing();
-}
-
+  // Re-render the pricing dropdown if the function exists
+  if (typeof setupPricingMulti !== 'undefined') {
+    const renderPricing = window.renderPricingAreas;
+    if (renderPricing) renderPricing();
+  }
 }
 
 // Small toast/inline warning (simple alert for now)
