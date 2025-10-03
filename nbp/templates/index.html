@@ -1084,22 +1084,35 @@ function setPlanLimits(planId){
   else if (planId === 'regional') { maxAllowed = 10; hideAllOption = true; }
   else { maxAllowed = Infinity; hideAllOption = false; } // statewide or wizard path
 
-  // Show/hide the "All of Florida" row + separator
-  const allLabel = allOpt()?.closest('label');
-  const sep = list?.querySelector('.nbp-multi-sep');
-  if (allLabel) allLabel.style.display = hideAllOption ? 'none' : '';
-  if (sep) sep.style.display = hideAllOption ? 'none' : '';
+  // Show/hide the "All of Florida" row + separator IN PRICING DROPDOWN ONLY
+  const pricingList = byId('nbp-multi-panel-pricing')?.querySelector('.nbp-multi-list');
+  if (pricingList) {
+    const allLabel = pricingList.querySelector('input[data-all="1"]')?.closest('label');
+    const sep = pricingList.querySelector('.nbp-multi-sep');
+    
+    if (allLabel) allLabel.style.display = hideAllOption ? 'none' : '';
+    if (sep) sep.style.display = hideAllOption ? 'none' : '';
 
-  // If we just hid the "All" option and it was selected, unselect it
-  if (hideAllOption && allOpt() && allOpt().checked){
-    allOpt().checked = false;
+    // If we just hid the "All" option and it was selected, unselect it
+    const allOpt = pricingList.querySelector('input[data-all="1"]');
+    if (hideAllOption && allOpt && allOpt.checked){
+      allOpt.checked = false;
+    }
   }
 
   // If current selection exceeds max, trim it (keep earliest)
-  const sel = inputs().filter(i => i.checked && !i.dataset.all);
-  if (sel.length > maxAllowed){
-    sel.slice(maxAllowed).forEach(i => i.checked = false);
+  if (pricingList) {
+    const pricingInputs = Array.from(pricingList.querySelectorAll('input[type="checkbox"]'));
+    const sel = pricingInputs.filter(i => i.checked && !i.dataset.all);
+    if (sel.length > maxAllowed){
+      sel.slice(maxAllowed).forEach(i => i.checked = false);
+    }
   }
+  
+  // Re-render the pricing dropdown
+  const renderPricing = window.renderPricingAreas;
+  if (renderPricing) renderPricing();
+}
   renderAreas();
 }
 
