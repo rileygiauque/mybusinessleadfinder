@@ -30,6 +30,7 @@ class User(db.Model):
     plan_id = db.Column(db.Integer, db.ForeignKey('plans.id'), nullable=False)  # ForeignKey to the Plan
     subscription_status = db.Column(db.String(50), default="inactive")  # active, trial, etc.
     trial_end_date = db.Column(db.DateTime, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # ✅ Add this if missing
     
     # Method to hash password when setting it
     def set_password(self, password):
