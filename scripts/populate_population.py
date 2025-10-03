@@ -16,7 +16,7 @@ from nbp.models import Jurisdiction, db
 # NOTE: Slugs match database format with '-county' suffix
 POPULATIONS = {
     # Major metros (300k+)
-    'miami-dade-county': 2716940,
+    'miami-dade': 2716940,
     'broward-county': 1944375,
     'palm-beach-county': 1496770,
     'hillsborough-county': 1459762,
