@@ -356,13 +356,7 @@ def create_checkout_session():
         }],
 
 
-        subscription_data={
-            "metadata": {
-                "nbp_plan": plan_label,
-                "nbp_jurisdiction": jur_slug,
-                "nbp_counties": counties_csv,
-            },
-        },
+        subscription_data=subscription_data,
         metadata={
             "nbp_plan": plan_label,
             "nbp_jurisdiction": jur_slug,
