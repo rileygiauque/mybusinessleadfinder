@@ -731,13 +731,13 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
   <!-- Dynamic Meta Description -->
   {% if jur.kind == "city" %}
-    <meta name="description" content="Access {{ jur.name }}, FL business registrations. Track new LLCs, corporations, partnerships and more leads updated {{ 'daily' if jur.population|default(0) > 100000 else 'weekly' }}. Try free 30 days.">
+    <meta name="description" content="Access {{ jur.name }}, FL business registrations. Track new LLCs, corporations, partnerships and more leads updated {{ 'daily' if jur.population|default(0) > 100000 else 'weekly' }}.">
   {% elif jur.kind == "county" %}
-    <meta name="description" content="Access {{ (jur.population or 0)|format_number }}+ {{ jur.name }} business filings. Track LLCs, corporations, partnerships and more updated {{ 'daily' if jur.population|default(0) > 300000 else 'weekly' }}. Try free 30 days.">
+    <meta name="description" content="Access {{ (jur.population or 0)|format_number }}+ {{ jur.name }} business filings. Track LLCs, corporations, partnerships and more updated {{ 'daily' if jur.population|default(0) > 300000 else 'weekly' }}.">
   {% elif jur.kind == "state" %}
-    <meta name="description" content="Florida's largest new business database. Track 22M+ registrations across all 67 counties. LLCs, corporations partnerships and more updated daily. Try free 30 days.">
+    <meta name="description" content="Florida's largest new business database. Track 22M+ registrations across all 67 counties. LLCs, corporations partnerships and more updated daily.">
   {% else %}
-    <meta name="description" content="Access {{ jur.name }} business registrations. Track new LLCs, corporations, partnerships and more with full contact details. Try free 30 days.">
+    <meta name="description" content="Access {{ jur.name }} business registrations. Track new LLCs, corporations, partnerships and more with full contact details.">
   {% endif %}
 
   <!-- Canonical URL -->
@@ -1026,9 +1026,9 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
      href="{{ url_for('public.home') }}#plans"
 
-     aria-label="Try Free for 30 Days. Access all data, contact information, and receive alerts when a new business owner is identified in your area.">
-    <span class="cta-line-1">Try Free for 30 Days</span>
-    <span class="cta-line-2">Access all data, contact info and receive alerts when a new business owner is identified in your area</span>
+     aria-label="Access data, contact information, and receive alerts when a new business owner is identified in your area.">
+    <span class="cta-line-1">Sign Up for Local Leads</span>
+    <span class="cta-line-2">Establish consistent leadflow to help grow your practice.</span>
   </a>
 
   {% endif %}
@@ -1158,9 +1158,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Access Modal -->
 <div id="accessModal" class="access-modal">
   <div class="access-modal-content">
-    <h2>Access All Content with Free 30-Day Trial</h2>
-    <p>Free trial, unlimited access, cancel anytime.</p>
-    <a href="{{ url_for('public.home') }}#plans" class="access-modal-btn">Get Access</a>
+    <h2>Looking for leads to grow your business?</h2>
+    <p>No long-term contracts. Cancel anytime.</p>
+    <a href="{{ url_for('public.home') }}#plans" class="access-modal-btn">Sign Up</a>
   </div>
 </div>
 
