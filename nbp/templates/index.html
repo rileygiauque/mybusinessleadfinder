@@ -1211,8 +1211,7 @@ function postToStripe(){
   const price = Object.assign(document.createElement('input'), {type:'hidden', name:'price_id', value: planField.value});
   const counties = Object.assign(document.createElement('input'), {type:'hidden', name:'counties', value: hiddenCounties.value || ''});
   const email = Object.assign(document.createElement('input'), {type:'hidden', name:'email', value: (document.getElementById('nbp-email')?.value || '').trim()});
-  const trial = Object.assign(document.createElement('input'), {type:'hidden', name:'trial_days', value: '7'}); // 🚨 FREE TRIAL: Delete this line later
-  
+    
   f.append(price, counties, email);
   document.body.appendChild(f);
   f.submit();
