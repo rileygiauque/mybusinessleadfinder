@@ -620,7 +620,24 @@ form input {
     margin-top: 80px; /* Push title and content down */
   }
 }
-    
+
+/* Larger form elements on mobile */
+@media (max-width: 980px) {
+  #nbp-state {
+    font-size: 24px;
+    padding: 20px 16px;
+  }
+  
+  #to-step-2 {
+    font-size: 22px;
+    padding: 20px 24px;
+  }
+  
+  .form-card {
+    padding: clamp(24px, 4vw, 32px);
+    min-height: auto;
+  }
+}
   </style>
 <script>
   // Force-hide spinner + reset form on back button
@@ -860,14 +877,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <img class="hiw-img" src="{{ url_for('static', filename='img/1.png') }}" alt="Illustration" />
           <div class="hiw-body">
             <h3>Pick Your Area</h3>
-            <p>Choose 1 county or many. We constantly scan for new businesses in your location.</p>
+            <p>Choose one county or many. We send you new businesses owner leads in your specified location.</p>
           </div>
         </div>
         <div class="hiw-card">
           <img class="hiw-img" src="{{ url_for('static', filename='img/2.png') }}" alt="Illustration" />
           <div class="hiw-body">
             <h3>Daily Delivery</h3>
-            <p>When a new business is created in your area, details and contact info are sent to your dashboard.</p>
+            <p>When a new business owner lead is identified in your area, details and contact info are sent to your dashboard.</p>
           </div>
         </div>
         <div class="hiw-card">
@@ -884,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- RESULTS PREVIEW -->
   <section class="section section-results">
     <div class="container">
-      <h2>Reach New Business Owners In Your Area First!</h2>
+      <h2>Reach New Business Owners In Your Area First</h2>
 <p id="results-subtitle" class="results-subtitle">
   Each day, thousands of fresh business owners starting their journey become prospects actively looking for accounting services. Getting in front of these prospects first gives you the advantage of <strong>consistent new leads</strong> and long-term growth potential.
 </p>
