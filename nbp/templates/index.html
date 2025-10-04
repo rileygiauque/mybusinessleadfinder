@@ -585,10 +585,14 @@ form input {
       if (s) s.classList.remove('active');
     }
     
-    // Run immediately
-    hideSpinner();
+    // Run on DOMContentLoaded (when spinner exists)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', hideSpinner);
+    } else {
+      hideSpinner(); // DOM already loaded
+    }
     
-    // Also run on pageshow (back button)
+    // Also run on pageshow (back button - critical!)
     window.addEventListener('pageshow', hideSpinner);
   })();
 </script>
