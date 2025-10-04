@@ -3,6 +3,7 @@
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -151,9 +152,9 @@ body{
   position: relative;
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 32px;
+  border-radius: 48px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 32px 36px;
+  padding: 52px 56px;
   transition: transform .15s ease, box-shadow .15s ease;
   overflow: visible;
 }
@@ -389,8 +390,8 @@ body{
 /* Heading block aligns with avatar and breathes slightly */
 .nbp-head{ margin:0; }
 .nbp-name{
-  font-family: 'DM Serif Text', serif;
-  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
   color: #000000;
   font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   margin: 0 0 12px 0;
@@ -451,7 +452,7 @@ body{
 .container{ max-width: 1200px; } /* widen page so card can breathe */
 
 .nbp-type{
-  font-family: 'DM Serif Text', serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   color: #000000;
   font-size: clamp(1.2rem, 1.65vw, 1.6rem);
@@ -953,7 +954,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 <li class="nbp-card nbp-card--profile nbp-card--full">
 {% if e.filing_date == latest %}
-  <div class="nbp-badge-goldstar">⭐ Just Added</div>
+  <div class="nbp-badge-goldstar"></div>
 {% endif %}
   <div class="nbp-profile">
     <!-- Left: Avatar -->
