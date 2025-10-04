@@ -10,256 +10,290 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  background: gold;
-  color: #333;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #78350f;
   font-weight: 700;
-  padding: 6px 10px;
+  padding: 8px 14px;
   border-radius: 999px;
   font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
 }
 
 /* ===== Brand & Base (elder-friendly sizing) ===== */
 :root{
-  --brand:#1f3e58;        /* your blue */
-  --bg:#f6f8fb;
-  --card:#fff;
+  --brand:#1f3e58;
+  --bg:#f8fafc;
+  --card:#ffffff;
   --ink-900:#0f172a;
-  --ink-700:#334155;
-  --border:#e5e7eb;
-  --radius:18px;
-  --shadow:0 10px 26px rgba(15,23,42,.08);
-  --shadow-hover:0 16px 38px rgba(15,23,42,.14);
+  --ink-700:#475569;
+  --border:#e2e8f0;
+  --radius:20px;
+  --shadow:0 4px 16px rgba(15,23,42,.06);
+  --shadow-hover:0 8px 24px rgba(15,23,42,.12);
 }
 
-body{ margin:0; background:var(--bg); color:var(--ink-900); font-size:18px; line-height:1.55; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;}
-.container{ max-width:1100px; margin:20px auto; padding:0 20px; }
+body{ 
+  margin:0; 
+  background:var(--bg); 
+  color:var(--ink-900); 
+  font-size:17px; 
+  line-height:1.6; 
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
-/* ===== Full-bleed hero header (like index) ===== */
+.container{ 
+  max-width:1140px; 
+  margin:20px auto; 
+  padding:0 24px; 
+}
+
+/* ===== Full-bleed hero header ===== */
 .nbp-hero{
   position:relative;
   z-index:auto;
   color:#fff;
   background: var(--hero-bg, none) center/cover no-repeat;
-  /* full-bleed even inside a centered .container */
-  width:100vw; margin-left:50%; transform:translateX(-50%);
-  /* vertical rhythm */
-  padding: clamp(54px, 8vw, 110px) 0 clamp(42px, 6vw, 80px);
-  /* prevent any white edge peeking */
+  width:100vw; 
+  margin-left:50%; 
+  transform:translateX(-50%);
+  padding: clamp(60px, 9vw, 120px) 0 clamp(48px, 7vw, 90px);
   overflow:hidden;
 }
 
 .nbp-hero::before{
   content:"";
-  position:absolute; inset:0;
+  position:absolute; 
+  inset:0;
   background:
     linear-gradient(to right,
-      rgba(15,62,88,.68) 0%,   /* was .78 */
-      rgba(15,62,88,.46) 45%,  /* was .56 */
-      rgba(15,62,88,.20) 70%,  /* was .30 */
-      rgba(15,62,88,.02) 100%  /* was .12 */
+      rgba(15,62,88,.65) 0%,
+      rgba(15,62,88,.45) 45%,
+      rgba(15,62,88,.18) 70%,
+      rgba(15,62,88,.02) 100%
     ),
-    rgba(15,62,88,.10);        /* was .20 */
+    rgba(15,62,88,.12);
   pointer-events:none;
 }
 
 .nbp-hero::after{
   content:"";
-  position:absolute; inset:0;
+  position:absolute; 
+  inset:0;
   background: linear-gradient(
     to bottom,
-    rgba(15,62,88,.35) 0%,   /* was .45 */
-    rgba(15,62,88,.18) 35%,  /* was .28 */
-    rgba(15,62,88,.02) 70%,  /* was .12 */
-    rgba(15,62,88,0)   100%
+    rgba(15,62,88,.32) 0%,
+    rgba(15,62,88,.16) 35%,
+    rgba(15,62,88,.02) 70%,
+    rgba(15,62,88,0) 100%
   );
   pointer-events:none;
 }
 
 .nbp-hero__inner{
-  position:relative; z-index:3;
-  max-width:1100px; margin:0 auto;
-  padding: 0 20px;
-  text-align:center;     /* center the title */
+  position:relative; 
+  z-index:3;
+  max-width:1140px; 
+  margin:0 auto;
+  padding: 0 24px;
+  text-align:center;
 }
 
 .nbp-hero h1{
-  Position:relative; z-index:3;
-  margin:0 0 .35rem 0;
-  font-size: clamp(32px, 4vw, 48px);
+  position:relative; 
+  z-index:3;
+  margin:0 0 .4rem 0;
+  font-size: clamp(36px, 4.5vw, 52px);
   font-weight: 800;
-  letter-spacing: .2px;
-  color:#f7fbff;
+  letter-spacing: -0.5px;
+  color:#ffffff;
   text-align:center;
 }
 
 .nbp-hero__sub{
-  Position:relative; z-index:3;
-  margin:.25rem 0 0;
-  font-size: clamp(16px, 1.6vw, 20px);
-  color:#e9f1fb;
-  opacity:.95;
+  position:relative; 
+  z-index:3;
+  margin:.3rem 0 0;
+  font-size: clamp(17px, 1.7vw, 21px);
+  color:#f0f9ff;
+  opacity:.96;
   text-align:center;
+  font-weight: 500;
 }
 
-/* Breadcrumb on hero: white text + subtle separators */
-.nbp-breadcrumb{ margin-top:12px; }
-.nbp-breadcrumb ol{ margin:0; padding:0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; font-size:1rem; }
-.nbp-breadcrumb li{ list-style:none; }
-.nbp-breadcrumb li+li::before{ content:"/"; margin:0 6px; opacity:.8; color:#fff; }
-.nbp-breadcrumb a{ color:#fff; text-decoration:underline; text-underline-offset:2px; }
-.nbp-breadcrumb [aria-current="page"]{ opacity:.95; color:#fff; }
+/* Breadcrumb */
+.nbp-breadcrumb{ 
+  margin-top:14px; 
+}
 
-/* When breadcrumb appears over hero image, ensure contrast */
-.nbp-breadcrumb--on-hero a{ color:#fff; }
+.nbp-breadcrumb ol{ 
+  margin:0; 
+  padding:0; 
+  display:flex; 
+  gap:12px; 
+  justify-content:center; 
+  flex-wrap:wrap; 
+  font-size:1rem; 
+}
 
+.nbp-breadcrumb li{ 
+  list-style:none; 
+}
 
-/* Breadcrumbs in header */
-.nbp-breadcrumb ol{ margin:0; padding:0; display:flex; gap:10px; flex-wrap:wrap; font-size:1rem; }
-.nbp-breadcrumb li{ list-style:none; }
-.nbp-breadcrumb li+li::before{ content:"/"; margin:0 6px; opacity:.65; color:#fff; }
-.nbp-breadcrumb a{ color:#fff; text-decoration:underline; text-underline-offset:2px; }
-.nbp-breadcrumb [aria-current="page"]{ opacity:.9; }
+.nbp-breadcrumb li+li::before{ 
+  content:"/"; 
+  margin:0 8px; 
+  opacity:.75; 
+  color:#fff; 
+}
+
+.nbp-breadcrumb a{ 
+  color:#fff; 
+  text-decoration:underline; 
+  text-underline-offset:3px; 
+  transition: opacity 0.2s;
+}
+
+.nbp-breadcrumb a:hover{
+  opacity: 0.8;
+}
+
+.nbp-breadcrumb [aria-current="page"]{ 
+  opacity:.92; 
+  color:#fff; 
+}
 
 /* ===== Card grid ===== */
-.nbp-cards{ margin-top:16px; }
+.nbp-cards{ 
+  margin-top:20px; 
+}
+
 .nbp-card-grid{
   display:grid;
-  grid-template-columns: 1fr;   /* one column = full-width cards */
-  gap:12px;
+  grid-template-columns: 1fr;
+  gap:16px;
   list-style:none;
   padding:0;
   margin:0;
 }
-/* Make fields use two columns on larger screens to take advantage of full width */
-@media (min-width: 900px){
-  .nbp-fields{
-    display:grid;
-    grid-template-columns: 2fr 1fr;  /* left column bigger, right column for contact */
-    gap:16px 24px;
-  }
-  /* Keep single-column on small screens for readability */
-  .nbp-field--two{ grid-template-columns: 1fr; }
-}
 
 .nbp-card{
-  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-  box-shadow:var(--shadow); padding:16px 18px; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  position: relative;
+  background:var(--card); 
+  border:1px solid var(--border); 
+  border-radius:var(--radius);
+  box-shadow:var(--shadow); 
+  padding:24px; 
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  overflow: clip;
 }
-.nbp-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#d9dee5; }
 
-/* Card content */
-.nbp-card__title{ margin:0 0 6px; font-size:1.15rem; font-weight:800; }
-.nbp-card__meta{ display:flex; flex-wrap:wrap; gap:10px; font-size:.98rem; color:var(--ink-700); margin-bottom:10px; }
-
-.nbp-badges{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
-.nbp-badge{
-  display:inline-block; padding:4px 8px; border-radius:999px; font-size:.85rem; border:1px solid var(--border); background:#f9fafb;
-}
-.nbp-badge--status{ background:#eef6ff; border-color:#dbeafe; }
-.nbp-badge--type{ background:#f2fdf5; border-color:#dcfce7; }
-
-.nbp-fields{ display:grid; gap:10px; }
-.nbp-field{ display:grid; gap:4px; }
-.nbp-field--two{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.nbp-label{ font-size:.9rem; color:var(--ink-700); }
-.nbp-value a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
-
-/* Reduce motion for those who prefer it */
-@media (prefers-reduced-motion: reduce){
-  .nbp-card{ transition:none; }
+.nbp-card:hover{ 
+  transform:translateY(-3px); 
+  box-shadow:var(--shadow-hover); 
+  border-color:#cbd5e1; 
 }
 
 /* ===== Friendly Card Enhancements ===== */
 :root{
-  --accent:#4f9cf9;         /* calm friendly blue */
-  --accent-soft:#eef5ff;    /* soft panel */
-  --success-soft:#e8fbf0;
-  --warning-soft:#fff7e6;
+  --accent:#3b82f6;
+  --accent-soft:#eff6ff;
+  --success-soft:#f0fdf4;
+  --warning-soft:#fffbeb;
 }
 
-/* Larger touch targets + friendly spacing */
-.nbp-card{
-  position: relative;
-  overflow: clip; /* allows reveal overlay to sit inside rounded corners */
-  border-radius: 22px;       /* a little rounder = friendlier */
-  padding: 18px 18px 20px 18px;
-}
-
-/* Card header with avatar & summary line */
+/* Card header with avatar */
 .nbp-card__head{
   display:grid;
-  grid-template-columns: 84px 1fr;
-  gap:16px;
-  align-items:center;      /* was start */
-  margin-bottom:14px;
+  grid-template-columns: 90px 1fr;
+  gap:18px;
+  align-items:center;
+  margin-bottom:16px;
 }
 
 .nbp-avatar{
-  width:72px; height:72px;
+  width:80px; 
+  height:80px;
   border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, #1f6bd6 60%, #194a99 100%);
-  display:grid; place-items:center;
-  box-shadow: 0 6px 14px rgba(31,107,214,.25);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+  display:grid; 
+  place-items:center;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
-.nbp-avatar svg{ width:30px; height:30px; fill:#fff; }
+
+.nbp-avatar svg{ 
+  width:36px; 
+  height:36px; 
+  fill:#fff; 
+}
 
 /* Title */
 .nbp-card__title{
-  margin:2px 0 12px;
-  font-size: clamp(1.45rem, 2.2vw, 2rem);  /* bigger name */
+  margin:0 0 14px;
+  font-size: clamp(1.5rem, 2.3vw, 2.1rem);
   font-weight:800;
-  letter-spacing:.2px;
-  line-height:1.15;
+  letter-spacing:-0.3px;
+  line-height:1.2;
+  color: var(--ink-900);
 }
 
-/* Friendly summary line (bigger, readable) */
+/* Summary line */
 .nbp-card__summary{
-  margin:2px 0 8px;
-  font-size:1rem;
-  line-height:1.4;
+  margin:4px 0 10px;
+  font-size:1.05rem;
+  line-height:1.5;
   color:var(--ink-700);
 }
-.nbp-card__summary b{ color:var(--ink-900); }
 
-/* Soft info chips */
-.nbp-badges{ margin:8px 0 10px; }
+.nbp-card__summary b{ 
+  color:var(--ink-900); 
+}
+
+/* Badges */
+.nbp-badges{ 
+  margin:10px 0 12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
 .nbp-badge{
+  display:inline-block;
   background:var(--accent-soft);
-  border-color:#dfe8ff;
+  border:1px solid #dbeafe;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:.88rem;
   font-weight:600;
+  color: #1e40af;
 }
-.nbp-badge--type{ background:var(--success-soft); border-color:#c9f5db; }
-.nbp-badge--status{ background:var(--warning-soft); border-color:#ffe5b5; }
 
-/* Fields panel gets a subtle divider and larger line-height */
+.nbp-badge--type{ 
+  background:var(--success-soft); 
+  border-color:#d1fae5; 
+  color: #065f46;
+}
+
+.nbp-badge--status{ 
+  background:var(--warning-soft); 
+  border-color:#fde68a; 
+  color: #92400e;
+}
+
+/* Fields panel */
 .nbp-fields{
-  background:#ffffff;
-  border:1px solid var(--border);
+  background:#fafafa;
+  border:1px solid #f1f5f9;
   border-radius:16px;
-  padding:12px;
-}
-.nbp-label{ font-size:.95rem; font-weight:700;}
-.nbp-value{ font-size:1.05rem; }
-
-/* ===== Details always visible (profile layout) ===== */
-.nbp-details{
-  max-height:none;
-  overflow:visible;
-  padding-top:8px;
-}
-
-.nbp-fields{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px 18px;
+  padding:18px 20px;
   display:grid;
-  gap:14px 22px;
+  gap:16px 24px;
 }
 
-.nbp-field{ display:grid; gap:6px; }
+.nbp-field{ 
+  display:grid; 
+  gap:6px; 
+}
 
 .nbp-label{
   font-size:.95rem;
@@ -270,212 +304,310 @@ body{ margin:0; background:var(--bg); color:var(--ink-900); font-size:18px; line
 .nbp-value{
   font-size:1.05rem;
   color:var(--ink-900);
+  line-height: 1.5;
 }
 
-/* Two-column on wide screens for that profile feel */
+.nbp-value a{ 
+  color:var(--accent); 
+  text-decoration:underline; 
+  text-underline-offset:2px; 
+}
+
+.nbp-value a:hover{
+  color: #2563eb;
+}
+
+/* Two-column layout */
 @media (min-width: 900px){
   .nbp-fields{
     grid-template-columns: 2fr 1fr;
   }
 }
 
-/* No reveal button */
-.nbp-reveal{ display:none !important; }
-
-.nbp-card[aria-expanded="true"] .nbp-details{
-  max-height:800px; /* plenty to show all fields */
+/* Details section */
+.nbp-details{
+  max-height:none;
+  overflow:visible;
+  padding-top:10px;
 }
 
-/* Reduce motion option */
-@media (prefers-reduced-motion: reduce){
-  .nbp-reveal{ transition:none; }
-  .nbp-details{ transition:none; }
-}
-
-/* Slightly larger, comfy grid on wide screens */
-@media (min-width: 900px){
-  .nbp-card__title{ font-size: clamp(1.6rem, 2.2vw, 2.2rem); }
-  .nbp-card__summary{ font-size:1.05rem; }
-}
-
+/* Factlist */
 .nbp-factlist{
   display:grid;
   gap:0;
-  margin:8px 0 0;
+  margin:10px 0 0;
   padding:0;
   list-style:none;
-  font-size:.96rem;
+  font-size:.98rem;
 }
+
 .nbp-factlist li{
   display:grid;
-  grid-template-columns: 160px 1fr; /* consistent label width */
+  grid-template-columns: 170px 1fr;
   align-items:baseline;
-  padding:10px 0;
-  border-bottom:1px solid #eef2f7;  /* lighter divider */
+  padding:12px 0;
+  border-bottom:1px solid #f1f5f9;
 }
-.nbp-factlist li:first-child{ padding-top:0; }
-.nbp-factlist li:last-child{ border-bottom:none; padding-bottom:0; }
-.nbp-factlist .k{ font-weight:700; color:var(--ink-900); opacity:.9; }
-.nbp-factlist .v{ color:var(--ink-900); }
 
+.nbp-factlist li:first-child{ 
+  padding-top:0; 
+}
 
+.nbp-factlist li:last-child{ 
+  border-bottom:none; 
+  padding-bottom:0; 
+}
+
+.nbp-factlist .k{ 
+  font-weight:700; 
+  color:var(--ink-700); 
+}
+
+.nbp-factlist .v{ 
+  color:var(--ink-900); 
+}
 
 /* Profile layout */
-.nbp-card--profile{ padding:22px; }
+.nbp-card--profile{ 
+  padding:28px; 
+}
+
 .nbp-card__grid{
   display:grid;
-  grid-template-columns: 120px 1fr;
-  gap:22px;
+  grid-template-columns: 130px 1fr;
+  gap:24px;
   align-items:center;
 }
-.nbp-avatar{
-  width:120px; height:120px;
-  border-radius:22px;
-  display:grid; place-items:center;
-  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, #1f6bd6 60%, #194a99 100%);
-  box-shadow: 0 8px 22px rgba(31,107,214,.18);
-}
-.nbp-avatar svg{ width:48px; height:48px; fill:#fff; }
 
-.nbp-card__title{ margin:2px 0 10px; font-size: clamp(1.6rem, 2.2vw, 2.2rem); }
+/* Profile-specific avatar */
+.nbp-card--profile .nbp-avatar{
+  width:130px; 
+  height:130px;
+  border-radius:24px;
+}
+
+.nbp-card--profile .nbp-avatar svg{ 
+  width:52px; 
+  height:52px; 
+}
+
 .nbp-tagline{
-  margin:0 0 14px;
+  margin:0 0 16px;
   color:var(--ink-700);
-  font-size:1rem;
+  font-size:1.05rem;
 }
 
-/* Inline key/value list */
-.nbp-info{ list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+/* Info list */
+.nbp-info{ 
+  list-style:none; 
+  margin:0; 
+  padding:0; 
+  display:grid; 
+  gap:10px; 
+}
+
 .nbp-info li{
   display:grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 190px 1fr;
   align-items:baseline;
 }
-.nbp-info .k{ font-weight:700; color:var(--ink-900); opacity:.95; }
-.nbp-info .v{ color:var(--ink-900); word-break:break-word; }
-.nbp-info a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
 
-/* Responsive: stack on small screens */
-@media (max-width: 640px){
-  .nbp-card__grid{ grid-template-columns: 1fr; gap:16px; }
-  .nbp-avatar{ width:92px; height:92px; }
-  .nbp-info li{ grid-template-columns: 140px 1fr; }
+.nbp-info .k{ 
+  font-weight:700; 
+  color:var(--ink-700); 
 }
 
-/* Full-width, elder-friendly profile cards */
-.nbp-card--full{ width:100%; border-radius:24px; padding:20px; }
+.nbp-info .v{ 
+  color:var(--ink-900); 
+  word-break:break-word; 
+}
+
+.nbp-info a{ 
+  color:var(--accent); 
+  text-decoration:underline; 
+  text-underline-offset:2px; 
+}
+
+/* Full-width profile cards */
+.nbp-card--full{ 
+  width:100%; 
+  border-radius:24px; 
+  padding:26px; 
+}
+
 .nbp-profile{
   display:grid;
-  grid-template-columns: 140px 1fr; /* avatar | content */
+  grid-template-columns: 150px 1fr;
   align-items:start;
-  gap:20px;
+  gap:24px;
 }
+
 .nbp-profile__avatar{
-  width:140px; height:140px; border-radius:22px;
-  display:grid; place-items:center;
-  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, #1f6bd6 60%, #194a99 100%);
-  box-shadow: 0 8px 22px rgba(31,107,214,.18);
+  width:150px; 
+  height:150px; 
+  border-radius:24px;
+  display:grid; 
+  place-items:center;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+  box-shadow: 0 10px 28px rgba(59, 130, 246, 0.25);
   flex-shrink:0;
 }
-.nbp-profile__avatar svg{ width:56px; height:56px; fill:#fff; }
 
-/* Heading block aligns with avatar and breathes slightly */
-.nbp-head{ margin:0; }
+.nbp-profile__avatar svg{ 
+  width:64px; 
+  height:64px; 
+  fill:#fff; 
+}
+
+/* Heading */
+.nbp-head{ 
+  margin:0; 
+}
+
 .nbp-name{
-  margin:0 0 6px;
-  font-size: clamp(1.7rem, 2.4vw, 2.25rem);
+  margin:0 0 8px;
+  font-size: clamp(1.8rem, 2.5vw, 2.35rem);
   font-weight:800;
-  line-height:1.15;
-}
-.nbp-subtitle{
-  margin:0 0 10px;            /* small space under subtitle per your request */
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
-  color: var(--ink-700);
-}
-.nbp-meta{
-  margin:0 0 14px;
-  font-size: clamp(0.98rem, 1.4vw, 1.05rem);
-  color: var(--ink-700);
+  line-height:1.2;
+  letter-spacing: -0.4px;
 }
 
-/* Detail grid: fills remaining width; no wasted space */
+.nbp-type{
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 1.6vw, 1.15rem);
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+.nbp-subtitle{
+  margin: 0 0 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.nbp-line{
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  align-items: start;
+  gap: 10px;
+}
+
+.nbp-line .i{
+  display:inline-grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  line-height:24px;
+  font-size: 18px;
+}
+
+.nbp-meta{
+  margin: 4px 0 16px;
+  font-size: clamp(1rem, 1.5vw, 1.08rem);
+  color: var(--ink-700);
+  font-weight: 500;
+}
+
+/* Detail grid */
 .nbp-detailgrid{
-  list-style:none; margin:0; padding:0;
+  list-style:none;
+  margin:0;
+  padding:0;
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:12px 28px;
+  gap:14px 30px;
 }
+
 .nbp-detailgrid li{
   display:grid;
   grid-template-columns: auto 1fr;
   align-items:baseline;
-  gap: 12px;
+  gap: 14px;
 }
+
 .nbp-detailgrid .k{
   font-weight:700;
-  color:var(--ink-900);
-  opacity:.95;
+  color:var(--ink-700);
   font-size:1rem;
 }
+
 .nbp-detailgrid .v{
   color:var(--ink-900);
-  font-size:1.06rem;
+  font-size:1.08rem;
   word-break:break-word;
 }
-.nbp-detailgrid a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
 
-/* Larger touch targets and readable on small screens */
+.nbp-detailgrid a{
+  color:var(--accent);
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
+/* Mobile adjustments */
 @media (max-width: 900px){
-  .nbp-profile{ grid-template-columns: 100px 1fr; gap:16px; }
-  .nbp-profile__avatar{ width:100px; height:100px; border-radius:18px; }
-  .nbp-detailgrid{ grid-template-columns: 1fr; }         /* stack rows on mobile */
-  .nbp-detailgrid li{ grid-template-columns: 140px 1fr; } /* slightly narrower labels */
+  .nbp-profile{
+    grid-template-columns: 110px 1fr;
+    gap:18px;
+  }
+  
+  .nbp-profile__avatar{
+    width:110px;
+    height:110px;
+    border-radius:20px;
+  }
+  
+  .nbp-profile__avatar svg{
+    width:48px;
+    height:48px;
+  }
+  
+  .nbp-detailgrid{
+    grid-template-columns: 1fr;
+  }
+  
+  .nbp-detailgrid li{
+    grid-template-columns: 150px 1fr;
+  }
+  
+  .nbp-line{
+    grid-template-columns: 22px 1fr;
+  }
+  
+  .nbp-card__grid{
+    grid-template-columns: 1fr;
+    gap:16px;
+  }
+  
+  .nbp-avatar{
+    width:100px;
+    height:100px;
+  }
+  
+  .nbp-info li{
+    grid-template-columns: 150px 1fr;
+  }
 }
 
-/* Optional: let the outer container breathe less so the card feels “full” */
-.container{ max-width: 1200px; } /* widen page so card can breathe */
-
-/* Type under the title */
-.nbp-type{
-  margin: 0 0 8px;
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
-  color: var(--ink-900);
+@media (max-width: 640px){
+  .nbp-card__grid{
+    grid-template-columns: 1fr;
+  }
+  
+  .nbp-info li{
+    grid-template-columns: 140px 1fr;
+  }
 }
 
-/* Stacked subtitles with small identifiers (elder-friendly) */
-.nbp-subtitle{ margin: 0 0 10px; display: grid; gap: 4px; }
-.nbp-line{ display: grid; grid-template-columns: 22px 1fr; align-items: start; gap: 8px; }
-.nbp-line .i{ display:inline-grid; place-items:center; width:22px; height:22px; line-height:22px; }
-.i-principal{ filter: grayscale(0); } /* left as-is for clarity */
-.i-mail{ filter: grayscale(0); }
-
-.nbp-meta{
-  margin: 2px 0 14px;
-  font-size: clamp(0.98rem, 1.4vw, 1.06rem);
-  color: var(--ink-700);
-}
-
-/* Slightly tighten name spacing since we added type and two subtitles */
-.nbp-name{ margin: 0 0 6px; }
-
-/* Ensure the content fills horizontally next to avatar */
-.nbp-profile__body{ min-width: 0; }            /* allows text to wrap instead of pushing layout */
-.nbp-detailgrid .v{ word-break: break-word; }  /* long emails/addresses wrap cleanly */
-
-/* Mobile tweaks */
-@media (max-width: 900px){
-  .nbp-line{ grid-template-columns: 20px 1fr; }
-}
-
-/* ===== Paywall Blur (SEO-friendly: text stays in DOM) ===== */
+/* Paywall blur */
 body.paywalled .nx-obscure{
   display:inline-block;
-  filter: blur(7px) !important;
-  opacity:.65;
+  filter: blur(6px) !important;
+  opacity:.7;
   pointer-events:none;
   user-select:none;
-  text-shadow:0 0 8px rgba(0,0,0,.15);
+  text-shadow:0 0 6px rgba(0,0,0,.12);
 }
+
 body:not(.paywalled) .nx-obscure{
   filter:none !important;
   opacity:1;
@@ -484,44 +616,56 @@ body:not(.paywalled) .nx-obscure{
   text-shadow:none;
 }
 
-
-
-/* REPLACE the entire background value in .cta-big with this */
+/* CTA Button */
 .cta-big{
-  display:grid; align-items:center; gap:6px;
-  Padding-top: 30px;
-  border:0; border-radius:16px;
+  display:grid;
+  align-items:center;
+  gap:8px;
+  padding: 70px 32px;
+  margin-top: 24px;
+  border:0;
+  border-radius:20px;
   background:
-    radial-gradient(900px 520px at 20% 25%, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 34%),
-    radial-gradient(1100px 700px at 85% 120%, rgba(0,0,0,.16) 0%, rgba(0,0,0,0) 60%),
-    radial-gradient(circle at 30% 30%, #63a8ff 0%, #2a7bf0 55%, #1b4ea3 100%) !important;
-  color:#fff !important; font-weight:800; padding:80px 28px;
-  box-shadow:0 12px 28px rgba(37,99,235,.25);
-  cursor:pointer; width:100%; margin:0 auto; text-align:center; line-height:1.25; text-decoration:none;
+    radial-gradient(900px 520px at 20% 25%, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 34%),
+    radial-gradient(1100px 700px at 85% 120%, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%) !important;
+  color:#fff !important;
+  font-weight:800;
+  box-shadow:0 14px 32px rgba(59, 130, 246, 0.3);
+  cursor:pointer;
+  width:100%;
+  text-align:center;
+  line-height:1.3;
+  text-decoration:none;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
-
 
 .cta-big:hover{
-  box-shadow: 0 16px 34px rgba(31,107,214,.30);
-  
+  box-shadow: 0 18px 40px rgba(59, 130, 246, 0.35);
+  transform: translateY(-2px);
 }
 
+.cta-big:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
 
-.cta-big:focus{ outline: none; box-shadow: 0 0 0 4px rgba(37,99,235,.28); }
-
-.cta-line-1{  font-size: clamp(28px, 2.6vw, 70px);  letter-spacing:.2px; }
-
+.cta-line-1{
+  font-size: clamp(30px, 2.8vw, 72px);
+  letter-spacing:-0.5px;
+}
 
 .cta-line-2{
   font-weight: 600;
-  opacity: .95;
-  font-size: clamp(16px, 1.6vw, 18px);
+  opacity: .96;
+  font-size: clamp(17px, 1.7vw, 19px);
 }
 
-/* Mobile comfort */
 @media (max-width: 640px){
-  .cta-big{ border-radius: 14px; padding: 18px; }
+  .cta-big{
+    border-radius: 16px;
+    padding: 20px;
+  }
 }
 
 /* Profile Modal */
@@ -532,42 +676,42 @@ body:not(.paywalled) .nx-obscure{
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   z-index: 99999;
   align-items: center;
   justify-content: center;
 }
+
 .profile-modal.active {
   display: flex;
 }
+
 .profile-modal-content {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 90%;
-  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+  max-width: 420px;
+  width: 92%;
+  padding: 36px;
   position: relative;
 }
 
-/* Start blurred like normal paywall cards */
+/* Reveal animation */
 body.paywalled .nbp-card:nth-child(-n+3) .nx-obscure {
-  filter: blur(7px) !important;
-  opacity: .65 !important;
-  transition: filter 0.6s ease, opacity 0.6s ease;
+  filter: blur(6px) !important;
+  opacity: .7 !important;
+  transition: filter 0.5s ease, opacity 0.5s ease;
 }
 
-/* Reveal after 1 second */
 body.paywalled.reveal-ready .nbp-card:nth-child(-n+3) .nx-obscure {
   filter: none !important;
   opacity: 1 !important;
 }
 
-/* For county pages: only reveal first card */
 body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(-n+1) .nx-obscure {
-  filter: blur(7px) !important;
-  opacity: .65 !important;
-  transition: filter 0.6s ease, opacity 0.6s ease;
+  filter: blur(6px) !important;
+  opacity: .7 !important;
+  transition: filter 0.5s ease, opacity 0.5s ease;
 }
 
 body.paywalled.reveal-ready[data-jur-kind="county"] .nbp-card:nth-child(-n+1) .nx-obscure {
@@ -575,36 +719,34 @@ body.paywalled.reveal-ready[data-jur-kind="county"] .nbp-card:nth-child(-n+1) .n
   opacity: 1 !important;
 }
 
-/* Keep others blurred */
 body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
-  filter: blur(7px) !important;
-  opacity: .65 !important;
+  filter: blur(6px) !important;
+  opacity: .7 !important;
 }
 
-  /* View Details button on hover */
+/* View Details button */
 .nbp-card--locked {
   position: relative;
 }
 
-/* View Details button on hover */
 .nbp-view-details {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #4a6fa5;
+  background: #3b82f6;
   color: #fff;
-  padding: 12px 28px;
-  border-radius: 24px;
-  font-weight: 600;
-  font-size: 1rem;
+  padding: 14px 32px;
+  border-radius: 28px;
+  font-weight: 700;
+  font-size: 1.05rem;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease, background 0.2s ease;
+  transition: opacity 0.3s ease, background 0.2s ease, transform 0.2s ease;
   cursor: pointer;
   z-index: 10;
   border: none;
-  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
 }
 
 .nbp-card--locked:hover .nbp-view-details {
@@ -613,12 +755,8 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 }
 
 .nbp-view-details:hover {
-  background: #3d5a8a;
-}
-
-.nbp-card--locked:hover .nbp-view-details {
-  opacity: 1;
-  pointer-events: auto;
+  background: #2563eb;
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
 /* Access Modal */
@@ -629,7 +767,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75);  /* ✅ Darker backdrop for better contrast */
+  background: rgba(0, 0, 0, 0.7);
   z-index: 99999;
   align-items: center;
   justify-content: center;
@@ -641,77 +779,89 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 .access-modal-content {
   background: white;
-  border-radius: 20px;  /* ✅ Slightly larger radius */
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 480px;  /* ✅ Wider for easier reading */
-  width: 92%;
-  padding: 40px;  /* ✅ More breathing room */
+  border-radius: 24px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+  max-width: 500px;
+  width: 94%;
+  padding: 44px;
   position: relative;
   box-sizing: border-box;
 }
 
 .access-modal-content h2 {
-  margin: 0 0 16px;
-  font-size: 32px;  /* ✅ Bigger title */
-  font-weight: 700;
+  margin: 0 0 18px;
+  font-size: 34px;
+  font-weight: 800;
   color: #111827;
   text-align: left;
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
 }
 
 .access-modal-content p {
-  margin: 0 0 28px;  /* ✅ More space before button */
-  font-size: 20px;  /* ✅ Bigger text */
-  color: #4b5563;  /* ✅ Better contrast */
+  margin: 0 0 32px;
+  font-size: 21px;
+  color: #475569;
   line-height: 1.6;
   text-align: left;
+  font-weight: 500;
 }
 
 .access-modal-btn {
   display: block;
   width: 100%;
   text-align: center;
-  background: #2563eb;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  padding: 18px 24px;  /* ✅ Bigger touch target */
-  border-radius: 12px;  /* ✅ Rounder, friendlier */
+  padding: 20px 28px;
+  border-radius: 14px;
   text-decoration: none;
-  font-weight: 700;  /* ✅ Bolder */
-  font-size: 18px;  /* ✅ Bigger text */
-  transition: background 0.2s ease, transform 0.15s ease;
+  font-weight: 700;
+  font-size: 19px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   cursor: pointer;
   box-sizing: border-box;
   border: none;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
 }
 
 .access-modal-btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);  /* ✅ Gentle lift effect */
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(37, 99, 235, 0.35);
 }
 
 .access-modal-btn:active {
   transform: translateY(0);
 }
 
-/* Mobile comfort */
 @media (max-width: 640px){
   .access-modal-content {
-    padding: 32px 24px;
-    max-width: 95%;
+    padding: 36px 28px;
+    max-width: 96%;
   }
   
   .access-modal-content h2 {
-    font-size: 22px;
+    font-size: 24px;
   }
   
   .access-modal-content p {
-    font-size: 17px;
+    font-size: 18px;
   }
   
   .access-modal-btn {
-    font-size: 17px;
-    padding: 16px 20px;
+    font-size: 18px;
+    padding: 18px 24px;
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .nbp-card,
+  .nbp-view-details,
+  .access-modal-btn,
+  .cta-big { 
+    transition: none; 
   }
 }
   
@@ -841,15 +991,15 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
     <div style="position:fixed; top:20px; right:20px; z-index:9999; display:flex; gap:12px; align-items:center;">
 <!-- Logout Button -->
       <a href="{{ url_for('billing.logout') }}" 
-         style="background:rgba(255,255,255,.2); color:#fff; padding:8px 16px; border-radius:20px; text-decoration:none; font-weight:600; backdrop-filter:blur(10px);">
+         style="background:rgba(255,255,255,.25); color:#fff; padding:10px 20px; border-radius:24px; text-decoration:none; font-weight:700; backdrop-filter:blur(12px); font-size: 15px; transition: all 0.2s;">
         Logout
       </a>
 
 
       <!-- Profile Button -->
 <button id="profileBtn" 
-        style="background:rgba(255,255,255,.2); border:none; padding:8px; border-radius:50%; cursor:pointer; backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; width:40px; height:40px;">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        style="background:rgba(255,255,255,.25); border:none; padding:10px; border-radius:50%; cursor:pointer; backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; width:44px; height:44px; transition: all 0.2s;">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
   </svg>
 </button>
@@ -873,18 +1023,18 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 {% if session.get('is_subscriber') and profile_data and profile_data.plan_name == 'Local Star' %}
 <div class="container">
-  <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); 
-              border-radius: 20px; 
-              padding: 32px 40px; 
-              margin: 24px 0 10px 0; 
-              box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);">
-    <div style="display: flex; align-items: center; gap: 18px;">
-      <span style="font-size: 52px;">💼</span>
+  <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+              border-radius: 24px; 
+              padding: 36px 44px; 
+              margin: 28px 0 12px 0; 
+              box-shadow: 0 10px 28px rgba(59, 130, 246, 0.28);">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <span style="font-size: 56px;">💼</span>
       <div>
-        <h3 style="margin: 0 0 10px; color: #ffffff; font-size: 26px; font-weight: 700; line-height: 1.3;">
+        <h3 style="margin: 0 0 12px; color: #ffffff; font-size: 28px; font-weight: 800; line-height: 1.25; letter-spacing: -0.3px;">
           Get Started Growing Your Client Base!
         </h3>
-        <p style="margin: 0; color: #e0e7ff; font-size: 19px; line-height: 1.5;">
+        <p style="margin: 0; color: #dbeafe; font-size: 20px; line-height: 1.55; font-weight: 500;">
           <strong>Here are some recent local leads to get you started.</strong> These are some of the newest business owners in your area. Also keep an eye out for upcoming leads sent directly to your email inbox.
         </p>
       </div>
@@ -900,8 +1050,8 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   <!-- Intro Section -->
   <section aria-label="New businesses" class="nbp-cards">
     {% if not session.get('is_subscriber') %}
-    <h2>Real-Time Tracking of New Business Owners in {{ jur.name }}</h2>
-    <p style="color: var(--ink-700); margin-bottom: 20px;">
+    <h2 style="font-size: clamp(24px, 2.5vw, 32px); font-weight: 800; margin: 0 0 14px; letter-spacing: -0.3px;">Real-Time Tracking of New Business Owners in {{ jur.name }}</h2>
+    <p style="color: var(--ink-700); margin-bottom: 24px; font-size: 18px; line-height: 1.6;">
       This is the most recent data for companies registered in {{ jur.name }}. Track new business owners of LLCs, corporations, partnerships and more in your area.
       <strong>Unlock full contact details</strong> to reach new business owners first.
     </p>
@@ -938,7 +1088,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
       <div class="nbp-head">
 <h3 class="nbp-name"><span class="nx-obscure">{{ e.name }}</span></h3>
 
-<p class="nbp-type"><strong><span class="nx-obscure">{{ type }}</span></strong></p>
+<p class="nbp-type"><span class="nx-obscure">{{ type }}</span></p>
 
 <div class="nbp-subtitle">
   <div class="nbp-line">
@@ -1015,15 +1165,8 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 {# show CTA to non-subscribers; show CSV for subscribers #}
 {% if not session.get('is_subscriber') %}
 
-  <a class="cta-big" style="background:
-  radial-gradient(900px 520px at 20% 25%, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 34%),
-  radial-gradient(1100px 700px at 85% 120%, rgba(0,0,0,.16) 0%, rgba(0,0,0,0) 60%),
-  radial-gradient(circle at 30% 30%, #63a8ff 0%, #2a7bf0 55%, #1b4ea3 100%);
-  margin-top: 15px;
-  color:#fff; box-shadow:0 12px 28px rgba(37,99,235,.25);"
-
+  <a class="cta-big"
      href="{{ url_for('public.home') }}#plans"
-
      aria-label="Access data, contact information, and receive alerts when a new business owner is identified in your area.">
     <span class="cta-line-1">Sign Up for Local Leads</span>
     <span class="cta-line-2">Establish consistent leadflow to help grow your practice today.</span>
@@ -1032,15 +1175,15 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   {% endif %}
     <!-- Children / Nearby links -->
     {% if children %}
-      <h3>Explore nearby</h3>
-      <div>
+      <h3 style="font-size: clamp(22px, 2.2vw, 28px); font-weight: 800; margin: 32px 0 16px; letter-spacing: -0.3px;">Explore nearby</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         {% for c in children %}
   {% if jur.kind == 'state' and c.kind == 'county' %}
-    <a class="chip" href="/new-business/florida/county/{{ c.slug }}/">{{ c.name }}</a>
+    <a class="chip" href="/new-business/florida/county/{{ c.slug }}/" style="background: var(--accent-soft); border: 1px solid #dbeafe; color: #1e40af; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">{{ c.name }}</a>
   {% elif jur.kind == 'state' and c.kind == 'city' %}
-    <a class="chip" href="/new-business/florida/city/{{ c.slug }}/">{{ c.name }}</a>
+    <a class="chip" href="/new-business/florida/city/{{ c.slug }}/" style="background: var(--accent-soft); border: 1px solid #dbeafe; color: #1e40af; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">{{ c.name }}</a>
   {% elif jur.kind == 'county' and c.kind == 'city' %}
-    <a class="chip" href="/new-business/florida/county/{{ jur.slug }}/city/{{ c.slug }}/">{{ c.name }}</a>
+    <a class="chip" href="/new-business/florida/county/{{ jur.slug }}/city/{{ c.slug }}/" style="background: var(--accent-soft); border: 1px solid #dbeafe; color: #1e40af; padding: 8px 16-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.2s;">{{ c.name }}</a>
   {% endif %}
 {% endfor %}
       </div>
@@ -1070,15 +1213,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="profileModal" class="profile-modal">
   <div class="profile-modal-content">
     {% if profile_data %}
-    <div style="border-bottom:1px solid #e5e7eb; padding-bottom:16px; margin-bottom:16px;">
-      <p style="margin:0; font-size:14px; color:#6b7280; font-weight:600;">Signed in as</p>
-      <p style="margin:4px 0 0; font-size:18px; color:#111827; font-weight:700;">{{ profile_data.email }}</p>
+    <div style="border-bottom:1px solid #f1f5f9; padding-bottom:18px; margin-bottom:18px;">
+      <p style="margin:0; font-size:14px; color:#64748b; font-weight:700;">Signed in as</p>
+      <p style="margin:6px 0 0; font-size:19px; color:#0f172a; font-weight:800;">{{ profile_data.email }}</p>
     </div>
     
-    <div style="padding:12px 0;">
-      <p style="margin:0 0 4px; font-size:13px; color:#6b7280; font-weight:600;">Current Plan</p>
-      <p style="margin:0; font-size:17px; color:#111827; font-weight:700;">{{ profile_data.plan_name }}</p>
-      <p style="margin:4px 0 0; font-size:14px; color:#6b7280;">
+    <div style="padding:14px 0;">
+      <p style="margin:0 0 6px; font-size:13px; color:#64748b; font-weight:700;">Current Plan</p>
+      <p style="margin:0; font-size:18px; color:#0f172a; font-weight:800;">{{ profile_data.plan_name }}</p>
+      <p style="margin:6px 0 0; font-size:15px; color:#64748b; font-weight: 500;">
         ${{ "%.0f"|format(profile_data.plan_price) }}/month • 
         {% if profile_data.county_count == 0 or 'statewide' in profile_data.plan_name.lower() %}
           All Florida
@@ -1090,30 +1233,30 @@ document.addEventListener('DOMContentLoaded', function() {
       </p>
       
       {% if profile_data.subscription_status == 'trialing' %}
-      <p style="margin:8px 0 0; font-size:13px; color:#059669; font-weight:600; background:#d1fae5; padding:6px 10px; border-radius:6px; display:inline-block;">
+      <p style="margin:10px 0 0; font-size:13px; color:#047857; font-weight:700; background:#d1fae5; padding:7px 12px; border-radius:12px; display:inline-block;">
         ✓ Free Trial Active
         {% if profile_data.trial_end_date %}
           (ends {{ profile_data.trial_end_date.strftime('%b %d, %Y') }})
         {% endif %}
       </p>
       {% elif profile_data.subscription_status == 'active' %}
-      <p style="margin:8px 0 0; font-size:13px; color:#059669; font-weight:600; background:#d1fae5; padding:6px 10px; border-radius:6px; display:inline-block;">
+      <p style="margin:10px 0 0; font-size:13px; color:#047857; font-weight:700; background:#d1fae5; padding:7px 12px; border-radius:12px; display:inline-block;">
         ✓ Active Subscription
       </p>
       {% endif %}
     </div>
     
     {% if profile_data.counties and profile_data.county_count > 0 and 'statewide' not in profile_data.plan_name.lower() %}
-    <div style="margin-top:12px; padding-top:12px; border-top:1px solid #f3f4f6;">
-      <p style="margin:0 0 8px; font-size:13px; color:#6b7280; font-weight:600;">Your Counties:</p>
-      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+    <div style="margin-top:14px; padding-top:14px; border-top:1px solid #f8fafc;">
+      <p style="margin:0 0 10px; font-size:13px; color:#64748b; font-weight:700;">Your Counties:</p>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
         {% for county in profile_data.counties[:5] %}
-        <span style="background:#f3f4f6; color:#374151; padding:5px 12px; border-radius:12px; font-size:12px; font-weight:600;">
+        <span style="background:#f1f5f9; color:#334155; padding:6px 14px; border-radius:14px; font-size:13px; font-weight:700;">
           {{ county|replace('-', ' ')|title }}
         </span>
         {% endfor %}
         {% if profile_data.county_count > 5 %}
-        <span style="background:#e5e7eb; color:#6b7280; padding:5px 12px; border-radius:12px; font-size:12px; font-weight:600;">
+        <span style="background:#e2e8f0; color:#64748b; padding:6px 14px; border-radius:14px; font-size:13px; font-weight:700;">
           +{{ profile_data.county_count - 5 }} more
         </span>
         {% endif %}
@@ -1121,23 +1264,19 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     {% endif %}
     
-    <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e5e7eb;">
+    <div style="margin-top:24px; padding-top:18px; border-top:1px solid #f1f5f9;">
       <a href="{{ url_for('billing.billing_portal') }}" 
-         style="display:block; width:auto; text-align:center; background:#2563eb; color:white; padding:12px; border-radius:8px; text-decoration:none; font-weight:600; font-size:15px; margin-bottom:10px;">
+         style="display:block; width:auto; text-align:center; background:#3b82f6; color:white; padding:14px; border-radius:12px; text-decoration:none; font-weight:700; font-size:16px; margin-bottom:12px; transition: all 0.2s;">
         Manage Subscription
       </a>
-      <!-- <a href="{{ url_for('billing.billing_portal') }}"  
-         style="display:block; width:auto; text-align:center; background:#f3f4f6; color:#111827; padding:12px; border-radius:8px; text-decoration:none; font-weight:600; font-size:15px;">
-        Upgrade Plan
-      </a> -->
     </div>
     
     {% else %}
     <!-- Fallback if no profile data -->
-    <div style="text-align:center; padding:20px;">
-      <p style="color:#6b7280; margin-bottom:16px;">Unable to load profile</p>
+    <div style="text-align:center; padding:24px;">
+      <p style="color:#64748b; margin-bottom:18px; font-size: 16px;">Unable to load profile</p>
       <a href="{{ url_for('billing.logout') }}" 
-         style="display:inline-block; color:#2563eb; text-decoration:underline; font-weight:600;">
+         style="display:inline-block; color:#3b82f6; text-decoration:underline; font-weight:700; font-size: 15px;">
         Sign Out
       </a>
     </div>
