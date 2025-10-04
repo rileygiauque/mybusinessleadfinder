@@ -12,8 +12,8 @@
   position: absolute;
   top: -40px;
   right: -40px;
-  width: 280px;
-  height: 280px;
+  width: 240px;
+  height: 240px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
@@ -1232,6 +1232,26 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+});
+
+document.querySelectorAll('.nbp-card').forEach(card => {
+  const details = card.querySelector('.nbp-detailgrid');
+  const toggle = document.createElement('button');
+  toggle.textContent = '▼ Show Details';
+  toggle.style.cssText = 'background:none;border:1px solid #e5e7eb;padding:8px 16px;border-radius:8px;cursor:pointer;margin-top:12px;font-weight:600;';
+  
+  details.style.display = 'none';
+  details.insertAdjacentElement('beforebegin', toggle);
+  
+  toggle.onclick = () => {
+    if(details.style.display === 'none'){
+      details.style.display = 'grid';
+      toggle.textContent = '▲ Hide Details';
+    } else {
+      details.style.display = 'none';
+      toggle.textContent = '▼ Show Details';
+    }
+  };
 });
 </script>
 </body>
