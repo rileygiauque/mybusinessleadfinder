@@ -577,6 +577,13 @@ form input {
   color: #991b1b;
 }
   </style>
+<script>
+  // Force-hide spinner on every page show
+  window.addEventListener('pageshow', () => {
+    const s = document.getElementById('loading-spinner');
+    if (s) s.classList.remove('active');
+  });
+</script>
 </head>
 
 <body>
@@ -1006,7 +1013,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const spinner = document.getElementById('loading-spinner');
   if (spinner) spinner.classList.remove('active');
 });
-    
+
+// ✅ ADD THIS: Also hide on pageshow (handles back button)
+window.addEventListener('pageshow', (event) => {
+  const spinner = document.getElementById('loading-spinner');
+  if (spinner) spinner.classList.remove('active');
+});
 
 
 (function(){
