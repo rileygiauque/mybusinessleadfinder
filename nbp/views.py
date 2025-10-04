@@ -121,8 +121,15 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
         if jur.kind == "state":
             q = q.filter_by(state="FL")
         elif jur.kind == "county":
-            county_search = f"%{jur.name} County%"
-            q = q.filter(Entity.state == "FL", Entity.county.ilike(county_search))
+            # Match both "Alachua" and "Alachua County"
+            q = q.filter(
+                Entity.state == "FL",
+                or_(
+                    Entity.county.ilike(jur.name),
+                    Entity.county.ilike(f"{jur.name} County")
+                )
+            )
+
         elif jur.kind == "city":
             current_app.logger.info(f"Looking for city: '{jur.name}'")
             
@@ -158,8 +165,15 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
                 if jur.kind == "state":
                     q = q.filter_by(state="FL")
                 elif jur.kind == "county":
-                    county_search = f"%{jur.name} County%"
-                    q = q.filter(Entity.state == "FL", Entity.county.ilike(county_search))
+                    # Match both "Alachua" and "Alachua County"
+                    q = q.filter(
+                        Entity.state == "FL",
+                        or_(
+                            Entity.county.ilike(jur.name),
+                            Entity.county.ilike(f"{jur.name} County")
+                        )
+                    )
+
                 elif jur.kind == "city":
                     q = q.filter(
                         Entity.state == "FL",
@@ -214,8 +228,15 @@ def _get_sample_rows(jur: Jurisdiction, limit=None):
         if jur.kind == "state":
             q = q.filter_by(state="FL")
         elif jur.kind == "county":
-            county_search = f"%{jur.name} County%"
-            q = q.filter(Entity.state == "FL", Entity.county.ilike(county_search))
+            # Match both "Alachua" and "Alachua County"
+            q = q.filter(
+                Entity.state == "FL",
+                or_(
+                    Entity.county.ilike(jur.name),
+                    Entity.county.ilike(f"{jur.name} County")
+                )
+            )
+
         elif jur.kind == "city":
             current_app.logger.info(f"Looking for city: '{jur.name}'")
             
@@ -607,8 +628,15 @@ def export_csv(slug):
     if jur.kind == "state":
         q = q.filter_by(state="FL")
     elif jur.kind == "county":
-        county_search = f"%{jur.name} County%"
-        q = q.filter(Entity.state == "FL", Entity.county.ilike(county_search))
+            # Match both "Alachua" and "Alachua County"
+            q = q.filter(
+                Entity.state == "FL",
+                or_(
+                    Entity.county.ilike(jur.name),
+                    Entity.county.ilike(f"{jur.name} County")
+                )
+            )
+
     elif jur.kind == "city":
         q = q.filter_by(state="FL", city=jur.name)
 
