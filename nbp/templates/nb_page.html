@@ -21,6 +21,36 @@
   pointer-events: none;
 }
 
+/* Shrink star on medium screens */
+@media (max-width: 1200px) {
+  .nbp-badge-goldstar {
+    width: 200px;
+    height: 200px;
+    top: -30px;
+    right: -30px;
+  }
+}
+
+/* Shrink more on smaller screens */
+@media (max-width: 900px) {
+  .nbp-badge-goldstar {
+    width: 140px;
+    height: 140px;
+    top: -20px;
+    right: -20px;
+  }
+}
+
+/* Mobile - smallest size */
+@media (max-width: 640px) {
+  .nbp-badge-goldstar {
+    width: 100px;
+    height: 100px;
+    top: -15px;
+    right: -15px;
+  }
+}
+
 /* ===== Brand & Base (elder-friendly sizing) ===== */
 :root{
   --brand:#1f3e58;        /* your blue */
