@@ -9,15 +9,12 @@
 /* Gold Star Badge */
 .nbp-badge-goldstar {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: gold;
-  color: #333;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  background: url('/static/img/Star.png') no-repeat center center;
+  background-size: contain;
 }
 
 /* ===== Brand & Base (elder-friendly sizing) ===== */
@@ -133,8 +130,8 @@ body{
 .nbp-cards{ margin-top:16px; }
 .nbp-card-grid{
   display:grid;
-  grid-template-columns: 1fr;   /* one column = full-width cards */
-  gap:12px;
+  grid-template-columns: 1fr;
+  gap:24px;
   list-style:none;
   padding:0;
   margin:0;
@@ -151,11 +148,20 @@ body{
 }
 
 .nbp-card{
-  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-  box-shadow:var(--shadow); padding:16px 18px; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 32px 36px;
+  transition: transform .15s ease, box-shadow .15s ease;
+  overflow: visible;
 }
-.nbp-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#d9dee5; }
-
+.nbp-card:hover{ 
+  transform: translateY(-4px); 
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12); 
+}
+  
 /* Card content */
 .nbp-card__title{ margin:0 0 6px; font-size:1.15rem; font-weight:800; }
 .nbp-card__meta{ display:flex; flex-wrap:wrap; gap:10px; font-size:.98rem; color:var(--ink-700); margin-bottom:10px; }
@@ -372,42 +378,41 @@ body{
 /* Full-width, elder-friendly profile cards */
 .nbp-card--full{ width:100%; border-radius:24px; padding:20px; }
 .nbp-profile{
-  display:grid;
-  grid-template-columns: 140px 1fr; /* avatar | content */
-  align-items:start;
-  gap:20px;
+  display:block;
+  width:100%;
 }
+  
 .nbp-profile__avatar{
-  width:140px; height:140px; border-radius:22px;
-  display:grid; place-items:center;
-  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, #1f6bd6 60%, #194a99 100%);
-  box-shadow: 0 8px 22px rgba(31,107,214,.18);
-  flex-shrink:0;
+  display: none !important;
 }
-.nbp-profile__avatar svg{ width:56px; height:56px; fill:#fff; }
 
 /* Heading block aligns with avatar and breathes slightly */
 .nbp-head{ margin:0; }
 .nbp-name{
-  margin:0 0 6px;
-  font-size: clamp(1.7rem, 2.4vw, 2.25rem);
-  font-weight:800;
-  line-height:1.15;
+  font-family: 'DM Serif Text', serif;
+  font-weight: 700;
+  color: #000000;
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+  text-transform: none;
 }
 .nbp-subtitle{
-  margin:0 0 10px;            /* small space under subtitle per your request */
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
-  color: var(--ink-700);
+  margin: 0 0 24px;
+  padding-bottom: 24px;
+  border-bottom: 3px solid #e5e7eb;
 }
+  
 .nbp-meta{
   margin:0 0 14px;
   font-size: clamp(0.98rem, 1.4vw, 1.05rem);
   color: var(--ink-700);
 }
 
-/* Detail grid: fills remaining width; no wasted space */
 .nbp-detailgrid{
-  list-style:none; margin:0; padding:0;
+  list-style:none;
+  margin:24px 0 0 0;
+  padding:0;
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:12px 28px;
@@ -415,19 +420,22 @@ body{
 .nbp-detailgrid li{
   display:grid;
   grid-template-columns: auto 1fr;
-  align-items:baseline;
-  gap: 12px;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.nbp-detailgrid li:last-child{
+  border-bottom: none;
 }
 .nbp-detailgrid .k{
-  font-weight:700;
-  color:var(--ink-900);
-  opacity:.95;
-  font-size:1rem;
+  font-weight: 700;
+  color: #000000;
+  font-size: 1.05rem;
 }
 .nbp-detailgrid .v{
-  color:var(--ink-900);
-  font-size:1.06rem;
-  word-break:break-word;
+  color: #374151;
+  font-size: 1.05rem;
+  word-break: break-word;
 }
 .nbp-detailgrid a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
 
@@ -442,16 +450,28 @@ body{
 /* Optional: let the outer container breathe less so the card feels “full” */
 .container{ max-width: 1200px; } /* widen page so card can breathe */
 
-/* Type under the title */
 .nbp-type{
-  margin: 0 0 8px;
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
-  color: var(--ink-900);
+  font-family: 'DM Serif Text', serif;
+  font-weight: 700;
+  color: #000000;
+  font-size: clamp(1.2rem, 1.65vw, 1.6rem);
+  margin: 0 0 20px 0;
 }
 
 /* Stacked subtitles with small identifiers (elder-friendly) */
 .nbp-subtitle{ margin: 0 0 10px; display: grid; gap: 4px; }
-.nbp-line{ display: grid; grid-template-columns: 22px 1fr; align-items: start; gap: 8px; }
+.nbp-line{
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+  color: #374151;
+  text-transform: capitalize;
+}
+.nbp-line:last-child{
+  margin-bottom: 0;
+}
 .nbp-line .i{ display:inline-grid; place-items:center; width:22px; height:22px; line-height:22px; }
 .i-principal{ filter: grayscale(0); } /* left as-is for clarity */
 .i-mail{ filter: grayscale(0); }
@@ -466,7 +486,10 @@ body{
 .nbp-name{ margin: 0 0 6px; }
 
 /* Ensure the content fills horizontally next to avatar */
-.nbp-profile__body{ min-width: 0; }            /* allows text to wrap instead of pushing layout */
+.nbp-profile__body{ 
+  min-width: 0;
+  width: 100%;
+}         /* allows text to wrap instead of pushing layout */
 .nbp-detailgrid .v{ word-break: break-word; }  /* long emails/addresses wrap cleanly */
 
 /* Mobile tweaks */
