@@ -10,8 +10,8 @@
 /* Gold Star Badge */
 .nbp-badge-goldstar {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: 10px;
+  right: 10px;
   width: 240px;
   height: 240px;
   background-repeat: no-repeat;
@@ -187,7 +187,7 @@ body{
   border: 1px solid #e5e7eb;
   border-radius: 48px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 156px 168px;  /* Desktop: lots of padding */
+  padding: 56px 62px;  /* Desktop: lots of padding */
   transition: transform .15s ease, box-shadow .15s ease;
   overflow: visible;
 }
@@ -784,6 +784,56 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
     padding: 16px 20px;
   }
 }
+
+/* NEW LEAD Banner */
+.nbp-new-lead-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  text-align: center;
+  padding: 16px;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  letter-spacing: 2px;
+  border-radius: 48px 48px 0 0;
+  z-index: 5;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .nbp-new-lead-banner {
+    border-radius: 24px 24px 0 0;
+    padding: 12px;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .nbp-new-lead-banner {
+    border-radius: 20px 20px 0 0;
+    padding: 10px;
+  }
+}
+
+/* Add top padding to card content when banner is present */
+.nbp-card.has-new-lead-banner {
+  padding-top: 80px;
+}
+
+@media (max-width: 900px) {
+  .nbp-card.has-new-lead-banner {
+    padding-top: 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .nbp-card.has-new-lead-banner {
+    padding-top: 50px;
+  }
+}
   
 </style>
   <meta charset="utf-8"/>
@@ -991,8 +1041,9 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
       {% set type      = e.entity_type or 'Business' %}
 
 
-<li class="nbp-card nbp-card--profile nbp-card--full">
+<li class="nbp-card nbp-card--profile nbp-card--full {% if e.filing_date == latest %}has-new-lead-banner{% endif %}">
 {% if e.filing_date == latest %}
+  <div class="nbp-new-lead-banner">NEW LEAD</div>
   <div class="nbp-badge-goldstar" style="background-image: url('/star.png');"></div>
 {% endif %}
   <div class="nbp-profile">
