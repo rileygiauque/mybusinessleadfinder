@@ -98,6 +98,13 @@ def create_app():
         # Opens user's default email client
         return redirect('mailto:support@newbusinessleadfinder.com')
 
+    @app.route('/star.png')
+    def serve_star():
+        from flask import send_file
+        import os
+        star_path = os.path.join(app.root_path, '..', 'star.png')
+        return send_file(star_path, mimetype='image/png')
+
     
     # Example: Create a user when the app starts (can be triggered manually)
     with app.app_context():
