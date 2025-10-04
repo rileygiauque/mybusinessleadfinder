@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:wght@400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
@@ -189,7 +193,7 @@ body{
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   padding: 56px 62px;  /* Desktop: lots of padding */
   transition: transform .15s ease, box-shadow .15s ease;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .nbp-card:hover{ 
@@ -794,44 +798,51 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
   color: white;
   text-align: center;
-  padding: 16px;
+  padding: 20px 16px;
   font-weight: 800;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   letter-spacing: 2px;
   border-radius: 48px 48px 0 0;
   z-index: 5;
   text-transform: uppercase;
+  /* Prevent cutoff */
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
   .nbp-new-lead-banner {
     border-radius: 24px 24px 0 0;
-    padding: 12px;
-    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    padding: 14px 12px;
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    letter-spacing: 1px;
   }
 }
 
 @media (max-width: 640px) {
   .nbp-new-lead-banner {
     border-radius: 20px 20px 0 0;
-    padding: 10px;
+    padding: 12px 8px;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
   }
 }
 
 /* Add top padding to card content when banner is present */
 .nbp-card.has-new-lead-banner {
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 @media (max-width: 900px) {
   .nbp-card.has-new-lead-banner {
-    padding-top: 60px;
+    padding-top: 70px;
   }
 }
 
 @media (max-width: 640px) {
   .nbp-card.has-new-lead-banner {
-    padding-top: 50px;
+    padding-top: 60px;
   }
 }
   
