@@ -576,6 +576,20 @@ form input {
 .access-message a:hover {
   color: #991b1b;
 }
+
+/* Hide "All of Florida" option in HERO form only */
+#nbp-multi .nbp-multi-item input[data-all="1"] {
+  display: none;
+}
+
+#nbp-multi .nbp-multi-item:has(input[data-all="1"]) {
+  display: none;
+}
+
+/* Hide the separator line after it */
+#nbp-multi .nbp-multi-sep {
+  display: none;
+}
   </style>
 <script>
   // Force-hide spinner + reset form on back button
