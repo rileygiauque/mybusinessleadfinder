@@ -167,13 +167,15 @@ body{
 /* ===== Card grid ===== */
 .nbp-cards{ margin-top:16px; }
 .nbp-card-grid{
-  display:grid;
+  display: grid;
   grid-template-columns: 1fr;
-  gap:24px;
-  list-style:none;
-  padding:0;
-  margin:0;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
+  
 /* Make fields use two columns on larger screens to take advantage of full width */
 @media (min-width: 900px){
   .nbp-fields{
@@ -191,9 +193,11 @@ body{
   border: 1px solid #e5e7eb;
   border-radius: 48px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 56px 62px;  /* Desktop: lots of padding */
+  padding: 56px 62px;
   transition: transform .15s ease, box-shadow .15s ease;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .nbp-card:hover{ 
@@ -201,17 +205,18 @@ body{
   box-shadow: 0 12px 32px rgba(0,0,0,0.12); 
 }
 
-/* Mobile: normal padding */
+/* Tablet */
 @media (max-width: 900px){
   .nbp-card{
-    padding: 32px 24px;  /* Comfortable mobile padding */
+    padding: 40px 28px;
     border-radius: 24px;
   }
 }
 
+/* Mobile */
 @media (max-width: 640px){
   .nbp-card{
-    padding: 24px 20px;  /* Even tighter on small phones */
+    padding: 32px 20px;
     border-radius: 20px;
   }
 }
@@ -491,8 +496,19 @@ body{
   .nbp-detailgrid li{ grid-template-columns: 140px 1fr; } /* slightly narrower labels */
 }
 
-/* Optional: let the outer container breathe less so the card feels “full” */
-.container{ max-width: 1200px; } /* widen page so card can breathe */
+.container { 
+  max-width: 1200px; 
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+}
 
 .nbp-type{
   font-family: 'Poppins', sans-serif;
@@ -831,18 +847,18 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 /* Add top padding to card content when banner is present */
 .nbp-card.has-new-lead-banner {
-  padding-top: 90px;
+  padding-top: 110px;
 }
 
 @media (max-width: 900px) {
   .nbp-card.has-new-lead-banner {
-    padding-top: 70px;
+    padding-top: 90px;
   }
 }
 
 @media (max-width: 640px) {
   .nbp-card.has-new-lead-banner {
-    padding-top: 60px;
+    padding-top: 80px;
   }
 }
   
