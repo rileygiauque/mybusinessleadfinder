@@ -683,25 +683,28 @@ form input {
   })();
 
 // Animate How It Works cards on scroll - Mobile only
-if (window.innerWidth <= 900) {
-  const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        observer.unobserve(entry.target); // Only animate once
-      }
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 900) {
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          observer.unobserve(entry.target); // Only animate once
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.hiw-card').forEach(card => {
+      observer.observe(card);
     });
-  }, observerOptions);
+  }
+});
   
-  document.querySelectorAll('.hiw-card').forEach(card => {
-    observer.observe(card);
-  });
-}
 </script>
 </head>
 
