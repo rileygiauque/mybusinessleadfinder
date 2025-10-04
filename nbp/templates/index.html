@@ -578,11 +578,19 @@ form input {
 }
   </style>
 <script>
-  // Force-hide spinner on every page show
-  window.addEventListener('pageshow', () => {
-    const s = document.getElementById('loading-spinner');
-    if (s) s.classList.remove('active');
-  });
+  // Force-hide spinner immediately on every page show (handles back button)
+  (function() {
+    function hideSpinner() {
+      const s = document.getElementById('loading-spinner');
+      if (s) s.classList.remove('active');
+    }
+    
+    // Run immediately
+    hideSpinner();
+    
+    // Also run on pageshow (back button)
+    window.addEventListener('pageshow', hideSpinner);
+  })();
 </script>
 </head>
 
