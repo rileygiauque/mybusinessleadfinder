@@ -187,13 +187,29 @@ body{
   border: 1px solid #e5e7eb;
   border-radius: 48px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 156px 168px;
+  padding: 156px 168px;  /* Desktop: lots of padding */
   transition: transform .15s ease, box-shadow .15s ease;
   overflow: visible;
 }
+
 .nbp-card:hover{ 
   transform: translateY(-4px); 
   box-shadow: 0 12px 32px rgba(0,0,0,0.12); 
+}
+
+/* Mobile: normal padding */
+@media (max-width: 900px){
+  .nbp-card{
+    padding: 32px 24px;  /* Comfortable mobile padding */
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 640px){
+  .nbp-card{
+    padding: 24px 20px;  /* Even tighter on small phones */
+    border-radius: 20px;
+  }
 }
   
 /* Card content */
@@ -224,14 +240,6 @@ body{
   --accent-soft:#eef5ff;    /* soft panel */
   --success-soft:#e8fbf0;
   --warning-soft:#fff7e6;
-}
-
-/* Larger touch targets + friendly spacing */
-.nbp-card{
-  position: relative;
-  overflow: clip; /* allows reveal overlay to sit inside rounded corners */
-  border-radius: 22px;       /* a little rounder = friendlier */
-  padding: 18px 18px 20px 18px;
 }
 
 /* Card header with avatar & summary line */
