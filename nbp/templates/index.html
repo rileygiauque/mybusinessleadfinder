@@ -578,7 +578,7 @@ form input {
 }
   </style>
 <script>
-  // Force-hide spinner immediately on every page show (handles back button)
+  // Force-hide spinner + reset form on back button
   (function() {
     function hideSpinner() {
       const s = document.getElementById('loading-spinner');
@@ -592,8 +592,49 @@ form input {
       hideSpinner(); // DOM already loaded
     }
     
-    // Also run on pageshow (back button - critical!)
-    window.addEventListener('pageshow', hideSpinner);
+    // Run on pageshow (back button - critical!)
+    window.addEventListener('pageshow', function(event) {
+      hideSpinner();
+      
+      // ✅ Clear form ONLY on back button (when page loaded from cache)
+      if (event.persisted) {
+        // Reset wizard to step 1
+        const form = document.getElementById('nbp-wizard');
+        if (form) form.reset();
+        
+        // Show step 1, hide others
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const step4 = document.getElementById('step-4');
+        
+        if (step1) step1.hidden = false;
+        if (step2) step2.hidden = true;
+        if (step3) step3.hidden = true;
+        if (step4) step4.hidden = true;
+        
+        // Clear any chips/selections
+        const chips = document.getElementById('nbp-multi-chips');
+        if (chips) chips.innerHTML = '';
+        
+        const chipsPricing = document.getElementById('nbp-multi-chips-pricing');
+        if (chipsPricing) chipsPricing.innerHTML = '';
+        
+        // Reset hidden fields
+        const hiddenCounties = document.getElementById('nbp-hidden-counties');
+        if (hiddenCounties) hiddenCounties.value = '';
+        
+        const hiddenPricing = document.getElementById('nbp-hidden-counties-pricing');
+        if (hiddenPricing) hiddenPricing.value = '';
+        
+        // Reset multiselect toggles
+        const toggle = document.getElementById('nbp-multi-button');
+        if (toggle) toggle.textContent = 'Select areas…';
+        
+        const togglePricing = document.getElementById('nbp-multi-button-pricing');
+        if (togglePricing) togglePricing.textContent = 'Select areas…';
+      }
+    });
   })();
 </script>
 </head>
