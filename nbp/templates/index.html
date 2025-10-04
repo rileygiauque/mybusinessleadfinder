@@ -638,6 +638,35 @@ form input {
     min-height: auto;
   }
 }
+
+/* Elderly-friendly select improvements */
+#nbp-state {
+  font-size: 24px !important;
+  padding: 24px 16px !important;
+  border: 3px solid #334155 !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  min-height: 70px !important;
+}
+
+.nbp-multi-toggle {
+  font-size: 24px !important;
+  padding: 24px 16px !important;
+  border: 3px solid #334155 !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  min-height: 70px !important;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 980px) {
+  #nbp-state,
+  .nbp-multi-toggle {
+    font-size: 26px !important;
+    padding: 28px 18px !important;
+    min-height: 80px !important;
+  }
+}
   </style>
 <script>
   // Force-hide spinner + reset form on back button
