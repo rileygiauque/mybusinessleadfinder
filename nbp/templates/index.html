@@ -1122,7 +1122,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ Single fresh lead</li><li>✔ From Your Desired Area</li><li>✔ Full Customer Profile</li><li>✔ New Today</li>
             </ul>
-            <button class="btn choose-area" type="button" data-plan="local">Try Free</button>
+            <!--<button class="btn choose-area" type="button" data-plan="local">Try Free</button>-->
+            <button class="btn scroll-only-btn" type="button" data-plan="local">Try Free</button>
           </div>
         </div>
     
@@ -1273,7 +1274,6 @@ window.addEventListener('pageshow', (event) => {
   const spinner = document.getElementById('loading-spinner');
   if (spinner) spinner.classList.remove('active');
 });
-
 
 (function(){
   // ========================================
@@ -1477,21 +1477,22 @@ function showAreaPickerFromPlan(planId){
   }, 300);
 }
 
-// intercept “Choose Area” on pricing cards
-// Around line 1138, wrap the choose-area event listeners:
+// intercept "Choose Area" on pricing cards
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.choose-area').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    showAreaPickerFromPlan(btn.dataset.plan);
+  // First, mark "Try Free" button with special plan ID
+  document.querySelectorAll('.choose-area, .scroll-only-btn').forEach(btn => {
+    if (btn.textContent.trim() === 'Try Free') {
+      btn.dataset.plan = 'free';
+    }
   });
-});
 
-// ✅ Special handler for "Try Free" button - scroll to top only
-document.querySelectorAll('.choose-area').forEach(btn => {
-  if (btn.textContent.trim() === 'Try Free') {
-    btn.dataset.plan = 'free'; // Mark it so we can intercept it
-  }
-});
+  // Then attach click handlers to ALL buttons
+  document.querySelectorAll('.choose-area, .scroll-only-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      showAreaPickerFromPlan(btn.dataset.plan);
+    });
+  });
+});  // ← NOW it properly closes DOMContentLoaded
 
 // POST to Stripe with plan + selected counties (+ email if present)
 function postToStripe(){
