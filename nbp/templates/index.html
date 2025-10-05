@@ -639,38 +639,41 @@ form input {
     display: none;
   }
   
-  /* Create a flex container for title and content */
+  /* Create a flex container for title and sticker on mobile */
   .section-results .container {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 16px;
-    position: relative;
+    gap: 12px;
   }
   
   .section-results h2 {
-    flex: 1 1 100%;
-    margin: 0 0 8px 0;
-  }
-  
-  /* Bullet list takes left side */
-  .results-subtitle {
-    flex: 1 1 50%;
+    flex: 1 1 55%;
     min-width: 0;
     margin: 0;
-    font-size: 17px;
-    line-height: 1.6;
   }
   
-  .results-subtitle li {
-    margin-bottom: 14px;
+  /* Position sticker to the right of title */
+  .lead-sticker {
+    position: relative;
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+    transform: rotate(-2deg);
+    margin: 0;
+    left: auto;
+    bottom: auto;
+    display: block;
   }
-
-  /* ✅ CHANGE 2: Make 3rd bullet full width */
-  .results-subtitle li:nth-child(3) {
+  
+  /* Bullet list goes full width below title+image */
+  .results-subtitle {
     flex: 1 1 100%;
     width: 100%;
+    margin: 0;
+    font-size: 17px;
   }
+}
   
   /* Position sticker to the right, make it 1.6x bigger */
   .lead-sticker {
@@ -1096,9 +1099,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <img class="pricing-photo" src="{{ url_for('static', filename='img/6.png') }}" alt="Local storefront" />
           <div class="pricing-body">
             <!-- <h3>Local Star</h3>-->
-            
-            <div class="price">Starter<span style="font-weight:400"></span></div>
             <div class="trial-kicker"><span class="trial-badge">15 Free Leads included</span></div>
+            <div class="price">Starter<span style="font-weight:400"></span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ 10-18 leads per day</li><li>✔ 1 city/county</li><li>✔ Full Customer Profiles</li><li>✔ Live Support</li>
             </ul>
@@ -1109,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="pricing-card">
           <img class="pricing-photo" src="{{ url_for('static', filename='img/7.png') }}" alt="Regional skyline" />
           <div class="pricing-body">
-            <h3>Regional Hero</h3>
+            <!--<h3>Regional Hero</h3>-->
             <div class="trial-kicker"><span class="trial-badge">100 Free Leads included</span></div>
             <div class="price">Advanced<span style="font-weight:400"></span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
@@ -1122,9 +1124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="pricing-card">
           <img class="pricing-photo" src="{{ url_for('static', filename='img/8.png') }}" alt="State outline" />
           <div class="pricing-body">
-            <h3>Statewide Boss</h3>
+            <!--<h3>Statewide Boss</h3>-->
             <div class="trial-kicker"><span class="trial-badge">350 Free Leads included</span></div>
-            <div class="price">Enterprise<span style="font-weight:400">/month</span></div>
+            <div class="price">Enterprise<span style="font-weight:400"></span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ 100-112 leads per day</li><li>✔ Custom Locations</li><li>✔ Full Customer Profiles</li><li>✔ Historical Lead Access</li><li>✔ Live Support and Training</li>
             </ul>
@@ -1144,7 +1146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
       <p class="pricing-note">
-        Each plan provides access to leads within your selected territory. We limit the distribution of leads in your area and do not send them to directly to anyone other than <strong>you</strong>.
+        Each plan provides access to leads within your selected territory. We do not directly send leads in your area to anyone but <strong>you</strong>.
       </p>
     </div>
   </div>
@@ -1208,10 +1210,9 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- FOOTER -->
   <footer class="section" style="padding-block:36px;background:#fff;border-top:1px solid var(--border)">
   <div class="container" style="text-align:center">
-    <p style="margin:.2rem 0;color:var(--ink-600)"><strong>© 2025 NewBusinessLeadFinder.com.</strong></p>
+    <p style="margin:.2rem 0;color:var(--ink-600)"><strong>© 2025 MyBusinessLeadFinder.com</strong></p>
     <p style="margin:.2rem 0;color:var(--ink-600)">
-      NewBusinessLeadFinder.com is a lead generation and marketing services provider that identifies and delivers business opportunity information to subscribers. We are not a CPA firm, tax advisor, financial institution, attorney, or business consultant, and we do not provide professional advice, recommendations, or endorsements regarding any leads or business opportunities.  All rights reserved.
-    </p>
+      MyBusinessLeadFinder.com is a marketing and lead generation platform that collects and provides publicly available or third-party business information to subscribers. We do not guarantee the accuracy, completeness, or reliability of any leads or business opportunities provided. MyBusinessLeadFinder.com is not a CPA firm, tax advisor, financial institution, attorney, or business consultant, and does not offer professional advice, recommendations, or endorsements of any kind. Use of our services and any decisions based on the information provided are solely at the subscriber’s own risk. All rights reserved.</p>
     <p style="margin:.2rem 0;color:var(--ink-600)">
       <a href="/privacy-policy" style="color:var(--ink-600);text-decoration:none"><strong>Privacy Policy   </strong></a> | 
       <a href="/terms-of-service" style="color:var(--ink-600);text-decoration:none"><strong>   Terms of Service   </strong></a> | 
