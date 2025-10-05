@@ -655,6 +655,37 @@ form input {
     width: 100%;
   }
 }
+
+/* ===== MOBILE-ONLY ADJUSTMENTS ===== */
+@media (max-width: 980px) {
+  /* 1) Hide the "Access Free Leads" CTA button on mobile */
+  .trial-cta {
+    display: none;
+  }
+  
+  /* 2) Make pricing cards scroll horizontally */
+  .pricing-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  }
+  
+  .pricing-card {
+    flex: 0 0 85%; /* each card takes 85% of screen width */
+    scroll-snap-align: center;
+    max-width: 400px; /* prevent cards from being too wide on tablets */
+  }
+  
+  /* Optional: Add scroll indicator hint */
+  .pricing-grid::after {
+    content: '';
+    flex: 0 0 8px; /* small spacer at end */
+  }
+}
     
   </style>
 <script>
