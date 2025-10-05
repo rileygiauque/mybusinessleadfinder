@@ -742,6 +742,30 @@ form input {
     padding-bottom: 24px !important; /* adjust to your liking */
   }
 }
+
+@media (max-width: 720px) {
+  .section-results .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* Centers the group horizontally */
+    text-align: left;         /* Keeps the text left-aligned */
+  }
+
+  .section-results h2 {
+    text-align: left;         /* Keeps text flush left */
+    width: 100%;
+    max-width: 360px;         /* Keeps line length readable */
+    margin: 0 auto;           /* Centers within container */
+  }
+
+  .section-results .lead-sticker {
+    position: static;         /* Removes absolute positioning */
+    width: 180px;
+    margin-top: 24px;
+    align-self: center;       /* Centers image under heading */
+  }
+}
+
     
   </style>
 <script>
