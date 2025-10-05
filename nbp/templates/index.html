@@ -759,31 +759,9 @@ form input {
     content: url("/static/img/lead-mobile.png");
     transform: scale(1.35);      /* makes it 1.0x larger */
     transform-origin: center;   /* keep it centered */
-
   }
 }
 
-
-@media (max-width: 720px) {
-  /* Tighten up the space between hero and next section */
-  .hero {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-  }
-
-  /* Reduce the top padding of the section that follows hero */
-  .hero + .section {
-    padding-top: 12px !important;  /* adjust smaller or larger as needed */
-  }
-
-  /* Optional: also tighten the general section padding on mobile */
-  .section {
-    padding-block: 32px !important;
-  }
-}
-
-
-    
   </style>
 <script>
   // Force-hide spinner + reset form on back button
@@ -1223,15 +1201,22 @@ document.addEventListener('DOMContentLoaded', () => {
     <h2 style="text-align:center; margin-bottom:clamp(32px,4vw,48px)">Frequently Asked Questions</h2>
     
     <div class="faq-grid">
+
+      <!-- Question 0 -->
+      <div class="faq-item">
+        <h3 class="faq-question">What happens after I complete the questionnaire?</h3>
+        <div class="faq-answer">
+          <p>Our 6-question form helps us see if you’re a good fit for the service. To maintain high customer satisfaction, we limit the amount of new sign-ups we take on so every client gets personal attention and consistent results.</p>
+        </div>
+      </div>
       
       <!-- Question 1 -->
       <div class="faq-item">
         <h3 class="faq-question">What happens after I sign up?</h3>
         <div class="faq-answer">
           <ul>
-            <li>Begin receiving leads immediately upon purchase with daily quantity based on plan type.</li>
-            <li>Real-time updates on new businesses prospects in your selected area, so you can be the first to connect with them.</li>
-            <li>Plan-based access to free leads, allowing you to begin prospecting right away!</li>
+            <li>Users can expect to begin receiving leads within 24 hours, with daily quantity based on plan type.</li>
+            <li>Access to historical leads (plan-based) allows users to begin connecting with new clients right away!</li>
           </ul>
         </div>
       </div>
