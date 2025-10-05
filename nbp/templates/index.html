@@ -775,6 +775,19 @@ form input {
   }
 }
 
+/* ===== Larger, Elder-Friendly Bullets on Desktop ===== */
+@media (min-width: 981px) {
+  .results-subtitle li::before {
+    font-size: 28px !important;   /* bigger checkmarks */
+    top: 1px;                     /* slight alignment tweak */
+  }
+
+  .results-subtitle {
+    font-size: 20px !important;   /* larger text for better readability */
+    line-height: 1.8;
+  }
+}
+
 
   </style>
 <script>
