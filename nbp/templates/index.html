@@ -763,8 +763,10 @@ form input {
 }
 
 @media (max-width: 980px) {
+  /* Fixes extra white space under Step 1 button on mobile only */
   #step-1.form-card {
-    padding-bottom: 0 !important; /* remove excess only from the state box */
+    min-height: auto !important;   /* remove forced tall box */
+    padding-bottom: 18px !important; /* keeps inside spacing natural */
   }
 }
 
