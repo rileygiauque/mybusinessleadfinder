@@ -762,21 +762,25 @@ form input {
   }
 }
 
-@media (max-width: 720px) {
-  /* Reduce the vertical space below the button */
-  .hero {
-    padding-bottom: 0px !important; /* Removes white gap */
-  }
 
-  /* Tighten the form spacing too */
-  .hero .form-card {
+@media (max-width: 720px) {
+  /* Tighten up the space between hero and next section */
+  .hero {
+    padding-bottom: 0 !important;
     margin-bottom: 0 !important;
   }
+
+  /* Reduce the top padding of the section that follows hero */
+  .hero + .section {
+    padding-top: 12px !important;  /* adjust smaller or larger as needed */
+  }
+
+  /* Optional: also tighten the general section padding on mobile */
+  .section {
+    padding-block: 32px !important;
+  }
 }
-    
-.hero .container {
-  padding-bottom: 0 !important;
-}
+
 
     
   </style>
