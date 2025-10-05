@@ -421,6 +421,23 @@ td, th { vertical-align: top; }
   margin:6px 0 16px;
   font-size: clamp(15px,1.3vw,18px);
   line-height:1.5;
+  list-style: none;
+  padding: 0;
+}
+
+.results-subtitle li {
+  margin-bottom: 12px;
+  padding-left: 24px;
+  position: relative;
+}
+
+.results-subtitle li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4ade80;
+  font-weight: 800;
+  font-size: 18px;
 }
 
 .step-progress{
@@ -622,37 +639,45 @@ form input {
     display: none;
   }
   
-  /* Create a flex container for title and sticker on mobile */
+  /* Create a flex container for title and content */
   .section-results .container {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 16px;
+    position: relative;
   }
   
   .section-results h2 {
-    flex: 1 1 55%;  /* Title takes ~55% width */
-    min-width: 0;   /* Allow text to wrap properly */
+    flex: 1 1 100%;
+    margin: 0 0 8px 0;
+  }
+  
+  /* Bullet list takes left side */
+  .results-subtitle {
+    flex: 1 1 50%;
+    min-width: 0;
     margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  
+  .results-subtitle li {
+    margin-bottom: 14px;
   }
   
   /* Position sticker to the right, make it 1.6x bigger */
   .lead-sticker {
     position: relative;
     flex: 0 0 auto;
-    width: min(288px, 45vw);  /* 180px * 1.6 = 288px, or 40vw * 1.6 ≈ 45vw */
-    max-width: 288px;
+    width: min(240px, 40vw);
+    max-width: 240px;
     transform: rotate(-2deg);
     margin: 0;
     left: auto;
     bottom: auto;
     display: block;
-  }
-  
-  /* Subtitle stays below both */
-  .results-subtitle {
-    flex: 1 1 100%;
-    width: 100%;
+    align-self: flex-start;
   }
 }
 
@@ -947,13 +972,15 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </section>
 
-  <!-- RESULTS PREVIEW -->
-  <section class="section section-results">
-    <div class="container">
-      <h2>Reach New Business Owners In Your Area First</h2>
-<p id="results-subtitle" class="results-subtitle">
-  Each day, thousands of fresh business owners starting their journey become prospects actively looking for accounting services. Getting in front of these prospects first gives you the advantage of <strong>consistent new leads</strong> and long-term growth potential.
-</p>
+<!-- RESULTS PREVIEW -->
+<section class="section section-results">
+  <div class="container">
+    <h2>Reach New Business Owners In Your Area First</h2>
+    <ul id="results-subtitle" class="results-subtitle">
+      <li>Thousands of fresh business owners become prospects daily</li>
+      <li>Get in front of prospects <strong>actively looking</strong> for accounting services</li>
+      <li>Gain the advantage of <strong>consistent new leads</strong> and <strong>long-term growth</strong>strong></li>
+    </ul>
       <div class="table-wrap">
   <table class="only-city-visible" id="preview-table">
     <thead>
