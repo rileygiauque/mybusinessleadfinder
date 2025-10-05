@@ -262,7 +262,8 @@ td, th { vertical-align: top; }
     .pricing-body{padding:24px}
     .price{font-weight:800;font-size:32px;margin:.25rem 0 1rem;color:var(--ink-900)}
     .pricing-card.featured{border-color:var(--blue-soft);box-shadow:0 16px 40px rgba(42,94,169,.18)}
-    /*@media (max-width:980px){.pricing-grid{grid-template-columns:1fr}}*/
+    @media (max-width:980px){.pricing-grid{grid-template-columns:1fr}}
+
 
 
 /* ===== Custom multiselect ===== */
@@ -638,41 +639,38 @@ form input {
     display: none;
   }
   
-  /* Create a flex container for title and sticker on mobile */
+  /* Create a flex container for title and content */
   .section-results .container {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
+    position: relative;
   }
   
   .section-results h2 {
-    flex: 1 1 55%;
+    flex: 1 1 100%;
+    margin: 0 0 8px 0;
+  }
+  
+  /* Bullet list takes left side */
+  .results-subtitle {
+    flex: 1 1 50%;
     min-width: 0;
     margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
   }
   
-  /* Position sticker to the right of title */
-  .lead-sticker {
-    position: relative;
-    flex: 0 0 auto;
-    width: 140px;
-    max-width: 140px;
-    transform: rotate(-2deg);
-    margin: 0;
-    left: auto;
-    bottom: auto;
-    display: block;
+  .results-subtitle li {
+    margin-bottom: 14px;
   }
-  
-  /* Bullet list goes full width below title+image */
-  .results-subtitle {
+
+  /* ✅ CHANGE 2: Make 3rd bullet full width */
+  .results-subtitle li:nth-child(3) {
     flex: 1 1 100%;
     width: 100%;
-    margin: 0;
-    font-size: 17px;
   }
-}
   
   /* Position sticker to the right, make it 1.6x bigger */
   .lead-sticker {
@@ -706,11 +704,11 @@ form input {
     padding-bottom: 16px;
     -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
   }
-
+  
   .pricing-card {
-    flex: 0 0 calc(100vw - 60px); /* Each card takes almost full screen width */
-    min-width: calc(100vw - 60px);
+    flex: 0 0 85%; /* each card takes 85% of screen width */
     scroll-snap-align: center;
+    max-width: 400px; /* prevent cards from being too wide on tablets */
   }
   
   /* Optional: Add scroll indicator hint */
@@ -1145,7 +1143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
       <p class="pricing-note">
-        Each plan provides access to leads within your selected territory. We do not directly send leads in your area to anyone but <strong>you</strong>.
+        Each plan provides access to leads within your selected territory. We limit the distribution of leads in your area and do not send them to directly to anyone other than <strong>you</strong>.
       </p>
     </div>
   </div>
@@ -1190,7 +1188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="faq-item">
         <h3 class="faq-question">Who do I contact if I have questions?</h3>
         <div class="faq-answer">
-          <p>Our customer support team is available 24 hours a day via email. You will also receive contact details for your personal customer service representative upon purchase.</p>
+          <p>Our customer support team is available 24 hours a day via email. You will also receive contact details (phone and email) for your personal customer service representative upon initial plan purchase regardless of your subscription. We pride ourselves on having <strong>exceptional customer service</strong>, meaning we want for you to know us by name.</p>
         </div>
       </div>
 
@@ -1198,7 +1196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="faq-item">
         <h3 class="faq-question">Are there refunds if I am not satisfied?</h3>
         <div class="faq-answer">
-          <p>Customer satisfaction is our top priority. We are so confident in our data and service that we offer a <strong>100% satisfaction guarantee</strong>. If you are not completely satisfied with your purchase or the data provided, we will make it right.</p>
+          <p>We are so confident in our data and service that we offer a <strong>100% satisfaction guarantee</strong>. If you are not completely satisfied with your purchase or the data provided, we will make it right.</p>
         </div>
       </div>
 
@@ -1211,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="container" style="text-align:center">
     <p style="margin:.2rem 0;color:var(--ink-600)"><strong>© 2025 MyBusinessLeadFinder.com</strong></p>
     <p style="margin:.2rem 0;color:var(--ink-600)">
-      MyBusinessLeadFinder.com is not a CPA firm, tax advisor, financial institution, attorney, or business consultant, and does not offer professional advice, recommendations, or endorsements of any kind. Use of our services and any decisions based on the information provided are solely at the subscriber’s own risk. All rights reserved.</p>
+      MyBusinessLeadFinder.com is a marketing and lead generation platform that collects and provides publicly available or third-party business information to subscribers. We do not guarantee the accuracy, completeness, or reliability of any leads or business opportunities provided. MyBusinessLeadFinder.com is not a CPA firm, tax advisor, financial institution, attorney, or business consultant, and does not offer professional advice, recommendations, or endorsements of any kind. Use of our services and any decisions based on the information provided are solely at the subscriber’s own risk. All rights reserved.</p>
     <p style="margin:.2rem 0;color:var(--ink-600)">
       <a href="/privacy-policy" style="color:var(--ink-600);text-decoration:none"><strong>Privacy Policy   </strong></a> | 
       <a href="/terms-of-service" style="color:var(--ink-600);text-decoration:none"><strong>   Terms of Service   </strong></a> | 
