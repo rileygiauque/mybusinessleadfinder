@@ -1118,12 +1118,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="pricing-body">
             <!-- <h3>FREE</h3>-->
             <div class="trial-kicker"><span class="trial-badge">1 Free Lead included</span></div>
-            <div class="price">Free<span style="font-weight:400"></span></div>
+            <div class="price">Free Plan<span style="font-weight:400"></span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ Single fresh lead</li><li>✔ From Your Desired Area</li><li>✔ Full Customer Profile</li><li>✔ New Today</li>
             </ul>
             <!--<button class="btn choose-area" type="button" data-plan="local">Try Free</button>-->
-            <button class="btn scroll-only-btn" type="button" data-plan="local">Try Free</button>
+            <button class="btn scroll-only-btn" type="button" data-plan="local">Try for Free</button>
           </div>
         </div>
     
@@ -1773,7 +1773,7 @@ const continueToRegister = byId('continue-to-register');
 if (continueToRegister) {
   continueToRegister.addEventListener('click', () => {
     const hiddenPricing = byId('nbp-hidden-counties-pricing');
-    const picked = (hiddenPricing.value || '').split(',').filter(Boolean);  // ← Use pricing field
+    const picked = (hiddenPricing.value || '').split(',').filter(Boolean);
     
     if (picked.length === 0) { 
       alert('Please select at least one area');
@@ -1784,6 +1784,12 @@ if (continueToRegister) {
     if ((planField.value.includes('local') && count > 1) ||
         (planField.value.includes('regional') && count > 10)) {
       overLimitMessage();
+      return;
+    }
+
+    // ✅ Redirect to JotForm for Starter plan
+    if (planField.value.includes('local')) {
+      window.location.href = 'https://form.jotform.com/252773617505158';
       return;
     }
 
