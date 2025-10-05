@@ -732,18 +732,6 @@ form input {
 }
 
 @media (max-width: 720px) {
-  /* Remove extra white space below the button */
-  .hero .form-card {
-    margin-bottom: 0 !important;
-  }
-
-  /* Optionally reduce hero section bottom padding */
-  .hero {
-    padding-bottom: 24px !important; /* adjust to your liking */
-  }
-}
-
-@media (max-width: 720px) {
   .section-results .container {
     display: flex;
     flex-direction: column;
@@ -774,7 +762,17 @@ form input {
   }
 }
 
+@media (max-width: 720px) {
+  /* Reduce the vertical space below the button */
+  .hero {
+    padding-bottom: 0px !important; /* Removes white gap */
+  }
 
+  /* Tighten the form spacing too */
+  .hero .form-card {
+    margin-bottom: 0 !important;
+  }
+}
     
   </style>
 <script>
