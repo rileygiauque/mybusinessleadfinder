@@ -757,7 +757,7 @@ form input {
 @media (max-width: 720px) {
   .section-results .lead-sticker {
     content: url("/static/img/lead-mobile.png");
-    transform: scale(2.1);      /* makes it 3.2x larger */
+    transform: scale(1.7);      /* makes it 1.7x larger */
     transform-origin: center;   /* keep it centered */
   }
 }
@@ -773,6 +773,11 @@ form input {
     margin-bottom: 0 !important;
   }
 }
+    
+.hero .container {
+  padding-bottom: 0 !important;
+}
+
     
   </style>
 <script>
@@ -1701,6 +1706,8 @@ if (countySel.length > maxAllowed) {
   list.addEventListener('change', (e) => {
     const t = e.target;
     if (t.type !== 'checkbox') return;
+
+    closePanel();
 
     const all = allOpt();
     const selected = inputs().filter(i => i.checked);
