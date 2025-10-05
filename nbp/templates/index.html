@@ -763,12 +763,18 @@ form input {
 }
 
 @media (max-width: 980px) {
-  /* Fixes extra white space under Step 1 button on mobile only */
+  /* Remove the blue section padding under the Step 1 card */
+  .hero {
+    padding-bottom: 0 !important;
+  }
+
+  /* Keep Step 1 looking balanced */
   #step-1.form-card {
-    min-height: auto !important;   /* remove forced tall box */
-    padding-bottom: 18px !important; /* keeps inside spacing natural */
+    min-height: auto !important;
+    padding-bottom: 18px !important;
   }
 }
+
 
   </style>
 <script>
