@@ -256,7 +256,28 @@ td, th { vertical-align: top; }
     tbody tr:hover{background:#f8fbff}
 
     /* ===== Pricing (accent photos) ===== */
-    .pricing-grid{display:grid;gap:24px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    /* ===== Pricing (accent photos) ===== */
+.pricing-grid{
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 16px;
+}
+    
+.pricing-card{
+  flex: 0 0 calc(33.333% - 16px);
+  scroll-snap-align: start;
+  min-width: 320px;
+  max-width: 380px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  text-align:center;
+}
     .pricing-card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;text-align:center}
     .pricing-photo{height:120px;object-fit:cover;width:100%}
     .pricing-body{padding:24px}
@@ -1310,19 +1331,39 @@ document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ✅ NEW: Make "Try Free" buttons scroll to top
+// ✅ NEW: Make "Try Free" button scroll to top (slower)
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.choose-area').forEach(btn => {
-    const originalHandler = btn.onclick;
-    btn.addEventListener('click', (e) => {
-      // If it's the "Try Free" button (first card), scroll to top
-      if (btn.textContent.trim() === 'Try Free') {
+    if (btn.textContent.trim() === 'Try Free') {
+      // Remove this button from the area picker handler
+      btn.classList.add('scroll-only-btn');
+      
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-      // Otherwise, let the original handler run (area picker)
-    });
+        
+        // Smooth scroll to top (50% slower)
+        const start = window.pageYOffset;
+        const duration = 1200; // 50% slower than default 800ms
+        const startTime = performance.now();
+        
+        function scroll(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+          
+          window.scrollTo(0, start * (1 - easeProgress));
+          
+          if (progress < 1) {
+            requestAnimationFrame(scroll);
+          }
+        }
+        
+        requestAnimationFrame(scroll);
+      });
+    }
   });
 });
 
@@ -1455,10 +1496,12 @@ function showAreaPickerFromPlan(planId){
 // Around line 1138, wrap the choose-area event listeners:
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.choose-area').forEach(btn=>{
+  // Skip "Try Free" button (handled separately)
+  if (!btn.classList.contains('scroll-only-btn')) {
     btn.addEventListener('click', ()=> {
       showAreaPickerFromPlan(btn.dataset.plan);
     });
-  });
+  }
 });
 
 // POST to Stripe with plan + selected counties (+ email if present)
