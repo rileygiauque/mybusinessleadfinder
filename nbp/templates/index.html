@@ -147,7 +147,7 @@ td, th { vertical-align: top; }
     .lead{color:#20324b}
 
     .btn{
-      display:block;width:100%;border:0;border-radius:14px;
+      display:inline-block;border:0;border-radius:14px;
       background:var(--blue-soft);color:#fff;font-weight:800;
       padding:16px 20px;font-size:clamp(18px,1.4vw,20px);
       box-shadow:var(--shadow); cursor:pointer;
@@ -763,6 +763,12 @@ form input {
     transform-origin: center;   /* keep it centered */
   }
 }
+
+@media (max-width: 980px) {
+  .form-card { padding-bottom: 0 !important; }
+}
+
+
 
   </style>
 <script>
