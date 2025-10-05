@@ -1331,43 +1331,6 @@ document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ✅ NEW: Make "Try Free" button scroll to top (slower)
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.choose-area').forEach(btn => {
-    if (btn.textContent.trim() === 'Try Free') {
-      // Remove this button from the area picker handler
-      btn.classList.add('scroll-only-btn');
-      
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Smooth scroll to top (50% slower)
-        const start = window.pageYOffset;
-        const duration = 1200; // 50% slower than default 800ms
-        const startTime = performance.now();
-        
-        function scroll(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const easeProgress = progress < 0.5 
-            ? 2 * progress * progress 
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-          
-          window.scrollTo(0, start * (1 - easeProgress));
-          
-          if (progress < 1) {
-            requestAnimationFrame(scroll);
-          }
-        }
-        
-        requestAnimationFrame(scroll);
-      });
-    }
-  });
-});
-
-
 function mountStep2Into(el){
   // Don't move step-2 anymore - pricing has its own selector
   const pricingStep2 = byId('step-2-pricing');
@@ -1434,6 +1397,28 @@ function restoreStep2Home(){
 }
 
 function showAreaPickerFromPlan(planId){
+  // ✅ Intercept "Try Free" button - scroll to top instead
+  if (planId === 'free') {
+    const start = window.pageYOffset;
+    const duration = 1200;
+    const startTime = performance.now();
+    
+    function scroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      
+      window.scrollTo(0, start * (1 - easeProgress));
+      
+      if (progress < 1) requestAnimationFrame(scroll);
+    }
+    
+    requestAnimationFrame(scroll);
+    return; // Don't proceed with area picker
+  }
+  
   launchedFromPlan = true;
   const priceId = PLAN_TO_PRICE[planId];
   if (!priceId) {
@@ -1496,11 +1481,15 @@ function showAreaPickerFromPlan(planId){
 // Around line 1138, wrap the choose-area event listeners:
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.choose-area').forEach(btn=>{
-  // Skip "Try Free" button (handled separately)
-  if (!btn.classList.contains('scroll-only-btn')) {
-    btn.addEventListener('click', ()=> {
-      showAreaPickerFromPlan(btn.dataset.plan);
-    });
+  btn.addEventListener('click', ()=> {
+    showAreaPickerFromPlan(btn.dataset.plan);
+  });
+});
+
+// ✅ Special handler for "Try Free" button - scroll to top only
+document.querySelectorAll('.choose-area').forEach(btn => {
+  if (btn.textContent.trim() === 'Try Free') {
+    btn.dataset.plan = 'free'; // Mark it so we can intercept it
   }
 });
 
