@@ -706,11 +706,11 @@ form input {
     padding-bottom: 16px;
     -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
   }
-  
+
   .pricing-card {
-    flex: 0 0 85%; /* each card takes 85% of screen width */
+    flex: 0 0 calc(100vw - 60px); /* Each card takes almost full screen width */
+    min-width: calc(100vw - 60px);
     scroll-snap-align: center;
-    max-width: 400px; /* prevent cards from being too wide on tablets */
   }
   
   /* Optional: Add scroll indicator hint */
