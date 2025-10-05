@@ -368,16 +368,6 @@ td, th { vertical-align: top; }
 /* give the section breathing room so the overlap isn't clipped */
 .section-results { padding-bottom: clamp(60px, 8vw, 100px); }
 
-/* Keep lead sticker visible on mobile */
-@media (max-width: 720px){
-  .lead-sticker{
-    /* Remove display:none - let it show on mobile */
-    width: min(180px, 40vw);  /* Make it smaller on mobile */
-    left: clamp(12px, 3vw, 16px);
-    bottom: clamp(-30px, -5vw, -20px);
-  }
-}
-
 /* --- Row CTA (centered) + full-row blur on hover --- */
 #preview-table tbody tr.preview-row { position: relative; }
 
@@ -632,14 +622,37 @@ form input {
     display: none;
   }
   
-  /* Keep sticker centered and visible when table is hidden */
+  /* Create a flex container for title and sticker on mobile */
+  .section-results .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .section-results h2 {
+    flex: 1 1 55%;  /* Title takes ~55% width */
+    min-width: 0;   /* Allow text to wrap properly */
+    margin: 0;
+  }
+  
+  /* Position sticker to the right, make it 1.6x bigger */
   .lead-sticker {
-    position: relative;  /* Change from absolute */
-    display: block;
-    margin: 30px auto 0;  /* Center it */
-    transform: translateX(0) rotate(-2deg);  /* Reset positioning */
+    position: relative;
+    flex: 0 0 auto;
+    width: min(288px, 45vw);  /* 180px * 1.6 = 288px, or 40vw * 1.6 ≈ 45vw */
+    max-width: 288px;
+    transform: rotate(-2deg);
+    margin: 0;
     left: auto;
     bottom: auto;
+    display: block;
+  }
+  
+  /* Subtitle stays below both */
+  .results-subtitle {
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
     
