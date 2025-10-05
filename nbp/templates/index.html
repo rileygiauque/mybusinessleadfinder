@@ -665,13 +665,19 @@ form input {
   .results-subtitle li {
     margin-bottom: 14px;
   }
+
+  /* ✅ CHANGE 2: Make 3rd bullet full width */
+  .results-subtitle li:nth-child(3) {
+    flex: 1 1 100%;
+    width: 100%;
+  }
   
   /* Position sticker to the right, make it 1.6x bigger */
   .lead-sticker {
     position: relative;
     flex: 0 0 auto;
-    width: min(240px, 40vw);
-    max-width: 240px;
+    width: min(360px, 50vw);
+    max-width: 360px;
     transform: rotate(-2deg);
     margin: 0;
     left: auto;
@@ -1090,8 +1096,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <img class="pricing-photo" src="{{ url_for('static', filename='img/6.png') }}" alt="Local storefront" />
           <div class="pricing-body">
             <!-- <h3>Local Star</h3>-->
-            <div class="trial-kicker"><span class="trial-badge">15 Free Leads included</span></div>
+            
             <div class="price">Starter<span style="font-weight:400"></span></div>
+            <div class="trial-kicker"><span class="trial-badge">15 Free Leads included</span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ 10-18 leads per day</li><li>✔ 1 city/county</li><li>✔ Full Customer Profiles</li><li>✔ Live Support</li>
             </ul>
