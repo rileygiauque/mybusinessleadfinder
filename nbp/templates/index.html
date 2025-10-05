@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <img class="pricing-photo" src="{{ url_for('static', filename='img/6.png') }}" alt="Local storefront" />
           <div class="pricing-body">
             <!-- <h3>FREE</h3>-->
-            <div class="trial-kicker"><span class="trial-badge">Free Lead included</span></div>
+            <div class="trial-kicker"><span class="trial-badge">1 Free Lead included</span></div>
             <div class="price">Free<span style="font-weight:400"></span></div>
             <ul style="list-style:none;padding:0;margin:0 0 12px 0;font-size:18px;color:var(--ink-600)">
               <li>✔ Single fresh lead</li><li>✔ From Your Desired Area</li><li>✔ Full Customer Profile</li><li>✔ New Today</li>
@@ -1308,6 +1308,22 @@ const step2OrigNext   = step2.nextSibling; // may be text node
 document.getElementById('trial-scroll')?.addEventListener('click', (e) => {
   e.preventDefault();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ✅ NEW: Make "Try Free" buttons scroll to top
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.choose-area').forEach(btn => {
+    const originalHandler = btn.onclick;
+    btn.addEventListener('click', (e) => {
+      // If it's the "Try Free" button (first card), scroll to top
+      if (btn.textContent.trim() === 'Try Free') {
+        e.preventDefault();
+        e.stopPropagation();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      // Otherwise, let the original handler run (area picker)
+    });
+  });
 });
 
 
