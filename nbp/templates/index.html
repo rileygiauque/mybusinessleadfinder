@@ -368,9 +368,14 @@ td, th { vertical-align: top; }
 /* give the section breathing room so the overlap isn't clipped */
 .section-results { padding-bottom: clamp(60px, 8vw, 100px); }
 
-/* Hide on small screens to keep things tidy */
+/* Keep lead sticker visible on mobile */
 @media (max-width: 720px){
-  .lead-sticker{ display:none; }
+  .lead-sticker{ 
+    /* Remove display:none - let it show on mobile */
+    width: min(180px, 40vw);  /* Make it smaller on mobile */
+    left: clamp(12px, 3vw, 16px);
+    bottom: clamp(-30px, -5vw, -20px);
+  }
 }
 
 /* --- Row CTA (centered) + full-row blur on hover --- */
