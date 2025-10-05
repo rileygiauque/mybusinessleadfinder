@@ -370,7 +370,7 @@ td, th { vertical-align: top; }
 
 /* Keep lead sticker visible on mobile */
 @media (max-width: 720px){
-  .lead-sticker{ 
+  .lead-sticker{
     /* Remove display:none - let it show on mobile */
     width: min(180px, 40vw);  /* Make it smaller on mobile */
     left: clamp(12px, 3vw, 16px);
@@ -626,10 +626,20 @@ form input {
   }
 }
 
-/* Hide preview table on mobile */
+/* Hide preview table on mobile but keep sticker visible */
 @media (max-width: 720px) {
   .table-wrap {
     display: none;
+  }
+  
+  /* Keep sticker centered and visible when table is hidden */
+  .lead-sticker {
+    position: relative;  /* Change from absolute */
+    display: block;
+    margin: 30px auto 0;  /* Center it */
+    transform: translateX(0) rotate(-2deg);  /* Reset positioning */
+    left: auto;
+    bottom: auto;
   }
 }
     
