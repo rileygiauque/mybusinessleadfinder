@@ -1477,11 +1477,10 @@ function showAreaPickerFromPlan(planId){
   }, 300);
 }
 
-// intercept "Choose Area" on pricing cards
 document.addEventListener('DOMContentLoaded', () => {
   // First, mark "Try Free" button with special plan ID
   document.querySelectorAll('.choose-area, .scroll-only-btn').forEach(btn => {
-    if (btn.textContent.trim() === 'Try Free') {
+    if (btn.textContent.trim() === 'Try for Free' || btn.textContent.trim() === 'Try Free') {
       btn.dataset.plan = 'free';
     }
   });
@@ -1492,8 +1491,8 @@ document.addEventListener('DOMContentLoaded', () => {
       showAreaPickerFromPlan(btn.dataset.plan);
     });
   });
-});  // ← NOW it properly closes DOMContentLoaded
-
+});
+  
 // POST to Stripe with plan + selected counties (+ email if present)
 function postToStripe(){
   const f = document.createElement('form');
@@ -1788,7 +1787,7 @@ if (continueToRegister) {
     }
 
     // ✅ Redirect to JotForm for Starter plan
-    if (planField.value.includes('local')) {
+    if (planField.value === 'prod_TAYJYgmbiosE0M') {
       window.location.href = 'https://form.jotform.com/252773617505158';
       return;
     }
