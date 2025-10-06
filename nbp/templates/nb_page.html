@@ -1493,19 +1493,28 @@ document.addEventListener('DOMContentLoaded', function() {
 document.querySelectorAll('.nbp-card').forEach(card => {
   const details = card.querySelector('.nbp-detailgrid');
   const toggle = document.createElement('button');
-  toggle.textContent = '▼ Show Details';
-  toggle.style.cssText = 'background:none;border:1px solid #e5e7eb;padding:8px 16px;border-radius:8px;cursor:pointer;margin-top:12px;font-weight:600;';
+  toggle.textContent = 'Show Details';
+  toggle.className = 'nbp-show-details-btn';
+  toggle.style.cssText = 'background:#4a6fa5;color:#fff;padding:12px 28px;border-radius:24px;font-weight:600;font-size:1rem;cursor:pointer;border:none;box-shadow:0 4px 12px rgba(74,111,165,0.3);margin:16px auto 0;display:block;transition:background 0.2s ease;';
   
   details.style.display = 'none';
   details.insertAdjacentElement('beforebegin', toggle);
   
+  toggle.onmouseover = () => {
+    toggle.style.background = '#3d5a8a';
+  };
+  
+  toggle.onmouseout = () => {
+    toggle.style.background = '#4a6fa5';
+  };
+  
   toggle.onclick = () => {
     if(details.style.display === 'none'){
       details.style.display = 'grid';
-      toggle.textContent = '▲ Hide Details';
+      toggle.textContent = 'Hide Details';
     } else {
       details.style.display = 'none';
-      toggle.textContent = '▼ Show Details';
+      toggle.textContent = 'Show Details';
     }
   };
 });
