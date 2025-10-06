@@ -909,7 +909,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+1) .nx-obscure {
 .nbp-header h1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   margin: 0 0 10px;
   color: #000;
   display: inline-block;
@@ -990,7 +990,32 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+1) .nx-obscure {
     margin-top: 24px; /* adjust value as needed (e.g., 20–40px) */
   }
 }
+
+/* Mobile-friendly dropdown styling for elderly users */
+@media (max-width: 640px) {
+  .nbp-selectors select {
+    font-size: 1.25rem; /* Bigger text */
+    padding: 18px 24px; /* Larger touch target */
+    min-width: 100%; /* Full width on mobile */
+    min-height: 60px; /* Taller for easier tapping */
+    border-width: 2px; /* Slightly thinner border */
+  }
   
+  .nbp-selectors {
+    flex-direction: column; /* Stack vertically */
+    width: 100%;
+    gap: 16px; /* More space between dropdowns */
+  }
+}
+
+/* Tablet sizing */
+@media (max-width: 900px) and (min-width: 641px) {
+  .nbp-selectors select {
+    font-size: 1.1rem;
+    padding: 16px 20px;
+    min-height: 56px;
+  }
+}
 </style>
   <meta charset="utf-8"/>
 
