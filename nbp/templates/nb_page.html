@@ -581,27 +581,27 @@ body:not(.paywalled) .nx-obscure{
   display:grid; align-items:center; gap:6px;
   Padding-top: 30px;
   border:0; border-radius:16px;
-  background:
-    radial-gradient(900px 520px at 20% 25%, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 34%),
-    radial-gradient(1100px 700px at 85% 120%, rgba(0,0,0,.16) 0%, rgba(0,0,0,0) 60%),
-    radial-gradient(circle at 30% 30%, #63a8ff 0%, #2a7bf0 55%, #1b4ea3 100%) !important;
+  background: #1b4ea3 !important; /* Single dark blue, no gradient */
   color:#fff !important; font-weight:800; padding:80px 28px;
   box-shadow:0 12px 28px rgba(37,99,235,.25);
-  cursor:pointer; width:100%; margin:0 auto; text-align:center; line-height:1.25; text-decoration:none;
+  cursor:pointer; 
+  width: 100%; /* Match card width */
+  max-width: none; /* Remove any max-width constraint */
+  margin:0 auto; 
+  text-align:center; 
+  line-height:1.25; 
+  text-decoration:none;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
-
-
 
 .cta-big:hover{
   box-shadow: 0 16px 34px rgba(31,107,214,.30);
-  
+  background: #1b4ea3 !important; /* Keep same color on hover */
 }
-
 
 .cta-big:focus{ outline: none; box-shadow: 0 0 0 4px rgba(37,99,235,.28); }
 
 .cta-line-1{  font-size: clamp(28px, 2.6vw, 70px);  letter-spacing:.2px; }
-
 
 .cta-line-2{
   font-weight: 600;
@@ -991,10 +991,15 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   }
 }
 
-/* Show only the first lead card */
-  .nbp-card-grid .nbp-card:not(:first-child) {
-    display: none !important;
-  }
+/* === Show only first lead clearly; blur others === */
+.nbp-card-grid .nbp-card:not(:first-child) {
+  filter: blur(6px);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
   
 </style>
   <meta charset="utf-8"/>
@@ -1317,19 +1322,12 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 {# show CTA to non-subscribers; show CSV for subscribers #}
 {% if not session.get('is_subscriber') %}
 
-  <a class="cta-big" style="background:
-  radial-gradient(900px 520px at 20% 25%, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 34%),
-  radial-gradient(1100px 700px at 85% 120%, rgba(0,0,0,.16) 0%, rgba(0,0,0,0) 60%),
-  radial-gradient(circle at 30% 30%, #63a8ff 0%, #2a7bf0 55%, #1b4ea3 100%);
-  margin-top: 15px;
-  color:#fff; box-shadow:0 12px 28px rgba(37,99,235,.25);"
-
-     href="{{ url_for('public.home') }}#plans"
-
-     aria-label="Access data, contact information, and receive alerts when a new business owner is identified in your area.">
-    <span class="cta-line-1">Sign Up for Local Leads</span>
-    <span class="cta-line-2">Establish consistent leadflow to help grow your practice today.</span>
-  </a>
+  <a class="cta-big" 
+   href="{{ url_for('public.home') }}#plans"
+   aria-label="Access data, contact information, and receive alerts when a new business owner is identified in your area.">
+  <span class="cta-line-1">Sign Up for Local Leads</span>
+  <span class="cta-line-2">Establish consistent leadflow to help grow your practice today.</span>
+</a>
 
   {% endif %}
     <!-- Children / Nearby links -->
