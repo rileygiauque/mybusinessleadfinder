@@ -874,9 +874,25 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   border: 0 !important;
 }
 
-.nbp-line strong {
-  white-space: nowrap;
+/* Make the calendar emoji, label, and date sit inline on one line */
+.nbp-line.added-on {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+
+.nbp-line.added-on .i {
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: normal;
+}
+
+.nbp-line.added-on strong {
+  font-weight: 700;
+  color: #000; /* optional: adjust as needed */
+}
+
 
   
 </style>
@@ -1109,24 +1125,23 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 <p class="nbp-type"><strong><span class="nx-obscure">{{ type }}</span></strong></p>
 
 <div class="nbp-subtitle">
-  <div class="nbp-line">
-    <span class="i" aria-hidden="true">📅 <strong>Lead Added on:</strong></span>
-
-    {# --- Format filing date: YYYY-MM-DD -> Month DD, YYYY --- #}
-    {% set _raw = (filed|string).strip() %}
-    {% if _raw and _raw != '—' and _raw|length >= 10 %}
-      {% set _y = _raw[:4] %}
-      {% set _m = _raw[5:7] %}
-      {% set _d = _raw[8:10] %}
-      {% set _MONTHS = {
-        '01':'January','02':'February','03':'March','04':'April','05':'May','06':'June',
-        '07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'
-      } %}
-      <span>{{ _MONTHS.get(_m, _m) }} {{ _d }}, {{ _y }}</span>
-    {% else %}
-      <span>—</span>
-    {% endif %}
-  </div>
+  <div class="nbp-line added-on">
+  <span class="i" aria-hidden="true">📅</span>
+  <strong>Added on:</strong>
+  {% set _raw = (filed|string).strip() %}
+  {% if _raw and _raw != '—' and _raw|length >= 10 %}
+    {% set _y = _raw[:4] %}
+    {% set _m = _raw[5:7] %}
+    {% set _d = _raw[8:10] %}
+    {% set _MONTHS = {
+      '01':'January','02':'February','03':'March','04':'April','05':'May','06':'June',
+      '07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'
+    } %}
+    <span>{{ _MONTHS.get(_m, _m) }} {{ _d }}, {{ _y }}</span>
+  {% else %}
+    <span>—</span>
+  {% endif %}
+</div>
 </div>
 
 
