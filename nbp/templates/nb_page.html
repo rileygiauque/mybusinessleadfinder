@@ -874,6 +874,10 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   border: 0 !important;
 }
 
+.nbp-line strong {
+  white-space: nowrap;
+}
+
   
 </style>
   <meta charset="utf-8"/>
@@ -1105,7 +1109,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 <div class="nbp-subtitle">
   <div class="nbp-line">
-    <span class="i" aria-hidden="true">📅 <strong>Business Created on:</strong></span>
+    <span class="i" aria-hidden="true">📅 <strong>Lead Added on:</strong></span>
 
     {# --- Format filing date: YYYY-MM-DD -> Month DD, YYYY --- #}
     {% set _raw = (filed|string).strip() %}
