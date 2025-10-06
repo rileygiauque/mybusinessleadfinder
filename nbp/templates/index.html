@@ -2174,6 +2174,58 @@ if (step4Element) {
   });
 }
 
+// Populate state and county dropdowns
+document.addEventListener('DOMContentLoaded', function() {
+  const stateSelect = document.getElementById('state-select');
+  const countySelect = document.getElementById('county-select');
+  
+  // Add Florida option to state selector
+  if (stateSelect) {
+    const option = document.createElement('option');
+    option.value = 'florida';
+    option.textContent = 'Florida';
+    stateSelect.appendChild(option);
+    
+    // Pre-select Florida if we're on a Florida page
+    stateSelect.value = 'florida';
+  }
+  
+  // Populate counties for Florida
+  const floridaCounties = {{ counties | tojson | safe }};
+  
+  if (countySelect && floridaCounties) {
+    floridaCounties.forEach(county => {
+      const option = document.createElement('option');
+      option.value = county.slug;
+      option.textContent = county.name;
+      countySelect.appendChild(option);
+    });
+    
+    // Pre-select current county if we're on a county page
+    {% if jur.kind == "county" %}
+    countySelect.value = '{{ jur.slug }}';
+    {% endif %}
+  }
+  
+  // Handle state selection change
+  if (stateSelect) {
+    stateSelect.addEventListener('change', function() {
+      if (this.value === 'florida') {
+        window.location.href = '/new-business/florida/';
+      }
+    });
+  }
+  
+  // Handle county selection change
+  if (countySelect) {
+    countySelect.addEventListener('change', function() {
+      if (this.value) {
+        window.location.href = `/new-business/florida/county/${this.value}/`;
+      }
+    });
+  }
+});
+
 </script>
 </body>
 </html>
