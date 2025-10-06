@@ -83,13 +83,40 @@ body{
   position:relative;
   z-index:auto;
   color:#fff;
-  background: none !important;
+  background: var(--hero-bg, none) center/cover no-repeat;
   /* full-bleed even inside a centered .container */
   width:100vw; margin-left:50%; transform:translateX(-50%);
   /* vertical rhythm */
   padding: clamp(54px, 8vw, 110px) 0 clamp(42px, 6vw, 80px);
   /* prevent any white edge peeking */
   overflow:hidden;
+}
+
+.nbp-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(to right,
+      rgba(15,62,88,.68) 0%,   /* was .78 */
+      rgba(15,62,88,.46) 45%,  /* was .56 */
+      rgba(15,62,88,.20) 70%,  /* was .30 */
+      rgba(15,62,88,.02) 100%  /* was .12 */
+    ),
+    rgba(15,62,88,.10);        /* was .20 */
+  pointer-events:none;
+}
+
+.nbp-hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15,62,88,.35) 0%,   /* was .45 */
+    rgba(15,62,88,.18) 35%,  /* was .28 */
+    rgba(15,62,88,.02) 70%,  /* was .12 */
+    rgba(15,62,88,0)   100%
+  );
+  pointer-events:none;
 }
 
 .nbp-hero__inner{
@@ -780,9 +807,25 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 
 /* NEW LEAD Banner */
 .nbp-new-lead-banner {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  text-align: center;
+  padding: 20px 16px;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  letter-spacing: 2px;
+  border-radius: 48px 48px 0 0;
+  z-index: 5;
+  text-transform: uppercase;
+  /* Prevent cutoff */
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 
 @media (max-width: 900px) {
   .nbp-new-lead-banner {
@@ -850,64 +893,6 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   color: #000; /* optional: adjust as needed */
 }
 
-/* ===== Simplified Interactive Header ===== */
-.nbp-header {
-  background: #fff;
-  text-align: center;
-  padding: 60px 20px 40px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.nbp-header__inner {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.nbp-header h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  margin: 0 0 10px;
-  color: #000;
-  display: inline-block;
-  padding: 14px 30px;
-  border-radius: 8px;
-}
-
-
-.nbp-location {
-  font-family: 'Nunito', sans-serif;
-  font-size: 1.3rem;
-  color: #000;
-  margin-top: 8px;
-  text-transform: uppercase;
-}
-
-.nbp-selectors {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin-top: 32px;
-  flex-wrap: wrap;
-}
-
-.nbp-selectors select {
-  appearance: none;
-  background: #fff;
-  border: 3px solid #000;
-  padding: 14px 22px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.nbp-selectors select:hover {
-  background: #000;
-  color: #fff;
-}
 
   
 </style>
@@ -1026,30 +1011,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 <body class="{{ 'paywalled' if not session.get('is_subscriber') else '' }}" 
       data-jur-kind="{{ jur.kind }}">
 
-  <section class="nbp-header">
-  <div class="nbp-header__inner">
-    <h1>NEW BUSINESS PROSPECTS IN</h1>
-    {% if jur.kind == "county" %}
-      <p class="nbp-location">{{ jur.name }}, FL</p>
-    {% elif jur.kind == "city" %}
-      <p class="nbp-location">{{ jur.name }}, FL</p>
-    {% elif jur.kind == "state" %}
-      <p class="nbp-location">Florida</p>
-    {% else %}
-      <p class="nbp-location">{{ jur.name }}</p>
-    {% endif %}
-
-    <div class="nbp-selectors">
-      <select id="state-select">
-        <option value="">Select State</option>
-      </select>
-      <select id="county-select">
-        <option value="">Select County</option>
-      </select>
-    </div>
-  </div>
-</section>
-
+  
     <section
   class="nbp-hero">
 
