@@ -574,25 +574,23 @@ body:not(.paywalled) .nx-obscure{
   text-shadow:none;
 }
 
-
-
-/* REPLACE the entire background value in .cta-big with this */
 .cta-big{
   display:grid; align-items:center; gap:6px;
-  Padding-top: 30px;
+  padding-top: 30px;
   margin-top: 60px;
   border:0; border-radius:16px;
-  background: #1b4ea3 !important; /* Single dark blue, no gradient */
+  background: #1b4ea3 !important;
   color:#fff !important; font-weight:800; padding:80px 28px;
   box-shadow:0 12px 28px rgba(37,99,235,.25);
   cursor:pointer; 
-  width: 100%; /* Match card width */
-  max-width: none; /* Remove any max-width constraint */
-  margin:0 auto; 
+  width: 100%;
+  max-width: none;
+  margin-left: auto;   /* ← Changed from margin:0 auto */
+  margin-right: auto;  /* ← Split into separate properties */
   text-align:center; 
   line-height:1.25; 
   text-decoration:none;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  box-sizing: border-box;
 }
 
 .cta-big:hover{
