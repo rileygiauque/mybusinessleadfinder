@@ -1487,12 +1487,25 @@ document.querySelectorAll('.nbp-card').forEach(card => {
   };
   
   toggle.onclick = () => {
-    if(details.style.display === 'none'){
-      details.style.display = 'grid';
-      toggle.textContent = 'Hide Details';
+    // Check if card has blurred content
+    const isBlurred = card.querySelector('.nx-obscure');
+    const paywalled = document.body.classList.contains('paywalled');
+    
+    if (paywalled && isBlurred) {
+      // Show access modal instead
+      const accessModal = document.getElementById('accessModal');
+      if (accessModal) {
+        accessModal.classList.add('active');
+      }
     } else {
-      details.style.display = 'none';
-      toggle.textContent = 'Show Details';
+      // Normal toggle behavior for non-blurred cards
+      if(details.style.display === 'none'){
+        details.style.display = 'grid';
+        toggle.textContent = 'Hide Details';
+      } else {
+        details.style.display = 'none';
+        toggle.textContent = 'Show Details';
+      }
     }
   };
 });
