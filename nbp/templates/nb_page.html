@@ -1453,34 +1453,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <script>
-// Add View Details buttons to blurred cards
+// Handle access modal
 document.addEventListener('DOMContentLoaded', function() {
   const paywalled = document.body.classList.contains('paywalled');
-  const isCounty = document.body.dataset.jurKind === 'county';
   const accessModal = document.getElementById('accessModal');
   
-  if (paywalled) {
-    const cards = document.querySelectorAll('.nbp-card');
-    const revealCount = isCounty ? 1 : 3;
-    
-    cards.forEach((card, index) => {
-      // Skip cards that will be revealed
-      if (index < revealCount) return;
-      
-      card.classList.add('nbp-card--locked');
-      
-      const btn = document.createElement('button');
-      btn.className = 'nbp-view-details';
-      btn.textContent = 'View Details';
-      btn.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        accessModal.classList.add('active');
-      };
-      
-      card.appendChild(btn);
-    });
-    
+  if (paywalled && accessModal) {
     // Close modal on background click
     accessModal.addEventListener('click', function(e) {
       if (e.target === accessModal) {
