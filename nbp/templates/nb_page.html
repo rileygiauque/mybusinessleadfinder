@@ -1516,6 +1516,127 @@ document.querySelectorAll('.nbp-card').forEach(card => {
     }
   };
 });
+
+// Populate state and county dropdowns
+document.addEventListener('DOMContentLoaded', function() {
+  const stateSelect = document.getElementById('state-select');
+  const countySelect = document.getElementById('county-select');
+  
+  // Add Florida option to state selector
+  if (stateSelect) {
+    const option = document.createElement('option');
+    option.value = 'florida';
+    option.textContent = 'Florida';
+    stateSelect.appendChild(option);
+    
+    // Pre-select Florida since we're on a Florida page
+    stateSelect.value = 'florida';
+  }
+  
+  // Florida counties list (hardcoded for now)
+  const floridaCounties = [
+    {slug: 'alachua', name: 'Alachua'},
+    {slug: 'baker', name: 'Baker'},
+    {slug: 'bay', name: 'Bay'},
+    {slug: 'bradford', name: 'Bradford'},
+    {slug: 'brevard', name: 'Brevard'},
+    {slug: 'broward', name: 'Broward'},
+    {slug: 'calhoun', name: 'Calhoun'},
+    {slug: 'charlotte', name: 'Charlotte'},
+    {slug: 'citrus', name: 'Citrus'},
+    {slug: 'clay', name: 'Clay'},
+    {slug: 'collier', name: 'Collier'},
+    {slug: 'columbia', name: 'Columbia'},
+    {slug: 'desoto', name: 'DeSoto'},
+    {slug: 'dixie', name: 'Dixie'},
+    {slug: 'duval', name: 'Duval'},
+    {slug: 'escambia', name: 'Escambia'},
+    {slug: 'flagler', name: 'Flagler'},
+    {slug: 'franklin', name: 'Franklin'},
+    {slug: 'gadsden', name: 'Gadsden'},
+    {slug: 'gilchrist', name: 'Gilchrist'},
+    {slug: 'glades', name: 'Glades'},
+    {slug: 'gulf', name: 'Gulf'},
+    {slug: 'hamilton', name: 'Hamilton'},
+    {slug: 'hardee', name: 'Hardee'},
+    {slug: 'hendry', name: 'Hendry'},
+    {slug: 'hernando', name: 'Hernando'},
+    {slug: 'highlands', name: 'Highlands'},
+    {slug: 'hillsborough', name: 'Hillsborough'},
+    {slug: 'holmes', name: 'Holmes'},
+    {slug: 'indian-river', name: 'Indian River'},
+    {slug: 'jackson', name: 'Jackson'},
+    {slug: 'jefferson', name: 'Jefferson'},
+    {slug: 'lafayette', name: 'Lafayette'},
+    {slug: 'lake', name: 'Lake'},
+    {slug: 'lee', name: 'Lee'},
+    {slug: 'leon', name: 'Leon'},
+    {slug: 'levy', name: 'Levy'},
+    {slug: 'liberty', name: 'Liberty'},
+    {slug: 'madison', name: 'Madison'},
+    {slug: 'manatee', name: 'Manatee'},
+    {slug: 'marion', name: 'Marion'},
+    {slug: 'martin', name: 'Martin'},
+    {slug: 'miami-dade', name: 'Miami-Dade'},
+    {slug: 'monroe', name: 'Monroe'},
+    {slug: 'nassau', name: 'Nassau'},
+    {slug: 'okaloosa', name: 'Okaloosa'},
+    {slug: 'okeechobee', name: 'Okeechobee'},
+    {slug: 'orange', name: 'Orange'},
+    {slug: 'osceola', name: 'Osceola'},
+    {slug: 'palm-beach', name: 'Palm Beach'},
+    {slug: 'pasco', name: 'Pasco'},
+    {slug: 'pinellas', name: 'Pinellas'},
+    {slug: 'polk', name: 'Polk'},
+    {slug: 'putnam', name: 'Putnam'},
+    {slug: 'santa-rosa', name: 'Santa Rosa'},
+    {slug: 'sarasota', name: 'Sarasota'},
+    {slug: 'seminole', name: 'Seminole'},
+    {slug: 'st-johns', name: 'St. Johns'},
+    {slug: 'st-lucie', name: 'St. Lucie'},
+    {slug: 'sumter', name: 'Sumter'},
+    {slug: 'suwannee', name: 'Suwannee'},
+    {slug: 'taylor', name: 'Taylor'},
+    {slug: 'union', name: 'Union'},
+    {slug: 'volusia', name: 'Volusia'},
+    {slug: 'wakulla', name: 'Wakulla'},
+    {slug: 'walton', name: 'Walton'},
+    {slug: 'washington', name: 'Washington'}
+  ];
+  
+  // Populate county dropdown
+  if (countySelect) {
+    floridaCounties.forEach(county => {
+      const option = document.createElement('option');
+      option.value = county.slug;
+      option.textContent = county.name;
+      countySelect.appendChild(option);
+    });
+    
+    // Pre-select current county if we're on a county page
+    {% if jur.kind == "county" %}
+    countySelect.value = '{{ jur.slug }}';
+    {% endif %}
+  }
+  
+  // Handle state selection change
+  if (stateSelect) {
+    stateSelect.addEventListener('change', function() {
+      if (this.value === 'florida') {
+        window.location.href = '/new-business/florida/';
+      }
+    });
+  }
+  
+  // Handle county selection change
+  if (countySelect) {
+    countySelect.addEventListener('change', function() {
+      if (this.value) {
+        window.location.href = `/new-business/florida/county/${this.value}/`;
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
