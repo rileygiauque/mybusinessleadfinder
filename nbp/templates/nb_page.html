@@ -934,7 +934,9 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 }
 
 .nbp-selectors select {
-  appearance: none;
+  appearance: auto; /* ✅ Changed from 'none' to show native dropdown arrow */
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
   background: #fff;
   border: 3px solid #000;
   padding: 14px 22px;
@@ -944,11 +946,29 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
+  min-width: 200px; /* ✅ Give them some width */
 }
 
 .nbp-selectors select:hover {
-  background: #000;
-  color: #fff;
+  background: #f0f0f0; /* ✅ Lighter hover instead of full black */
+  color: #000;
+  border-color: #333;
+}
+
+.nbp-selectors select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Make dropdown arrow more visible on iOS */
+@supports (-webkit-touch-callout: none) {
+  .nbp-selectors select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px;
+  }
 }
 
 /* === Remove gradient header bar entirely === */
