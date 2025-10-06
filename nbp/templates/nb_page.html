@@ -83,40 +83,13 @@ body{
   position:relative;
   z-index:auto;
   color:#fff;
-  background: var(--hero-bg, none) center/cover no-repeat;
+  background: none !important;
   /* full-bleed even inside a centered .container */
   width:100vw; margin-left:50%; transform:translateX(-50%);
   /* vertical rhythm */
   padding: clamp(54px, 8vw, 110px) 0 clamp(42px, 6vw, 80px);
   /* prevent any white edge peeking */
   overflow:hidden;
-}
-
-.nbp-hero::before{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    linear-gradient(to right,
-      rgba(15,62,88,.68) 0%,   /* was .78 */
-      rgba(15,62,88,.46) 45%,  /* was .56 */
-      rgba(15,62,88,.20) 70%,  /* was .30 */
-      rgba(15,62,88,.02) 100%  /* was .12 */
-    ),
-    rgba(15,62,88,.10);        /* was .20 */
-  pointer-events:none;
-}
-
-.nbp-hero::after{
-  content:"";
-  position:absolute; inset:0;
-  background: linear-gradient(
-    to bottom,
-    rgba(15,62,88,.35) 0%,   /* was .45 */
-    rgba(15,62,88,.18) 35%,  /* was .28 */
-    rgba(15,62,88,.02) 70%,  /* was .12 */
-    rgba(15,62,88,0)   100%
-  );
-  pointer-events:none;
 }
 
 .nbp-hero__inner{
