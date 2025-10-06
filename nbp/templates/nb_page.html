@@ -893,6 +893,64 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   color: #000; /* optional: adjust as needed */
 }
 
+/* ===== Simplified Interactive Header ===== */
+.nbp-header {
+  background: #fff;
+  text-align: center;
+  padding: 60px 20px 40px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.nbp-header__inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.nbp-header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  margin: 0 0 10px;
+  color: #000;
+  border: 3px solid #9b5efc; /* purple border like your image */
+  display: inline-block;
+  padding: 14px 30px;
+  border-radius: 8px;
+}
+
+.nbp-location {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem;
+  color: #000;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.nbp-selectors {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.nbp-selectors select {
+  appearance: none;
+  background: #fff;
+  border: 3px solid #000;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nbp-selectors select:hover {
+  background: #000;
+  color: #fff;
+}
 
   
 </style>
@@ -1011,7 +1069,30 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
 <body class="{{ 'paywalled' if not session.get('is_subscriber') else '' }}" 
       data-jur-kind="{{ jur.kind }}">
 
-  
+  <section class="nbp-header">
+  <div class="nbp-header__inner">
+    <h1>NEW BUSINESS PROSPECTS IN</h1>
+    {% if jur.kind == "county" %}
+      <p class="nbp-location">{{ jur.name }}, FL</p>
+    {% elif jur.kind == "city" %}
+      <p class="nbp-location">{{ jur.name }}, FL</p>
+    {% elif jur.kind == "state" %}
+      <p class="nbp-location">Florida</p>
+    {% else %}
+      <p class="nbp-location">{{ jur.name }}</p>
+    {% endif %}
+
+    <div class="nbp-selectors">
+      <select id="state-select">
+        <option value="">Select State</option>
+      </select>
+      <select id="county-select">
+        <option value="">Select County</option>
+      </select>
+    </div>
+  </div>
+</section>
+
     <section
   class="nbp-hero">
 
@@ -1069,7 +1150,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   <!-- Intro Section -->
   <section aria-label="New businesses" class="nbp-cards">
     {% if not session.get('is_subscriber') %}
-    
+    <div class="visually-hidden">
   {% if jur.kind == "state" %}
     <h1>New Businesses in Florida</h1>
   {% elif jur.kind == "county" %}
@@ -1077,7 +1158,7 @@ body.paywalled[data-jur-kind="county"] .nbp-card:nth-child(n+2) .nx-obscure {
   {% else %}
     <h1>New Businesses in {{ jur.name|title }}</h1>
   {% endif %}
-    <div class="visually-hidden">
+    
   <p>Constantly updated to give you first access to new potential customers or clients in your area</p>
 
   <h2>Real-Time Tracking of New Business Owners in {{ jur.name }}</h2>
