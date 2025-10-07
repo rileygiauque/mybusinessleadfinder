@@ -471,6 +471,7 @@ td, th { vertical-align: top; }
 
 /* Subtle Login Button Style */
 .login-btn {
+  display: none !important;
   position: absolute;
   top: 20px;
   right: 20px;
@@ -886,6 +887,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <body>
 
+<!-- Replace Login with Apply Now button -->
+<a 
+  href="https://calendly.com/riley-mybusinessleadfinder/30min?back=1&month=2025-10&date=2025-10-08" 
+  class="login-btn" 
+  aria-label="Apply Now" 
+  target="_blank"
+  style="background-color: var(--green-mid); border-color: var(--green-mid);"
+>
+  Apply Now
+</a>
+
+  
 <!-- Subtle Login Button -->
 <a href="/login" class="login-btn" aria-label="Login">
   Login
